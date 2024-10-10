@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 
 import 'ability_scores/ability_scores_widget.dart';
+import 'character_classes/character_classes_widget.dart';
 import 'personality/personality_widget.dart';
 import 'skills/skills_widget.dart';
 import 'names/names_widget.dart';
@@ -38,16 +39,18 @@ class CharacterSheet extends StatelessWidget {
           child: LayoutGrid(
             areas: '''
               names names names names token
+              classes classes classes classes classes
               abilities abilities skills skills personality
               abilities abilities skills skills personality
             ''',
             columnSizes: [1.fr, 1.fr, 1.fr, 1.fr, 1.fr],
-            rowSizes: const [auto, auto, auto],
+            rowSizes: const [auto, auto, auto, auto],
             columnGap: 16,
             rowGap: 16,
             children: [
               const NamesWidget().inGridArea('names'),
               const VttTokenWidget().inGridArea('token'),
+              const CharacterClassesWidget().inGridArea('classes'),
               const AbilityScoresWidget().inGridArea('abilities'),
               const SkillsWidget().inGridArea('skills'),
               const PersonalityWidget().inGridArea('personality'),
