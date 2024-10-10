@@ -1,3 +1,4 @@
+import 'package:character_sheet/vtt_token/vtt_token_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
@@ -32,28 +33,26 @@ class CharacterSheet extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: LayoutGrid(
-          areas: '''
-            names names names names
-            abilities skills personality personality
-            abilities skills personality personality
-          ''',
-          columnSizes: [1.fr, 1.fr, 1.fr, 1.fr],
-          rowSizes: const [auto, auto, auto],
-          columnGap: 16,
-          rowGap: 16,
-          children: [
-            const NamesWidget().inGridArea('names'),
-            const SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: AbilityScoresWidget(),
-            ).inGridArea('abilities'),
-            const SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SkillsWidget(),
-            ).inGridArea('skills'),
-            const PersonalityWidget().inGridArea('personality'),
-          ],
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: LayoutGrid(
+            areas: '''
+              names names names names token
+              abilities abilities skills skills personality
+              abilities abilities skills skills personality
+            ''',
+            columnSizes: [1.fr, 1.fr, 1.fr, 1.fr, 1.fr],
+            rowSizes: const [auto, auto, auto],
+            columnGap: 16,
+            rowGap: 16,
+            children: [
+              const NamesWidget().inGridArea('names'),
+              const VttTokenWidget().inGridArea('token'),
+              const AbilityScoresWidget().inGridArea('abilities'),
+              const SkillsWidget().inGridArea('skills'),
+              const PersonalityWidget().inGridArea('personality'),
+            ],
+          ),
         ),
       ),
     );
