@@ -1,8 +1,9 @@
-import 'package:character_sheet/skills/skills_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'ability_scores/ability_scores_widget.dart';
+import 'skills/skills_widget.dart';
+import 'names/names_widget.dart';
 
 void main() {
   runApp(const MainApp());
@@ -26,14 +27,29 @@ class CharacterSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return const Scaffold(
+      body: Column(
         children: [
-          AbilityScoresWidget(),
-          SkillsWidget(),
-        ]
+          Expanded(child: NamesWidget()),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: AbilityScoresWidget(),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: SkillsWidget(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -4,6 +4,8 @@ import 'ability_score_field.dart';
 import 'ability_scores_provider.dart';
 
 class AbilityScoresWidget extends ConsumerWidget {
+  const AbilityScoresWidget({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final abilityScores = ref.watch(abilityScoresProvider);
