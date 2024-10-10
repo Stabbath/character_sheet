@@ -1,6 +1,6 @@
 import 'package:character_sheet/biometrics/biometrics_widget.dart';
 import 'package:character_sheet/origins/origins_widget.dart';
-import 'package:character_sheet/vtt_token/vtt_token_widget.dart';
+import 'package:character_sheet/image/image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
@@ -40,8 +40,8 @@ class CharacterSheet extends StatelessWidget {
           scrollDirection: Axis.vertical,
           child: LayoutGrid(
             areas: '''
-              names names names names token
-              biometrics biometrics biometrics origins origins
+              picture names names names token
+              picture biometrics biometrics origins origins
               classes classes classes classes classes
               abilities abilities skills skills personality
               abilities abilities skills skills personality
@@ -51,8 +51,9 @@ class CharacterSheet extends StatelessWidget {
             columnGap: 16,
             rowGap: 16,
             children: [
+              const ImageWidget().inGridArea('picture'),
               const NamesWidget().inGridArea('names'),
-              const VttTokenWidget().inGridArea('token'),
+              const ImageWidget().inGridArea('token'),
               const BiometricsWidget().inGridArea('biometrics'),
               const OriginsWidget().inGridArea('origins'),
               const CharacterClassesWidget().inGridArea('classes'),
