@@ -16,6 +16,10 @@
             }
         ]
     },
+    "origins": {
+        "race": "Race",
+        "background": "Background"
+    },
     "biometrics": {
         "age": 0,
         "height": 0,
@@ -29,9 +33,6 @@
         "ideals": "Ideals",
         "bonds": "Bonds",
         "flaws": "Flaws"
-    },
-    "background": {
-        "background": "Background"
     },
     "ability_scores": {
         "strength": 10,
