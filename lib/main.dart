@@ -1,3 +1,4 @@
+import 'package:character_sheet/biometrics/biometrics_widget.dart';
 import 'package:character_sheet/vtt_token/vtt_token_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,17 +40,19 @@ class CharacterSheet extends StatelessWidget {
           child: LayoutGrid(
             areas: '''
               names names names names token
+              biometrics biometrics biometrics biometrics biometrics
               classes classes classes classes classes
               abilities abilities skills skills personality
               abilities abilities skills skills personality
             ''',
             columnSizes: [1.fr, 1.fr, 1.fr, 1.fr, 1.fr],
-            rowSizes: const [auto, auto, auto, auto],
+            rowSizes: const [auto, auto, auto, auto, auto],
             columnGap: 16,
             rowGap: 16,
             children: [
               const NamesWidget().inGridArea('names'),
               const VttTokenWidget().inGridArea('token'),
+              const BiometricsWidget().inGridArea('biometrics'),
               const CharacterClassesWidget().inGridArea('classes'),
               const AbilityScoresWidget().inGridArea('abilities'),
               const SkillsWidget().inGridArea('skills'),
