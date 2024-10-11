@@ -5,6 +5,14 @@ import 'character_class_model.dart';
 class CharacterClassesNotifier extends StateNotifier<List<CharacterClassModel>> {
   CharacterClassesNotifier() : super([]);
 
+  int getTotalLevel() {
+    return state.fold(0, (previousValue, element) => previousValue + element.level);
+  }
+
+  int getProficiencyBonus() {
+    return (getTotalLevel() - 1) ~/ 4 + 2;
+  }
+
   void addClass() {
     state = [...state, CharacterClassModel(name: '', level: 0)];
   }

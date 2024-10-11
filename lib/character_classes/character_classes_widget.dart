@@ -56,6 +56,10 @@ class CharacterClassesWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Text('Character Level: ${ref.read(characterClassesProvider.notifier).getTotalLevel()}'),
+            const Spacer(),
+            Text('Proficiency Modifier: ${ref.read(characterClassesProvider.notifier).getProficiencyBonus()}'),
+            const Spacer(),
             ElevatedButton.icon(
               onPressed: () =>
                 ref.read(characterClassesProvider.notifier).addClass(),
