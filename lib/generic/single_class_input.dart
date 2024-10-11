@@ -23,7 +23,7 @@ class SingleClassInput extends StatelessWidget {
         Expanded(
           child: TextFormField(
             initialValue: characterClass.name,
-            decoration: const InputDecoration(labelText: 'Class Name'),
+            decoration: const InputDecoration(labelText: 'Class'),
             onChanged: onNameChanged,
           ),
         ),

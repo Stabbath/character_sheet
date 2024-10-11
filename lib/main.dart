@@ -41,14 +41,15 @@ class CharacterSheet extends StatelessWidget {
           scrollDirection: Axis.vertical,
           child: LayoutGrid(
             areas: '''
-              picture names names names token
-              picture biometrics biometrics origins origins
-              classes classes classes classes classes
-              abilities skills attacks attacks personality
-              abilities skills attacks attacks personality
+              picture names names names names token
+              picture origins origins biometrics biometrics biometrics
+              classes classes personality personality personality personality
+              classes classes personality personality personality personality
+              abilities skills attacks attacks attacks attacks
+              abilities skills attacks attacks attacks attacks
             ''',
-            columnSizes: [1.fr, 1.fr, 1.fr, 1.fr, 1.fr],
-            rowSizes: const [auto, auto, auto, auto, auto],
+            columnSizes: const [auto, auto, auto, auto, auto, auto],
+            rowSizes: const [auto, auto, auto, auto, auto, auto],
             columnGap: 16,
             rowGap: 16,
             children: [

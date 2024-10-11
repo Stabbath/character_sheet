@@ -14,25 +14,14 @@ class TextBlockInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (title.isNotEmpty) Text(
-          title,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        TextField(
-          maxLines: 8,
-          controller: TextEditingController(text: initialValue),
-          onChanged: onChanged,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-        ),
-      ],
+    return TextField(
+      maxLines: 8,
+      controller: TextEditingController(text: initialValue),
+      onChanged: onChanged,
+      decoration: InputDecoration(
+        labelText: title.isEmpty ? null : title,
+        border: const OutlineInputBorder(),
+      ),
     );
   }
 }

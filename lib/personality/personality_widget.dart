@@ -14,44 +14,52 @@ class PersonalityWidget extends ConsumerWidget {
 
     return Column(
       children: [
-        Expanded(
-          child: TextBlockInput(
-            title: 'Personality Traits',
-            initialValue: personality.personalityTraits,
-            onChanged: (newValue) {
-              ref.read(personalityProvider.notifier).updatePersonalityTraits(newValue);
-            },
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: TextBlockInput(
+                title: 'Personality Traits',
+                initialValue: personality.personalityTraits,
+                onChanged: (newValue) {
+                  ref.read(personalityProvider.notifier).updatePersonalityTraits(newValue);
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: TextBlockInput(
+                title: 'Ideals',
+                initialValue: personality.ideals,
+                onChanged: (newValue) {
+                  ref.read(personalityProvider.notifier).updateIdeals(newValue);
+                },
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 16),
-        Expanded(
-          child: TextBlockInput(
-            title: 'Ideals',
-            initialValue: personality.ideals,
-            onChanged: (newValue) {
-              ref.read(personalityProvider.notifier).updateIdeals(newValue);
-            },
-          ),
-        ),
-        const SizedBox(height: 16),
-        Expanded(
-          child: TextBlockInput(
-            title: 'Bonds',
-            initialValue: personality.bonds,
-            onChanged: (newValue) {
-              ref.read(personalityProvider.notifier).updateBonds(newValue);
-            },
-          ),
-        ),
-        const SizedBox(height: 16),
-        Expanded(
-          child: TextBlockInput(
-            title: 'Flaws',
-            initialValue: personality.flaws,
-            onChanged: (newValue) {
-              ref.read(personalityProvider.notifier).updateFlaws(newValue);
-            },
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: TextBlockInput(
+                title: 'Bonds',
+                initialValue: personality.bonds,
+                onChanged: (newValue) {
+                  ref.read(personalityProvider.notifier).updateBonds(newValue);
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: TextBlockInput(
+                title: 'Flaws',
+                initialValue: personality.flaws,
+                onChanged: (newValue) {
+                  ref.read(personalityProvider.notifier).updateFlaws(newValue);
+                },
+              ),
+            ),
+          ]
         ),
       ],
     );
