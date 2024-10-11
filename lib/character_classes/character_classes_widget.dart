@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'character_class_model.dart';
 import 'character_classes_provider.dart';
-import 'single_class_input.dart';
+import '../generic/single_class_input.dart';
 
 class CharacterClassesWidget extends ConsumerWidget {
   const CharacterClassesWidget({super.key});

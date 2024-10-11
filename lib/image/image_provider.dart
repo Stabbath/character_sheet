@@ -2,12 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'image_model.dart';
 
-final ImageProvider = StateNotifierProvider<VttTokenNotifier, ImageModel>((ref) {
-  return VttTokenNotifier();
+final imageProvider = StateNotifierProvider<ImageNotifier, ImageModel>((ref) {
+  return ImageNotifier();
 });
 
-class VttTokenNotifier extends StateNotifier<ImageModel> {
-  VttTokenNotifier() : super(ImageModel(imagePath: ''));
+class ImageNotifier extends StateNotifier<ImageModel> {
+  ImageNotifier() : super(ImageModel(imagePath: ''));
 
   void setImagePath(String newPath) {
     state = ImageModel(imagePath: newPath);

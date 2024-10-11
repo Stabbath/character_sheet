@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'ability_score_field.dart';
+import '../generic/ability_score_field.dart';
+import '../generic/section_header.dart';
 import 'ability_scores_provider.dart';
 
 class AbilityScoresWidget extends ConsumerWidget {
@@ -15,6 +16,7 @@ class AbilityScoresWidget extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SectionHeader(title: 'Ability Scores'),
           AbilityScoreField(label: 'Strength', score: abilityScores.strength),
           const SizedBox(height: 10),
           AbilityScoreField(label: 'Dexterity', score: abilityScores.dexterity),

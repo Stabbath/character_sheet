@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'character_class_model.dart';
+import '../character_classes/character_class_model.dart';
 
 class SingleClassInput extends StatelessWidget {
   final int index;

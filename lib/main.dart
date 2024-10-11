@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 
-import 'ability_scores/ability_scores_widget.dart';
+import 'ability_scores_and_saves.dart/ability_scores_and_saves_widget.dart';
 import 'character_classes/character_classes_widget.dart';
 import 'personality/personality_widget.dart';
 import 'skills/skills_widget.dart';
@@ -57,7 +57,7 @@ class CharacterSheet extends StatelessWidget {
               const BiometricsWidget().inGridArea('biometrics'),
               const OriginsWidget().inGridArea('origins'),
               const CharacterClassesWidget().inGridArea('classes'),
-              const AbilityScoresWidget().inGridArea('abilities'),
+              const AbilityScoresAndSavesWidget().inGridArea('abilities'),
               const SkillsWidget().inGridArea('skills'),
               const PersonalityWidget().inGridArea('personality'),
             ],

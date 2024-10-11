@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'skill_field.dart';
+import '../generic/section_header.dart';
+import '../generic/skill_field.dart';
 import 'skills_provider.dart';
 
 class SkillsWidget extends ConsumerWidget {
@@ -15,24 +16,25 @@ class SkillsWidget extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SkillField(label: 'Acrobatics', skillValue: skills.acrobatics),
-          SkillField(label: 'Animal Handling', skillValue: skills.animalHandling),
-          SkillField(label: 'Arcana', skillValue: skills.arcana),
-          SkillField(label: 'Athletics', skillValue: skills.athletics),
-          SkillField(label: 'Deception', skillValue: skills.deception),
-          SkillField(label: 'History', skillValue: skills.history),
-          SkillField(label: 'Insight', skillValue: skills.insight),
-          SkillField(label: 'Intimidation', skillValue: skills.intimidation),
-          SkillField(label: 'Investigation', skillValue: skills.investigation),
-          SkillField(label: 'Medicine', skillValue: skills.medicine),
-          SkillField(label: 'Nature', skillValue: skills.nature),
-          SkillField(label: 'Perception', skillValue: skills.perception),
-          SkillField(label: 'Performance', skillValue: skills.performance),
-          SkillField(label: 'Persuasion', skillValue: skills.persuasion),
-          SkillField(label: 'Religion', skillValue: skills.religion),
-          SkillField(label: 'Sleight of Hand', skillValue: skills.sleightOfHand),
-          SkillField(label: 'Stealth', skillValue: skills.stealth),
-          SkillField(label: 'Survival', skillValue: skills.survival),
+          const SectionHeader(title: 'Skills'),
+          SkillField(label: 'Acrobatics', value: skills.acrobatics),
+          SkillField(label: 'Animal Handling', value: skills.animalHandling),
+          SkillField(label: 'Arcana', value: skills.arcana),
+          SkillField(label: 'Athletics', value: skills.athletics),
+          SkillField(label: 'Deception', value: skills.deception),
+          SkillField(label: 'History', value: skills.history),
+          SkillField(label: 'Insight', value: skills.insight),
+          SkillField(label: 'Intimidation', value: skills.intimidation),
+          SkillField(label: 'Investigation', value: skills.investigation),
+          SkillField(label: 'Medicine', value: skills.medicine),
+          SkillField(label: 'Nature', value: skills.nature),
+          SkillField(label: 'Perception', value: skills.perception),
+          SkillField(label: 'Performance', value: skills.performance),
+          SkillField(label: 'Persuasion', value: skills.persuasion),
+          SkillField(label: 'Religion', value: skills.religion),
+          SkillField(label: 'Sleight of Hand', value: skills.sleightOfHand),
+          SkillField(label: 'Stealth', value: skills.stealth),
+          SkillField(label: 'Survival', value: skills.survival),
         ],
       ),
     );

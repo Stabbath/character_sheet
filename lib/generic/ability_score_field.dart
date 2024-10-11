@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'skills_provider.dart'; // Make sure to import the file where the provider is defined
+import '../ability_scores/ability_scores_provider.dart';
 
-class SkillField extends ConsumerWidget {
+class AbilityScoreField extends ConsumerWidget {
   final String label;
-  final int skillValue;
+  final int score;
 
-  const SkillField({
+  const AbilityScoreField({
     super.key,
     required this.label,
-    required this.skillValue,
+    required this.score,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.read(skillsProvider.notifier);
+    final notifier = ref.read(abilityScoresProvider.notifier);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,12 +26,12 @@ class SkillField extends ConsumerWidget {
         SizedBox(
           width: 50,
           child: TextField(
-            controller: TextEditingController(text: skillValue.toString()),
+            controller: TextEditingController(text: score.toString()),
             keyboardType: TextInputType.number,
             onSubmitted: (value) {
-              final int? newValue = int.tryParse(value);
-              if (newValue != null) {
-                notifier.updateSkill(label.toLowerCase(), newValue);
+              final int? newScore = int.tryParse(value);
+              if (newScore != null) {
+                notifier.updateScore(label.toLowerCase(), newScore);
               }
             },
             textAlign: TextAlign.center,
