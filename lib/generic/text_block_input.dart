@@ -7,7 +7,7 @@ class TextBlockInput extends StatelessWidget {
 
   const TextBlockInput({
     super.key,
-    required this.title,
+    this.title = '',
     this.initialValue = '',
     required this.onChanged,
   });
@@ -17,7 +17,7 @@ class TextBlockInput extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        if (title.isNotEmpty) Text(
           title,
           style: const TextStyle(
             fontSize: 16,

@@ -1,4 +1,5 @@
 import 'package:character_sheet/biometrics/biometrics_widget.dart';
+import 'package:character_sheet/generic_block/generic_block_widget.dart';
 import 'package:character_sheet/origins/origins_widget.dart';
 import 'package:character_sheet/image/image_widget.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +44,8 @@ class CharacterSheet extends StatelessWidget {
               picture names names names token
               picture biometrics biometrics origins origins
               classes classes classes classes classes
-              abilities abilities skills skills personality
-              abilities abilities skills skills personality
+              abilities skills attacks attacks personality
+              abilities skills attacks attacks personality
             ''',
             columnSizes: [1.fr, 1.fr, 1.fr, 1.fr, 1.fr],
             rowSizes: const [auto, auto, auto, auto, auto],
@@ -59,6 +60,7 @@ class CharacterSheet extends StatelessWidget {
               const CharacterClassesWidget().inGridArea('classes'),
               const AbilityScoresAndSavesWidget().inGridArea('abilities'),
               const SkillsWidget().inGridArea('skills'),
+              const GenericBlockWidget(blockId: 'attacks').inGridArea('attacks'),
               const PersonalityWidget().inGridArea('personality'),
             ],
           ),
