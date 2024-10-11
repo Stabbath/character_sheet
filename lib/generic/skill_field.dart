@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../skills/skills_provider.dart'; // Make sure to import the file where the provider is defined
+
+import '../skills/skills_provider.dart';
 
 class SkillField extends ConsumerWidget {
   final String label;
@@ -23,6 +24,7 @@ class SkillField extends ConsumerWidget {
           label,
           style: const TextStyle(fontSize: 18),
         ),
+        const Spacer(),
         SizedBox(
           width: 50,
           child: TextField(

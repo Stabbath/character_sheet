@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'biometrics_model.dart';
 
 class BiometricsNotifier extends StateNotifier<BiometricsModel> {

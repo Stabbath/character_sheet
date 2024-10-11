@@ -44,12 +44,14 @@ class CharacterSheet extends StatelessWidget {
               picture names names names names token
               picture origins origins biometrics biometrics biometrics
               classes classes personality personality personality personality
-              classes classes personality personality personality personality
               abilities skills attacks attacks attacks attacks
-              abilities skills attacks attacks attacks attacks
+              abilities skills actives actives actives actives
+              proficiencies passives passives passives passives passives
+              cash cash equipment3 equipment3 equipment4 equipment4
+              equipment1 equipment2 equipment3 equipment3 equipment4 equipment4
             ''',
             columnSizes: const [auto, auto, auto, auto, auto, auto],
-            rowSizes: const [auto, auto, auto, auto, auto, auto],
+            rowSizes: const [auto, auto, auto, auto, auto, auto, auto, auto],
             columnGap: 16,
             rowGap: 16,
             children: [
@@ -63,6 +65,14 @@ class CharacterSheet extends StatelessWidget {
               const SkillsWidget().inGridArea('skills'),
               const GenericBlockWidget(blockId: 'attacks').inGridArea('attacks'),
               const PersonalityWidget().inGridArea('personality'),
+              const GenericBlockWidget(blockId: 'actives').inGridArea('actives'),
+              const GenericBlockWidget(blockId: 'passives').inGridArea('passives'),
+              const GenericBlockWidget(blockId: 'proficiencies').inGridArea('proficiencies'),
+              const GenericBlockWidget(blockId: 'cash').inGridArea('cash'),
+              const GenericBlockWidget(blockId: 'equipment 1').inGridArea('equipment1'),
+              const GenericBlockWidget(blockId: 'equipment 2').inGridArea('equipment2'),
+              const GenericBlockWidget(blockId: 'equipment 3').inGridArea('equipment3'),
+              const GenericBlockWidget(blockId: 'equipment 4').inGridArea('equipment4'),
             ],
           ),
         ),

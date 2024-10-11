@@ -13,20 +13,20 @@ class GenericBlockWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final genericBlock = ref.watch(genericBlockProviderFamily(blockId));
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SectionHeader(title: genericBlock.title),
-            const SizedBox(height: 8),
-            TextBlockInput(
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SectionHeader(title: genericBlock.title),
+          const SizedBox(height: 8),
+          Expanded(
+            child: TextBlockInput(
               onChanged: (value) =>
-                  ref.read(genericBlockProviderFamily(blockId).notifier).updateContent(value),
+                ref.read(genericBlockProviderFamily(blockId).notifier).updateContent(value),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

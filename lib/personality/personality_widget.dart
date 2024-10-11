@@ -14,7 +14,7 @@ class PersonalityWidget extends ConsumerWidget {
 
     return Column(
       children: [
-        Row(
+        Expanded(child: Row(
           children: [
             Expanded(
               child: TextBlockInput(
@@ -36,9 +36,9 @@ class PersonalityWidget extends ConsumerWidget {
               ),
             ),
           ],
-        ),
+        )),
         const SizedBox(height: 16),
-        Row(
+        Expanded(child: Row(
           children: [
             Expanded(
               child: TextBlockInput(
@@ -60,7 +60,7 @@ class PersonalityWidget extends ConsumerWidget {
               ),
             ),
           ]
-        ),
+        )),
       ],
     );
   }

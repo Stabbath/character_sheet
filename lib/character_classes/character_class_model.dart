@@ -4,7 +4,6 @@ class CharacterClassModel {
 
   CharacterClassModel({required this.name, required this.level});
 
-  // To facilitate JSON parsing if needed later
   factory CharacterClassModel.fromJson(Map<String, dynamic> json) {
     return CharacterClassModel(
       name: json['name'] ?? '',
