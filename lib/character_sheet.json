@@ -4,6 +4,25 @@
         "alias": "Alias",
         "titles": "Titles"
     },
+    "status": {
+        "dynamic": {
+            "hp": {
+                "currentValue": 0,
+                "maxValue": 0
+            },
+            "exhaustion": {
+                "currentValue": 0,
+                "maxValue": 0
+            }            
+        },
+        "static": {
+            "temp_hp": 0,
+            "armor_class": 0,
+            "initiative": 0,
+            "speed": 0,
+            "proficiency_bonus": 0
+        }
+    },
     "classes": {
         "classes": [
             {

@@ -2,6 +2,7 @@ import 'package:character_sheet/biometrics/biometrics_widget.dart';
 import 'package:character_sheet/generic_block/generic_block_widget.dart';
 import 'package:character_sheet/origins/origins_widget.dart';
 import 'package:character_sheet/image/image_widget.dart';
+import 'package:character_sheet/stats_core/stats_core_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
@@ -44,14 +45,15 @@ class CharacterSheet extends StatelessWidget {
               picture names names names names token
               picture origins origins biometrics biometrics biometrics
               classes classes personality personality personality personality
-              abilities skills attacks attacks attacks attacks
+              abilities skills stats stats attacks attacks
+              abilities skills actives actives actives actives
               abilities skills actives actives actives actives
               proficiencies passives passives passives passives passives
               cash cash equipment3 equipment3 equipment4 equipment4
               equipment1 equipment2 equipment3 equipment3 equipment4 equipment4
             ''',
             columnSizes: const [auto, auto, auto, auto, auto, auto],
-            rowSizes: const [auto, auto, auto, auto, auto, auto, auto, auto],
+            rowSizes: const [auto, auto, auto, auto, auto, auto, auto, auto, auto],
             columnGap: 16,
             rowGap: 16,
             children: [
@@ -63,6 +65,7 @@ class CharacterSheet extends StatelessWidget {
               const CharacterClassesWidget().inGridArea('classes'),
               const AbilityScoresAndSavesWidget().inGridArea('abilities'),
               const SkillsWidget().inGridArea('skills'),
+              const StatsCoreWidget().inGridArea('stats'),
               const GenericBlockWidget(blockId: 'attacks').inGridArea('attacks'),
               const PersonalityWidget().inGridArea('personality'),
               const GenericBlockWidget(blockId: 'actives').inGridArea('actives'),
