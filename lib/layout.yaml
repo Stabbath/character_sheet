@@ -1,0 +1,255 @@
+layout: |
+  picture names names names names token
+  picture origins origins biometrics biometrics biometrics
+  classes classes personality personality personality personality
+  abilities skills stats stats attacks attacks
+  saves skills actives actives actives actives
+  proficiencies passives passives passives passives passives
+  cash cash equipment3 equipment3 equipment4 equipment4
+  equipment1 equipment2 equipment3 equipment3 equipment4 equipment4
+
+components:
+  # images
+  picture:
+    type: image
+    default_data:
+      path: ""
+    data_bindings:
+      path: character.picturePath
+  token:
+    type: image
+    default_data:
+      path: ""
+    data_bindings:
+      path: character.tokenPath
+
+  # personal info
+  names:
+    type: names
+    default_data:
+      names: "Character Names"
+      titles: "Titles"
+    data_bindings:
+      names: character.names
+      titles: character.titles
+  origins:
+    type: origins
+    default_data:
+      race: ""
+      background: ""
+    data_bindings:
+      names: character.origins.race
+      titles: character.origins.background
+  biometrics:
+    type: biometrics
+    default_data:
+      age: ""
+      height: ""
+      weight: ""
+      eyes: ""
+      skin: ""
+      hair: ""
+    data_bindings:
+      age: character.biometrics.age
+      height: character.biometrics.height
+      weight: character.biometrics.weight
+      eyes: character.biometrics.eye_color
+      skin: character.biometrics.skin_color
+      hair: character.biometrics.hair_color
+  personality:
+    type: personality
+    default_data:
+      traits: ""
+      ideals: ""
+      bonds: ""
+      flaws: ""
+    data_bindings:
+      traits: character.personality.traits
+      ideals: character.personality.ideals
+      bonds: character.personality.bonds
+      flaws: character.personality.flaws
+
+  # classes and levels
+  classes:
+    type: classes
+    default_data:
+      classlist: [
+        {
+          name: "Class Name",
+          level: 0
+        }
+      ]
+    data_bindings:
+      classlist: character.classes.list
+
+  # stats
+  abilities:
+    type: abilities
+    default_data:
+      strength: 10
+      dexterity: 10
+      constitution: 10
+      intelligence: 10
+      wisdom: 10
+      charisma: 10
+    data_bindings:
+      strength: character.ability_scores.strength
+      dexterity: character.ability_scores.dexterity
+      constitution: character.ability_scores.constitution
+      intelligence: character.ability_scores.intelligence
+      wisdom: character.ability_scores.wisdom
+      charisma: character.ability_scores.charisma
+  saves:
+    type: saves
+    default_data:
+      strength: 0
+      dexterity: 0
+      constitution: 0
+      intelligence: 0
+      wisdom: 0
+      charisma: 0
+    data_bindings:
+      strength: character.saving_throws.strength
+      dexterity: character.saving_throws.dexterity
+      constitution: character.saving_throws.constitution
+      intelligence: character.saving_throws.intelligence
+      wisdom: character.saving_throws.wisdom
+      charisma: character.saving_throws.charisma
+  skills:
+    type: skills
+    default_data:
+      acrobatics: 0
+      animal_handling: 0
+      arcana: 0
+      athletics: 0
+      deception: 0
+      history: 0
+      insight: 0
+      intimidation: 0
+      investigation: 0
+      medicine: 0
+      nature: 0
+      perception: 0
+      performance: 0
+      persuasion: 0
+      religion: 0
+      sleight_of_hand: 0
+      stealth: 0
+      survival: 0
+    data_bindings:
+      acrobatics: character.skills.acrobatics
+      animal_handling: character.skills.animal_handling
+      arcana: character.skills.arcana
+      athletics: character.skills.athletics
+      deception: character.skills.deception
+      history: character.skills.history
+      insight: character.skills.insight
+      intimidation: character.skills.intimidation
+      investigation: character.skills.investigation
+      medicine: character.skills.medicine
+      nature: character.skills.nature
+      perception: character.skills.perception
+      performance: character.skills.performance
+      persuasion: character.skills.persuasion
+      religion: character.skills.religion
+      sleight_of_hand: character.skills.sleight_of_hand
+      stealth: character.skills.stealth
+      survival: character.skills.survival
+  stats:
+    type: stats
+    default_data:
+      hp: 0
+      max_hp: 0
+      exhaustion: 0
+      max_exhaustion: 0
+      temp_hp: 0
+      armor_class: 0
+      initiative: 0
+      speed: 0
+      proficiency_bonus: 0
+    data_bindings:
+      hp: character.hp
+      max_hp: character.max_hp
+      exhaustion: character.exhaustion
+      max_exhaustion: character.max_exhaustion
+      temp_hp: character.temp_hp
+      armor_class: character.armor_class
+      initiative: character.initiative
+      speed: character.speed
+      proficiency_bonus: character.proficiency_bonus
+  proficiencies:
+    type: generic_block
+    readonly_data:
+      title: Proficiencies
+    default_data:
+      content: ""
+    data_bindings:
+      content: character.proficiencies
+
+  # actions and traits
+  attacks:
+    type: generic_block
+    readonly_data:
+      title: Attacks
+    default_data:
+      content: ""
+    data_bindings:
+      content: character.attacks
+  actives:
+    type: generic_block
+    readonly_data:
+      title: Actives
+    default_data:
+      content: ""
+    data_bindings:
+      content: character.actives
+  passives:
+    type: generic_block
+    readonly_data:
+      title: Passives
+    default_data:
+      content: ""
+    data_bindings:
+      content: character.passives
+  
+  # cash and gear
+  cash:
+    type: generic_block
+    readonly_data:
+      title: Cash
+    default_data:
+      content: ""
+    data_bindings:
+      content: character.cash
+  equipment1:
+    type: generic_block
+    readonly_data:
+      title: Equipment 1
+    default_data:
+      content: ""
+    data_bindings: 
+      content: character.equipment1
+  equipment2:
+    type: generic_block
+    readonly_data:
+      title: Equipment 2
+    default_data:
+      content: ""
+    data_bindings:
+      content: character.equipment2
+  equipment3:
+    type: generic_block
+    readonly_data:
+      title: Equipment 3
+    default_data:
+      content: ""
+    data_bindings:
+      content: character.equipment3
+  equipment4:
+    type: generic_block
+    readonly_data:
+      title: Equipment 4
+    default_data:
+      content: ""
+    data_bindings:
+      content: character.equipment4
