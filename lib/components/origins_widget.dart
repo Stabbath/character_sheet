@@ -28,6 +28,8 @@ class OriginsWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final race = ref.watch(raceProvider);
     final background = ref.watch(backgroundProvider);
+    final raceNotifier = ref.read(raceProvider.notifier);
+    final backgroundNotifier = ref.read(backgroundProvider.notifier);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,13 +37,13 @@ class OriginsWidget extends ConsumerWidget {
         TextField(
           decoration: const InputDecoration(labelText: 'Race'),
           controller: TextEditingController(text: race),
-          onChanged: (value) => ref.read(race.notifier).update(value),
+          onChanged: (value) => raceNotifier.update(value),
         ),
         const SizedBox(height: 16),
         TextField(
           decoration: const InputDecoration(labelText: 'Background'),
           controller: TextEditingController(text: background),
-          onChanged: (value) => ref.read(background.notifier).update(value),
+          onChanged: (value) => backgroundNotifier.update(value),
         ),
       ],
     );

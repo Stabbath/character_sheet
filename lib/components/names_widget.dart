@@ -29,6 +29,8 @@ class NamesWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final names = ref.watch(namesProvider);
     final titles = ref.watch(titlesProvider);
+    final namesNotifier = ref.read(namesProvider.notifier);
+    final titlesNotifier = ref.read(titlesProvider.notifier);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -38,7 +40,7 @@ class NamesWidget extends ConsumerWidget {
             textAlign: TextAlign.center,
             controller: TextEditingController(text: names),
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            onSubmitted: (newValue) => ref.read(names.notifier).update(newValue),
+            onSubmitted: (newValue) => namesNotifier.update(newValue),
             decoration: const InputDecoration(
               hintText: 'Character Name',
               border: InputBorder.none,
@@ -48,7 +50,7 @@ class NamesWidget extends ConsumerWidget {
             textAlign: TextAlign.center,
             controller: TextEditingController(text: titles),
             style: const TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-            onSubmitted: (newValue) => ref.read(titles.notifier).update(newValue),
+            onSubmitted: (newValue) => titlesNotifier.update(newValue),
             decoration: const InputDecoration(
               hintText: 'Titles',
               border: InputBorder.none,

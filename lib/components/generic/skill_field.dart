@@ -22,6 +22,7 @@ class SkillField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final skill = ref.watch(skillProvider);
+    final skillNotifier = ref.read(skillProvider.notifier);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,7 +40,7 @@ class SkillField extends ConsumerWidget {
             onSubmitted: (value) {
               final int? newValue = int.tryParse(value);
               if (newValue != null) {
-                ref.read(skill.notifier).update(label.toLowerCase(), newValue);
+                skillNotifier.update(newValue);
               }
             },
             textAlign: TextAlign.center,

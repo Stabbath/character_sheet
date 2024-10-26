@@ -22,6 +22,7 @@ class StaticStatInput extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final stat = ref.watch(statProvider);
+    final statNotifier = ref.read(statProvider.notifier);
 
     return Column(
       children: [
@@ -38,7 +39,7 @@ class StaticStatInput extends ConsumerWidget {
               contentPadding: EdgeInsets.all(8.0),
             ),
             onChanged: (newValue) {
-              ref.read(stat.notifier).update(int.tryParse(newValue) ?? stat);
+              statNotifier.update(int.tryParse(newValue) ?? stat);
             },
           ),
         ),

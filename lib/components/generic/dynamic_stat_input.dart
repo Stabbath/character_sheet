@@ -27,6 +27,8 @@ class DynamicStatInput extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentValue = ref.watch(currentValueProvider);
     final maxValue = ref.watch(maxValueProvider);
+    final currentValueNotifier = ref.read(currentValueProvider.notifier);
+    final maxValueNotifier = ref.read(maxValueProvider.notifier);
 
     return Column(
       children: [
@@ -46,7 +48,7 @@ class DynamicStatInput extends ConsumerWidget {
                   contentPadding: EdgeInsets.all(8.0),
                 ),
                 onChanged: (value) {
-                  ref.read(currentValue.notifier).update(int.tryParse(value) ?? 0);
+                  currentValueNotifier.update(int.tryParse(value) ?? 0);
                 },
               ),
             ),
@@ -63,7 +65,7 @@ class DynamicStatInput extends ConsumerWidget {
                   contentPadding: EdgeInsets.all(8.0),
                 ),
                 onChanged: (value) {
-                  ref.read(maxValue.notifier).update(int.tryParse(value) ?? 0);
+                  maxValueNotifier.update(int.tryParse(value) ?? 0);
                 },
               ),
             ),

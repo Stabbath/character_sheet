@@ -29,6 +29,7 @@ class GenericBlockWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final content = ref.watch(contentProvider);
+    final contentNotifier = ref.read(contentProvider.notifier);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -39,8 +40,9 @@ class GenericBlockWidget extends ConsumerWidget {
           const SizedBox(height: 8),
           Expanded(
             child: TextBlockInput(
+              initialValue: content,
               onChanged: (value) =>
-                ref.read(content.notifier).update(value),
+                contentNotifier.update(value),
             ),
           ),
         ],

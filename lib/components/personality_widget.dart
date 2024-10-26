@@ -40,6 +40,10 @@ class PersonalityWidget extends ConsumerWidget {
     final ideals = ref.watch(idealsProvider);
     final bonds = ref.watch(bondsProvider);
     final flaws = ref.watch(flawsProvider);
+    final traitsNotifier = ref.read(traitsProvider.notifier);
+    final idealsNotifier = ref.read(idealsProvider.notifier);
+    final bondsNotifier = ref.read(bondsProvider.notifier);
+    final flawsNotifier = ref.read(flawsProvider.notifier);
 
     return Column(
       children: [
@@ -50,7 +54,7 @@ class PersonalityWidget extends ConsumerWidget {
                 title: 'Personality Traits',
                 initialValue: traits,
                 onChanged: (newValue) {
-                  ref.read(traits.notifier).update(newValue);
+                  traitsNotifier.update(newValue);
                 },
               ),
             ),
@@ -60,7 +64,7 @@ class PersonalityWidget extends ConsumerWidget {
                 title: 'Ideals',
                 initialValue: ideals,
                 onChanged: (newValue) {
-                  ref.read(ideals.notifier).update(newValue);
+                  idealsNotifier.update(newValue);
                 },
               ),
             ),
@@ -74,7 +78,7 @@ class PersonalityWidget extends ConsumerWidget {
                 title: 'Bonds',
                 initialValue: bonds,
                 onChanged: (newValue) {
-                  ref.read(bonds.notifier).update(newValue);
+                  bondsNotifier.update(newValue);
                 },
               ),
             ),
@@ -84,7 +88,7 @@ class PersonalityWidget extends ConsumerWidget {
                 title: 'Flaws',
                 initialValue: flaws,
                 onChanged: (newValue) {
-                  ref.read(flaws.notifier).update(newValue);
+                  flawsNotifier.update(newValue);
                 },
               ),
             ),

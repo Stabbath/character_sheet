@@ -22,6 +22,7 @@ class AbilityScoreField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final abilityScore = ref.watch(abilityScoreProvider);
+    final abilityScoreNotifier = ref.read(abilityScoreProvider.notifier);
     final modifier = (abilityScore - 10) ~/ 2;
 
     return Row(
@@ -40,7 +41,7 @@ class AbilityScoreField extends ConsumerWidget {
             onSubmitted: (value) {
               final int? newScore = int.tryParse(value);
               if (newScore != null) {
-                ref.read(abilityScore.notifier).update(label.toLowerCase(), newScore);
+                abilityScoreNotifier.update(newScore);
               }
             },
             textAlign: TextAlign.center,

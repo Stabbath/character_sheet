@@ -49,6 +49,12 @@ class BiometricsWidget extends ConsumerWidget {
     final eyes = ref.watch(eyesProvider);
     final skin = ref.watch(skinProvider);
     final hair = ref.watch(hairProvider);
+    final ageNotifier = ref.read(ageProvider.notifier);
+    final heightNotifier = ref.read(heightProvider.notifier);
+    final weightNotifier = ref.read(weightProvider.notifier);
+    final eyesNotifier = ref.read(eyesProvider.notifier);
+    final skinNotifier = ref.read(skinProvider.notifier);
+    final hairNotifier = ref.read(hairProvider.notifier);
 
     return Column(
       children: [
@@ -58,7 +64,8 @@ class BiometricsWidget extends ConsumerWidget {
               child: TextField(
                 decoration: const InputDecoration(labelText: 'Age'),
                 keyboardType: TextInputType.number,
-                onChanged: (value) => ref.read(age.notifier).update(int.tryParse(value) ?? 0),
+                controller: TextEditingController(text: age.toString()),
+                onChanged: (value) => ageNotifier.update(int.tryParse(value) ?? 0),
               ),
             ),
             const SizedBox(width: 16),
@@ -66,7 +73,8 @@ class BiometricsWidget extends ConsumerWidget {
               child: TextField(
                 decoration: const InputDecoration(labelText: 'Height'),
                 keyboardType: TextInputType.number,
-                onChanged: (value) => ref.read(height.notifier).update(double.tryParse(value) ?? 0),
+                controller: TextEditingController(text: height.toString()),
+                onChanged: (value) => heightNotifier.update(double.tryParse(value) ?? 0),
               ),
             ),
             const SizedBox(width: 16),
@@ -74,7 +82,8 @@ class BiometricsWidget extends ConsumerWidget {
               child: TextField(
                 decoration: const InputDecoration(labelText: 'Weight'),
                 keyboardType: TextInputType.number,
-                onChanged: (value) => ref.read(weight.notifier).update(double.tryParse(value) ?? 0),
+                controller: TextEditingController(text: weight.toString()),
+                onChanged: (value) => weightNotifier.update(double.tryParse(value) ?? 0),
               ),
             ),
           ],
@@ -85,21 +94,24 @@ class BiometricsWidget extends ConsumerWidget {
             Expanded(
               child: TextField(
                 decoration: const InputDecoration(labelText: 'Eye Color'),
-                onChanged: (value) => ref.read(eyes.notifier).update(value),
+                controller: TextEditingController(text: eyes.toString()),
+                onChanged: (value) => eyesNotifier.update(value),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: TextField(
                 decoration: const InputDecoration(labelText: 'Skin Color'),
-                onChanged: (value) => ref.read(skin.notifier).update(value),
+                controller: TextEditingController(text: skin.toString()),
+                onChanged: (value) => skinNotifier.update(value),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: TextField(
                 decoration: const InputDecoration(labelText: 'Hair Color'),
-                onChanged: (value) => ref.read(hair.notifier).update(value),
+                controller: TextEditingController(text: hair.toString()),
+                onChanged: (value) => hairNotifier.update(value),
               ),
             ),
           ],
