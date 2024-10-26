@@ -34,13 +34,13 @@ class OriginsWidget extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
+        TextFormField(
           decoration: const InputDecoration(labelText: 'Race'),
           controller: TextEditingController(text: race),
           onChanged: (value) => raceNotifier.update(value),
         ),
         const SizedBox(height: 16),
-        TextField(
+        TextFormField(
           decoration: const InputDecoration(labelText: 'Background'),
           controller: TextEditingController(text: background),
           onChanged: (value) => backgroundNotifier.update(value),

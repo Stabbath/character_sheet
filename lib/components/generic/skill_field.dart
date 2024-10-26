@@ -34,10 +34,10 @@ class SkillField extends ConsumerWidget {
         const Spacer(),
         SizedBox(
           width: 50,
-          child: TextField(
+          child: TextFormField(
             controller: TextEditingController(text: skill.toString()),
             keyboardType: TextInputType.number,
-            onSubmitted: (value) {
+            onChanged: (value) {
               final int? newValue = int.tryParse(value);
               if (newValue != null) {
                 skillNotifier.update(newValue);

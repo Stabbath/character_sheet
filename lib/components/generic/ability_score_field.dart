@@ -35,10 +35,10 @@ class AbilityScoreField extends ConsumerWidget {
         const Spacer(),
         SizedBox(
           width: 50,
-          child: TextField(
+          child: TextFormField(
             controller: TextEditingController(text: abilityScore.toString()),
             keyboardType: TextInputType.number,
-            onSubmitted: (value) {
+            onChanged: (value) {
               final int? newScore = int.tryParse(value);
               if (newScore != null) {
                 abilityScoreNotifier.update(newScore);

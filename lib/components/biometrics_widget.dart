@@ -61,7 +61,7 @@ class BiometricsWidget extends ConsumerWidget {
         Row(
           children: [
             Expanded(
-              child: TextField(
+              child: TextFormField(
                 decoration: const InputDecoration(labelText: 'Age'),
                 keyboardType: TextInputType.number,
                 controller: TextEditingController(text: age.toString()),
@@ -70,7 +70,7 @@ class BiometricsWidget extends ConsumerWidget {
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: TextField(
+              child: TextFormField(
                 decoration: const InputDecoration(labelText: 'Height'),
                 keyboardType: TextInputType.number,
                 controller: TextEditingController(text: height.toString()),
@@ -79,7 +79,7 @@ class BiometricsWidget extends ConsumerWidget {
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: TextField(
+              child: TextFormField(
                 decoration: const InputDecoration(labelText: 'Weight'),
                 keyboardType: TextInputType.number,
                 controller: TextEditingController(text: weight.toString()),
@@ -92,7 +92,7 @@ class BiometricsWidget extends ConsumerWidget {
         Row(
           children: [
             Expanded(
-              child: TextField(
+              child: TextFormField(
                 decoration: const InputDecoration(labelText: 'Eye Color'),
                 controller: TextEditingController(text: eyes.toString()),
                 onChanged: (value) => eyesNotifier.update(value),
@@ -100,7 +100,7 @@ class BiometricsWidget extends ConsumerWidget {
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: TextField(
+              child: TextFormField(
                 decoration: const InputDecoration(labelText: 'Skin Color'),
                 controller: TextEditingController(text: skin.toString()),
                 onChanged: (value) => skinNotifier.update(value),
@@ -108,7 +108,7 @@ class BiometricsWidget extends ConsumerWidget {
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: TextField(
+              child: TextFormField(
                 decoration: const InputDecoration(labelText: 'Hair Color'),
                 controller: TextEditingController(text: hair.toString()),
                 onChanged: (value) => hairNotifier.update(value),

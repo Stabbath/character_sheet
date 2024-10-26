@@ -14,7 +14,7 @@ class TextBlockInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       minLines: null,
       maxLines: null,
       expands: true,

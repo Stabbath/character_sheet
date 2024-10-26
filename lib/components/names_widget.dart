@@ -36,21 +36,21 @@ class NamesWidget extends ConsumerWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          TextField(
+          TextFormField(
             textAlign: TextAlign.center,
             controller: TextEditingController(text: names),
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            onSubmitted: (newValue) => namesNotifier.update(newValue),
+            onChanged: (newValue) => namesNotifier.update(newValue),
             decoration: const InputDecoration(
               hintText: 'Character Name',
               border: InputBorder.none,
             ),
           ),
-          TextField(
+          TextFormField(
             textAlign: TextAlign.center,
             controller: TextEditingController(text: titles),
             style: const TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-            onSubmitted: (newValue) => titlesNotifier.update(newValue),
+            onChanged: (newValue) => titlesNotifier.update(newValue),
             decoration: const InputDecoration(
               hintText: 'Titles',
               border: InputBorder.none,
