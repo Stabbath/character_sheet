@@ -18,7 +18,7 @@ class CharacterClassesWidget extends ConsumerWidget {
   factory CharacterClassesWidget.fromComponent(Component component) {
     return CharacterClassesWidget(
       id: component.id,
-      classListKeyPath: component.dataBindings['classList'],
+      classListKeyPath: component.dataBindings['class_list'],
     );
   }
 

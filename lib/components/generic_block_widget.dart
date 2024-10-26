@@ -8,28 +8,26 @@ import 'generic/text_block_input.dart';
 
 class GenericBlockWidget extends ConsumerWidget {
   final String id;
-  final Provider<dynamic> titleProvider;
+  final String title;
   final Provider<dynamic> contentProvider;
 
   GenericBlockWidget({
     super.key, 
     required this.id,
-    required titleKeyPath,
+    required this.title,
     required contentKeyPath,
-  }) : titleProvider = getKeyPathProvider(titleKeyPath),
-       contentProvider = getKeyPathProvider(contentKeyPath);
+  }) : contentProvider = getKeyPathProvider(contentKeyPath);
 
   factory GenericBlockWidget.fromComponent(Component component) {
     return GenericBlockWidget(
       id: component.id,
-      titleKeyPath: component.readOnlyData['title'],
+      title: component.readOnlyData['title'],
       contentKeyPath: component.dataBindings['content'],
     );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final title = ref.watch(titleProvider);
     final content = ref.watch(contentProvider);
 
     return Padding(

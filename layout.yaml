@@ -38,8 +38,8 @@ components:
       race: ""
       background: ""
     data_bindings:
-      names: character.origins.race
-      titles: character.origins.background
+      race: character.origins.race
+      background: character.origins.background
   biometrics:
     type: biometrics
     default_data:
@@ -73,14 +73,14 @@ components:
   classes:
     type: classes
     default_data:
-      classlist: [
+      class_list: [
         {
           name: "Class Name",
           level: 0
         }
       ]
     data_bindings:
-      classlist: character.classes.list
+      class_list: character.classes.list
 
   # stats
   abilities:

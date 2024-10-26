@@ -19,9 +19,12 @@ class StatsCoreWidget extends ConsumerWidget {
   StatsCoreWidget.fromKeyPaths({
     super.key,
     required this.id,
-    required statKeyPaths,
-  }) : statProviders = statKeyPaths.map((key, path) => MapEntry(key, getKeyPathProvider(path)));
+    required Map<String, String> statKeyPaths,
+  }) : statProviders = Map<String, Provider<dynamic>>.fromEntries(statKeyPaths.entries.map(
+    (entry) => MapEntry<String, Provider<dynamic>>(entry.key, getKeyPathProvider(entry.value)),
+  ));
 
+    
   factory StatsCoreWidget.fromComponent(Component component) {
     return StatsCoreWidget.fromKeyPaths(
       id: component.id,

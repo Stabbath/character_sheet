@@ -19,9 +19,9 @@ class Component {
     return Component(
       id: id,
       type: yaml['type'],
-      readOnlyData: yaml['read_only_data'] ?? {},
-      defaultData: yaml['default_data'] ?? {},
-      dataBindings: yaml['data_bindings'] ?? {},
+      readOnlyData: Map<String, dynamic>.from(yaml['readonly_data'] ?? {}),
+      defaultData: Map<String, dynamic>.from(yaml['default_data'] ?? {}),
+      dataBindings: Map<String, String>.from(yaml['data_bindings'] ?? {}),
     );
   }
 }

@@ -9,42 +9,43 @@ import 'package:yaml_writer/yaml_writer.dart';
 import 'file_paths_provider.dart';
 import 'sheet_data.dart';
 
-final sheetDataProvider = StateNotifierProvider<SheetDataNotifier, SheetData>((ref) {
-  final filePaths = ref.watch(filePathsProvider);
-  return SheetDataNotifier(filePaths.sheetPath);
-});
+final sheetDataProvider = NotifierProvider<SheetDataNotifier, SheetData>(SheetDataNotifier.new);
 
-class SheetDataNotifier extends StateNotifier<SheetData> {
-  final String filePath;
+class SheetDataNotifier extends Notifier<SheetData> {
   Timer? _debounceTimer;
 
-  SheetDataNotifier(this.filePath) : super(SheetData({})) {
-    _loadData();
+  @override
+  SheetData build() {
+    ref.onDispose(() {
+      _debounceTimer?.cancel();
+    });
+    return _loadData();
   }
 
-  Future<void> _loadData() async {
-    String dataYamlString = await File(filePath).readAsString();
+  SheetData _loadData() {
+    final filePaths = ref.watch(filePathsProvider);
+    String dataYamlString = File(filePaths.sheetPath).readAsStringSync();
     final dataYaml = loadYaml(dataYamlString);
-    state = SheetData.fromYaml(dataYaml);
+    return SheetData.fromYaml(dataYaml);
   }
 
-  // Debounced write to file
+  dynamic getValue(String path) => state.getValue(path);
+
+  void setValue(String path, dynamic newValue) {
+    state.setValue(path, newValue);
+    _scheduleWrite();
+  }
+
   void _scheduleWrite() {
     _debounceTimer?.cancel();
     _debounceTimer = Timer(const Duration(seconds: 1), _writeData);
   }
 
   Future<void> _writeData() async {
+    final filePaths = ref.watch(filePathsProvider);
     var yamlWriter = YamlWriter();
     String yamlString = yamlWriter.write(state.data);
-    await File(filePath).writeAsString(yamlString);
-  }
 
-  // Get or set data by path
-  dynamic getValue(String path) => state.getValue(path);
-
-  void setValue(String path, dynamic newValue) {
-    state.setValue(path, newValue);
-    _scheduleWrite();
+    await File(filePaths.sheetPath).writeAsString(yamlString);
   }
 }

@@ -1,13 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final filePathsProvider =
-    StateNotifierProvider<FilePathsNotifier, FilePaths>((ref) {
+final filePathsProvider = StateNotifierProvider<FilePathsNotifier, FilePaths>((ref) {
   return FilePathsNotifier();
 });
 
 // Provider for file paths
 class FilePathsNotifier extends StateNotifier<FilePaths> {
-  FilePathsNotifier() : super(FilePaths(layoutPath: '', sheetPath: ''));
+  FilePathsNotifier() : super(FilePaths(layoutPath: 'layout.yaml', sheetPath: 'test_sheet.yaml'));
 
   void setPaths({required String layoutPath, required String sheetPath}) {
     state = FilePaths(layoutPath: layoutPath, sheetPath: sheetPath);

@@ -22,28 +22,22 @@ class CharacterSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final layoutAsyncValue = ref.watch(layoutProvider);
+    final layoutData = ref.watch(layoutProvider);
 
-    return layoutAsyncValue.when(
-      data: (layoutData) {
-        return Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: LayoutGrid(
-                areas: layoutData.gridAreas,
-                columnSizes: layoutData.columnSizes,
-                rowSizes: layoutData.rowSizes,
-                columnGap: layoutData.columnGap,
-                rowGap: layoutData.rowGap,
-                children: buildChildren(layoutData, ref),
-              ),
-            ),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: LayoutGrid(
+            areas: layoutData.gridAreas,
+            columnSizes: layoutData.columnSizes,
+            rowSizes: layoutData.rowSizes,
+            columnGap: layoutData.columnGap,
+            rowGap: layoutData.rowGap,
+            children: buildChildren(layoutData, ref),
           ),
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('Error loading layout: $error')),
+        ),
+      ),
     );
   }
 }
