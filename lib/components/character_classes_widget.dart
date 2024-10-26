@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/component.dart';
-import '../core/key_path_providers.dart';
+import '../core/providers.dart';
 import 'generic/single_class_input.dart';
 
 class CharacterClassesWidget extends ConsumerWidget {
@@ -18,7 +18,7 @@ class CharacterClassesWidget extends ConsumerWidget {
   factory CharacterClassesWidget.fromComponent(Component component) {
     return CharacterClassesWidget(
       id: component.id,
-      classListKeyPath: component.dataBindings['class_list'],
+      classListKeyPath: component.dataBindings['list'],
     );
   }
 

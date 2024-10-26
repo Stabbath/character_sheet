@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/component.dart';
-import '../core/key_path_providers.dart';
+import '../core/providers.dart';
 import 'generic/text_block_input.dart';
 
 class GenericBlockWidget extends ConsumerWidget {

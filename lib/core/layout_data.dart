@@ -11,7 +11,14 @@ class LayoutData {
   final double rowGap;
   final Map<String, Component> components;
 
-  LayoutData({required this.gridAreas, required this.columnSizes, required this.rowSizes, required this.columnGap, required this.rowGap, required this.components});
+  LayoutData({
+    required this.gridAreas,
+    required this.columnSizes,
+    required this.rowSizes,
+    required this.columnGap,
+    required this.rowGap,
+    required this.components
+  });
 
   factory LayoutData.fromYaml(YamlMap yaml) {
     final String layout = yaml['layout'];
@@ -31,6 +38,16 @@ class LayoutData {
       rowGap: 16.0,
       components: components,
     );
+  }
+
+  Set<String> getAreaNames() {
+    Set<String> areaNames = {};
+    List<String> lines = gridAreas.trim().split('\n');
+    for (String line in lines) {
+      List<String> areas = line.trim().split(RegExp(r'\s+'));
+      areaNames.addAll(areas);
+    }
+    return areaNames;
   }
 }
 

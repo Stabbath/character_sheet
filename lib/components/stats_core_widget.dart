@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/component.dart';
-import '../core/key_path_providers.dart';
+import '../core/providers.dart';
 import 'generic/dynamic_stat_input.dart';
 import 'generic/static_stat_input.dart';
 

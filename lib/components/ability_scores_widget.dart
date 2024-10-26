@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/component.dart';
-import '../core/key_path_providers.dart';
+import '../core/providers.dart';
 import 'generic/ability_score_field.dart';
 import 'generic/section_header.dart';
 

@@ -1,11 +1,15 @@
 import 'package:yaml/yaml.dart';
 
+import '../utils/yaml_utils.dart';
+
 class SheetData {
   Map<String, dynamic> data;
 
   SheetData(this.data);
+  SheetData.empty() : data = {};
+  factory SheetData.fromYaml(YamlMap yaml) => SheetData(mapFromYaml(yaml));
 
-  factory SheetData.fromYaml(YamlMap yaml) => SheetData(Map<String, dynamic>.from(yaml));
+  YamlMap toYaml() => YamlMap.wrap(data);
 
   dynamic getValue(String path) {
     List<String> keys = path.split('.');

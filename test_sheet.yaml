@@ -1,0 +1,205 @@
+character:
+  character:
+    picture:
+      path: ''
+    token:
+      path: ''
+    names:
+      names: 'Character Names'
+      titles: 'Titles'
+    origins:
+      race: ''
+      background: ''
+    biometrics:
+      age: ''
+      height: ''
+      weight: ''
+      eyes: ''
+      skin: ''
+      hair: ''
+    personality:
+      traits: ''
+      ideals: ''
+      bonds: ''
+      flaws: ''
+    classes:
+      list:
+        - name: 'Class Name'
+          level: 0
+    abilities:
+      strength: 10
+      dexterity: 10
+      constitution: 10
+      intelligence: 10
+      wisdom: 10
+      charisma: 10
+    saves:
+      strength: 0
+      dexterity: 0
+      constitution: 0
+      intelligence: 0
+      wisdom: 0
+      charisma: 0
+    skills:
+      acrobatics: 0
+      animal_handling: 0
+      arcana: 0
+      athletics: 0
+      deception: 0
+      history: 0
+      insight: 0
+      intimidation: 0
+      investigation: 0
+      medicine: 0
+      nature: 0
+      perception: 0
+      performance: 0
+      persuasion: 0
+      religion: 0
+      sleight_of_hand: 0
+      stealth: 0
+      survival: 0
+    stats:
+      hp: 0
+      max_hp: 0
+      exhaustion: 0
+      max_exhaustion: 0
+      temp_hp: 0
+      armor_class: 0
+      initiative: 0
+      speed: 0
+      proficiency_bonus: 0
+    proficiencies:
+      content: ''
+    attacks:
+      content: ''
+    actives:
+      content: ''
+    passives:
+      content: ''
+    cash:
+      content: ''
+    equipment1:
+      content: ''
+    equipment2:
+      content: ''
+    equipment3:
+      content: ''
+    equipment4:
+      content: ''
+  picture:
+    path: ''
+  token:
+    path: ''
+  names:
+    names: 'Character Names'
+    titles: 'Titles'
+  origins:
+    race: ''
+    background: ''
+  biometrics:
+    age: ''
+    height: ''
+    weight: ''
+    eyes: ''
+    skin: ''
+    hair: ''
+    eye_color: ''
+    skin_color: ''
+    hair_color: ''
+  personality:
+    traits: ''
+    ideals: ''
+    bonds: ''
+    flaws: ''
+  classes:
+    list:
+      - name: 'Class Name'
+        level: 0
+  abilities:
+    strength: 10
+    dexterity: 10
+    constitution: 10
+    intelligence: 10
+    wisdom: 10
+    charisma: 10
+  saves:
+    strength: 0
+    dexterity: 0
+    constitution: 0
+    intelligence: 0
+    wisdom: 0
+    charisma: 0
+  skills:
+    acrobatics: 0
+    animal_handling: 0
+    arcana: 0
+    athletics: 0
+    deception: 0
+    history: 0
+    insight: 0
+    intimidation: 0
+    investigation: 0
+    medicine: 0
+    nature: 0
+    perception: 0
+    performance: 0
+    persuasion: 0
+    religion: 0
+    sleight_of_hand: 0
+    stealth: 0
+    survival: 0
+  stats:
+    hp: 0
+    max_hp: 0
+    exhaustion: 0
+    max_exhaustion: 0
+    temp_hp: 0
+    armor_class: 0
+    initiative: 0
+    speed: 0
+    proficiency_bonus: 0
+  proficiencies:
+    content: ''
+  attacks:
+    content: ''
+  actives:
+    content: ''
+  passives:
+    content: ''
+  cash:
+    content: ''
+  equipment1:
+    content: ''
+  equipment2:
+    content: ''
+  equipment3:
+    content: ''
+  equipment4:
+    content: ''
+  picturePath: ''
+  tokenPath: ''
+  titles: 'Titles'
+  ability_scores:
+    strength: 10
+    dexterity: 10
+    constitution: 10
+    intelligence: 10
+    wisdom: 10
+    charisma: 10
+  saving_throws:
+    strength: 0
+    dexterity: 0
+    constitution: 0
+    intelligence: 0
+    wisdom: 0
+    charisma: 0
+  hp: 0
+  max_hp: 0
+  exhaustion: 0
+  max_exhaustion: 0
+  temp_hp: 0
+  armor_class: 0
+  initiative: 0
+  speed: 0
+  proficiency_bonus: 0

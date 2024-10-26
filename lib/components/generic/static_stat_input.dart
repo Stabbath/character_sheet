@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/key_path_providers.dart';
+import '../../core/providers.dart';
 
 class StaticStatInput extends ConsumerWidget {
   final String label;

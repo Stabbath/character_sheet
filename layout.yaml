@@ -73,14 +73,14 @@ components:
   classes:
     type: classes
     default_data:
-      class_list: [
+      list: [
         {
           name: "Class Name",
           level: 0
         }
       ]
     data_bindings:
-      class_list: character.classes.list
+      list: character.classes.list
 
   # stats
   abilities:
