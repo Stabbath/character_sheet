@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SingleClassInput extends StatelessWidget {
   final int index;
   final String className;
-  final String classLevel;
+  final int classLevel;
   final ValueChanged<String> onNameChanged;
   final ValueChanged<int> onLevelChanged;
 

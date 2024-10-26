@@ -9,7 +9,7 @@ import 'generic/text_block_input.dart';
 class GenericBlockWidget extends ConsumerWidget {
   final String id;
   final String title;
-  final Provider<dynamic> contentProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> contentProvider;
 
   GenericBlockWidget({
     super.key, 

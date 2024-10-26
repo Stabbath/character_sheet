@@ -5,7 +5,7 @@ import '../../core/providers.dart';
 
 class AbilityScoreField extends ConsumerWidget {
   final String label;
-  final Provider<dynamic> abilityScoreProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> abilityScoreProvider;
 
   const AbilityScoreField({
     super.key,

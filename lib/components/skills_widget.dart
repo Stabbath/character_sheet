@@ -7,7 +7,7 @@ import 'generic/skill_field.dart';
 
 class SkillsWidget extends ConsumerWidget {
   final String id;
-  final Map<String, Provider<dynamic>> skillProviders;
+  final Map<String, StateNotifierProvider<KeyPathNotifier, dynamic>> skillProviders;
 
   const SkillsWidget({
     super.key,
@@ -30,6 +30,32 @@ class SkillsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    const requiredStats = [
+      'acrobatics',
+      'animal_handling',
+      'arcana',
+      'athletics',
+      'deception',
+      'history',
+      'insight',
+      'intimidation',
+      'investigation',
+      'medicine',
+      'nature',
+      'perception',
+      'performance',
+      'persuasion',
+      'religion',
+      'sleight_of_hand',
+      'stealth',
+      'survival',
+    ];
+    for (var stat in requiredStats) {
+      if (!skillProviders.containsKey(stat)) {
+        throw Exception('SkillsWidget requires a binding for $stat');
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -38,75 +64,75 @@ class SkillsWidget extends ConsumerWidget {
           const SectionHeader(title: 'Skills'),
           SkillField(
             label: 'Acrobatics',
-            skillProvider: skillProviders['acrobatics'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['acrobatics']!,
           ),
           SkillField(
             label: 'Animal Handling',
-            skillProvider: skillProviders['animal_handling'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['animal_handling']!,
           ),
           SkillField(
             label: 'Arcana',
-            skillProvider: skillProviders['arcana'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['arcana']!,
           ),
           SkillField(
             label: 'Athletics',
-            skillProvider: skillProviders['athletics'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['athletics']!,
           ),
           SkillField(
             label: 'Deception',
-            skillProvider: skillProviders['deception'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['deception']!,
           ),
           SkillField(
             label: 'History',
-            skillProvider: skillProviders['history'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['history']!,
           ),
           SkillField(
             label: 'Insight',
-            skillProvider: skillProviders['insight'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['insight']!,
           ),
           SkillField(
             label: 'Intimidation',
-            skillProvider: skillProviders['intimidation'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['intimidation']!,
           ),
           SkillField(
             label: 'Investigation',
-            skillProvider: skillProviders['investigation'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['investigation']!,
           ),
           SkillField(
             label: 'Medicine',
-            skillProvider: skillProviders['medicine'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['medicine']!,
           ),
           SkillField(
             label: 'Nature',
-            skillProvider: skillProviders['nature'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['nature']!,
           ),
           SkillField(
             label: 'Perception',
-            skillProvider: skillProviders['perception'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['perception']!,
           ),
           SkillField(
             label: 'Performance',
-            skillProvider: skillProviders['performance'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['performance']!,
           ),
           SkillField(
             label: 'Persuasion',
-            skillProvider: skillProviders['persuasion'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['persuasion']!,
           ),
           SkillField(
             label: 'Religion',
-            skillProvider: skillProviders['religion'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['religion']!,
           ),
           SkillField(
             label: 'Sleight of Hand',
-            skillProvider: skillProviders['sleight_of_hand'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['sleight_of_hand']!,
           ),
           SkillField(
             label: 'Stealth',
-            skillProvider: skillProviders['stealth'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['stealth']!,
           ),
           SkillField(
             label: 'Survival',
-            skillProvider: skillProviders['survival'] ?? Provider((ref) => null),
+            skillProvider: skillProviders['survival']!,
           ),
         ],
       ),

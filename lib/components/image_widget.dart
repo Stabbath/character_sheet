@@ -6,7 +6,7 @@ import '../core/providers.dart';
 
 class ImageWidget extends ConsumerWidget {
   final String id;
-  final Provider<dynamic> imagePathProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> imagePathProvider;
 
   ImageWidget({
     super.key,

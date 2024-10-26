@@ -5,8 +5,8 @@ import '../../core/providers.dart';
 
 class DynamicStatInput extends ConsumerWidget {
   final String label;
-  final Provider<dynamic> currentValueProvider;
-  final Provider<dynamic> maxValueProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> currentValueProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> maxValueProvider;
 
   const DynamicStatInput({
     super.key,

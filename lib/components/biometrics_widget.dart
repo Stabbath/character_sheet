@@ -6,12 +6,12 @@ import '../core/providers.dart';
 
 class BiometricsWidget extends ConsumerWidget {
   final String id;
-  final Provider<dynamic> ageProvider;
-  final Provider<dynamic> heightProvider;
-  final Provider<dynamic> weightProvider;
-  final Provider<dynamic> eyesProvider;
-  final Provider<dynamic> skinProvider;
-  final Provider<dynamic> hairProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> ageProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> heightProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> weightProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> eyesProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> skinProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> hairProvider;
 
   BiometricsWidget({
     super.key,

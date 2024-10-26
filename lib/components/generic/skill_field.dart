@@ -5,7 +5,7 @@ import '../../core/providers.dart';
 
 class SkillField extends ConsumerWidget {
   final String label;
-  final Provider<dynamic> skillProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> skillProvider;
 
   const SkillField({
     super.key,

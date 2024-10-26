@@ -5,7 +5,7 @@ import '../../core/providers.dart';
 
 class StaticStatInput extends ConsumerWidget {
   final String label;
-  final Provider<dynamic> statProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> statProvider;
 
   const StaticStatInput({
     super.key,

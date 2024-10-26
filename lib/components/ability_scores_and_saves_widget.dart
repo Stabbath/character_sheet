@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/component.dart';
-import '../core/key_path_providers.dart';
+import '../core/providers.dart';
 import 'ability_saves_widget.dart';
 import 'ability_scores_widget.dart';
 
@@ -12,8 +12,8 @@ import 'ability_scores_widget.dart';
 class AbilityScoresAndSavesWidget extends StatelessWidget {
   final String id;
   final Component component;
-  final Provider<dynamic> abilitiesProvider;
-  final Provider<dynamic> savesProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> abilitiesProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> savesProvider;
 
   const AbilityScoresAndSavesWidget({
     super.key,

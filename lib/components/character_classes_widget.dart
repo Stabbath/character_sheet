@@ -7,7 +7,7 @@ import 'generic/single_class_input.dart';
 
 class CharacterClassesWidget extends ConsumerWidget {
   final String id;
-  final Provider<dynamic> classListProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> classListProvider;
   
   CharacterClassesWidget({
     super.key,
@@ -22,9 +22,24 @@ class CharacterClassesWidget extends ConsumerWidget {
     );
   }
 
+  num getTotalLevel(WidgetRef ref) {
+    final classList = ref.watch(classListProvider);
+    num totalLevel = 0;
+    for (int i = 0; i < classList.length; i++) {
+      totalLevel += classList[i]["level"];
+    }
+    return totalLevel;
+  }
+
+  num getProficiencyBonus(WidgetRef ref) {
+    final totalLevel = getTotalLevel(ref);
+    return ((totalLevel - 1) / 4).floor() + 2;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final classList = ref.watch(classListProvider);
+    final classListNotifier = ref.read(classListProvider.notifier);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +60,7 @@ class CharacterClassesWidget extends ConsumerWidget {
                         "name": newName,
                         "level": classList[i]["level"],
                       };
-                      ref.read(classList.notifier).update(newClassList);
+                      classListNotifier.update(newClassList);
                     },
                     onLevelChanged: (newLevel) {
                       var newClassList = List.from(classList);
@@ -53,15 +68,17 @@ class CharacterClassesWidget extends ConsumerWidget {
                         "name": classList[i]["name"],
                         "level": newLevel,
                       };
-                      ref.read(classList.notifier).update(newClassList);
+                      classListNotifier.update(newClassList);
                     },
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.remove_circle_outline),
-                  onPressed: () => ref
-                    .read(classList.notifier)
-                    .removeClass(i),
+                  onPressed: () {
+                    var newClassList = List.from(classList);
+                    newClassList.removeAt(i);
+                    classListNotifier.update(newClassList);
+                  }
                 ),
               ],
             ),
@@ -69,15 +86,15 @@ class CharacterClassesWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('Character Level: ${ref.read(classList.notifier).getTotalLevel()}'),
+            Text('Character Level: ${getTotalLevel(ref)}'),
             const Spacer(),
-            Text('Proficiency Modifier: ${ref.read(classList.notifier).getProficiencyBonus()}'),
+            Text('Proficiency Modifier: ${getProficiencyBonus(ref)}'),
             const Spacer(),
             ElevatedButton.icon(
               onPressed: () {
                 var newClassList = List.from(classList);
                 newClassList.add({"name": "", "level": 0});
-                ref.read(classList.notifier).update(newClassList);
+                classListNotifier.update(newClassList);
               },
               icon: const Icon(Icons.add),
               label: const Text('Add Class'),

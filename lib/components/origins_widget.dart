@@ -5,8 +5,8 @@ import '../core/providers.dart';
 
 class OriginsWidget extends ConsumerWidget {
   final String id;
-  final Provider<dynamic> raceProvider;
-  final Provider<dynamic> backgroundProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> raceProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> backgroundProvider;
 
   OriginsWidget({
     super.key,

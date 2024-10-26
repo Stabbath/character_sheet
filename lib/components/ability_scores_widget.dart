@@ -7,12 +7,12 @@ import 'generic/section_header.dart';
 
 class AbilityScoresWidget extends ConsumerWidget {
   final String id;
-  final Provider<dynamic> strengthProvider;
-  final Provider<dynamic> dexterityProvider;
-  final Provider<dynamic> constitutionProvider;
-  final Provider<dynamic> intelligenceProvider;
-  final Provider<dynamic> wisdomProvider;
-  final Provider<dynamic> charismaProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> strengthProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> dexterityProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> constitutionProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> intelligenceProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> wisdomProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> charismaProvider;
 
   const AbilityScoresWidget({
     super.key,

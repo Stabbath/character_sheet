@@ -7,10 +7,10 @@ import 'generic/text_block_input.dart';
 
 class PersonalityWidget extends ConsumerWidget {
   final String id;
-  final Provider<dynamic> traitsProvider;
-  final Provider<dynamic> idealsProvider;
-  final Provider<dynamic> bondsProvider;
-  final Provider<dynamic> flawsProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> traitsProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> idealsProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> bondsProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> flawsProvider;
 
   PersonalityWidget({
     super.key,

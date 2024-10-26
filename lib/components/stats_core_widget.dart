@@ -8,7 +8,7 @@ import 'generic/static_stat_input.dart';
 
 class StatsCoreWidget extends ConsumerWidget {
   final String id;
-  final Map<String, Provider<dynamic>> statProviders;
+  final Map<String, StateNotifierProvider<KeyPathNotifier, dynamic>> statProviders;
 
   const StatsCoreWidget({
     super.key,
@@ -20,8 +20,8 @@ class StatsCoreWidget extends ConsumerWidget {
     super.key,
     required this.id,
     required Map<String, String> statKeyPaths,
-  }) : statProviders = Map<String, Provider<dynamic>>.fromEntries(statKeyPaths.entries.map(
-    (entry) => MapEntry<String, Provider<dynamic>>(entry.key, getKeyPathProvider(entry.value)),
+  }) : statProviders = Map<String, StateNotifierProvider<KeyPathNotifier, dynamic>>.fromEntries(statKeyPaths.entries.map(
+    (entry) => MapEntry<String, StateNotifierProvider<KeyPathNotifier, dynamic>>(entry.key, getKeyPathProvider(entry.value)),
   ));
 
     
@@ -34,6 +34,13 @@ class StatsCoreWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    const requiredStats = ['hp', 'max_hp', 'temp_hp', 'exhaustion', 'max_exhaustion', 'armor_class', 'initiative', 'speed', 'proficiency_bonus'];
+    for (var stat in requiredStats) {
+      if (!statProviders.containsKey(stat)) {
+        throw Exception('StatsCoreWidget requires a binding for $stat');
+      }
+    }
+
     return Column(
       children: [
         Expanded(
@@ -41,21 +48,21 @@ class StatsCoreWidget extends ConsumerWidget {
             Expanded(
               child: DynamicStatInput(
                 label: 'Hit Points',
-                currentValueProvider: statProviders['hp'] ?? Provider((ref) => null),
-                maxValueProvider: statProviders['max_hp'] ?? Provider((ref) => null),
+                currentValueProvider: statProviders['hp']!,
+                maxValueProvider: statProviders['max_hp']!,
               ),
             ),
             Expanded(
               child: StaticStatInput(
                 label: 'Temporary Hit Points',
-                statProvider: statProviders['temp_hp'] ?? Provider((ref) => null),
+                statProvider: statProviders['temp_hp']!,
               ),
             ),
             Expanded(
               child: DynamicStatInput(
                 label: 'Exhaustion',
-                currentValueProvider: statProviders['exhaustion'] ?? Provider((ref) => null),
-                maxValueProvider: statProviders['max_exhaustion'] ?? Provider((ref) => null),
+                currentValueProvider: statProviders['exhaustion']!,
+                maxValueProvider: statProviders['max_exhaustion']!,
               ),
             ),
           ],),
@@ -65,25 +72,25 @@ class StatsCoreWidget extends ConsumerWidget {
             Expanded(
               child: StaticStatInput(
                 label: 'Armor Class',
-                statProvider: statProviders['armor_class'] ?? Provider((ref) => null),
+                statProvider: statProviders['armor_class']!,
               ),
             ),
             Expanded(
               child: StaticStatInput(
                 label: 'Initiative',
-                statProvider: statProviders['initiative'] ?? Provider((ref) => null),
+                statProvider: statProviders['initiative']!,
               ),
             ),
             Expanded(
               child: StaticStatInput(
                 label: 'Speed',
-                statProvider: statProviders['speed'] ?? Provider((ref) => null),
+                statProvider: statProviders['speed']!,
               ),
             ),
             Expanded(
               child: StaticStatInput(
                 label: 'Proficiency Bonus',
-                statProvider: statProviders['proficiency_bonus'] ?? Provider((ref) => null),
+                statProvider: statProviders['proficiency_bonus']!,
               ),
             ),
           ],),

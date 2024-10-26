@@ -15,19 +15,14 @@ import '../components/skills_widget.dart';
 import '../components/stats_core_widget.dart';
 import 'component.dart';
 import 'layout_data.dart';
-import 'sheet_data.dart';
+import 'providers.dart';
 
 class CharacterSheet extends ConsumerWidget {
-  final LayoutData layoutData;
-  final SheetData sheetData;
-
   const CharacterSheet({
     super.key,
-    required this.layoutData,
-    required this.sheetData,
   });
 
-  List<Widget> buildChildren() {
+  List<Widget> buildChildren(LayoutData layoutData) {
     Set<String> areaNames = layoutData.getAreaNames();
     return areaNames.map((areaName) {
       final component = layoutData.components[areaName];
@@ -67,6 +62,11 @@ class CharacterSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final layoutData = ref.watch(layoutProvider);
+    if (layoutData == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -77,7 +77,7 @@ class CharacterSheet extends ConsumerWidget {
             rowSizes: layoutData.rowSizes,
             columnGap: layoutData.columnGap,
             rowGap: layoutData.rowGap,
-            children: buildChildren(),
+            children: buildChildren(layoutData),
           ),
         ),
       ),

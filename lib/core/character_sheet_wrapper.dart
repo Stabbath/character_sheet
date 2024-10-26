@@ -1,49 +1,48 @@
-// character_sheet_wrapper.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'providers.dart';
 import 'character_sheet_widget.dart';
+import 'providers.dart';
 
-class CharacterSheetWrapper extends ConsumerWidget {
+class CharacterSheetWrapper extends ConsumerStatefulWidget {
   const CharacterSheetWrapper({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final layoutAsyncValue = ref.watch(layoutProvider);
-    final sheetDataAsyncValue = ref.watch(sheetDataProvider);
+  CharacterSheetWrapperState createState() => CharacterSheetWrapperState();
+}
 
-    return layoutAsyncValue.when(
-      data: (layoutData) {
-        return sheetDataAsyncValue.when(
-          data: (sheetData) {
-            return CharacterSheet(layoutData: layoutData, sheetData: sheetData);
-          },
-          loading: () => Scaffold(
+class CharacterSheetWrapperState extends ConsumerState<CharacterSheetWrapper> {
+  Future<void>? _initializationFuture;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // ensure init only happens once
+    _initializationFuture ??= initializeProviders(ProviderScope.containerOf(context));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _initializationFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            throw(snapshot.error, snapshot.stackTrace);
+            return Scaffold(
+              body: Center(
+                child: Text('Error loading data: ${snapshot.error}'),
+              ),
+            );
+          } else {
+            return CharacterSheet();
+          }
+        } else {
+          return Scaffold(
             body: Center(child: CircularProgressIndicator()),
-          ),
-        error: (error, stack) {
-           throw(error, stack); 
-          },
-          // error: (error, stack) => Scaffold(
-          //   body: Center(
-          //     child: Text('Error loading sheet data: $error'),
-          //   ),
-          // ),
-        );
+          );
+        }
       },
-      loading: () => Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
-      error: (error, stack) {
-        throw(error, stack); 
-      },
-      // error: (error, stack) => Scaffold(
-      //   body: Center(
-      //     child: Text('Error loading layout data: $error'),
-      //   ),
-      // ),
     );
   }
 }

@@ -6,8 +6,8 @@ import '../core/providers.dart';
 
 class NamesWidget extends ConsumerWidget {
   final String id;
-  final Provider<dynamic> namesProvider;
-  final Provider<dynamic> titlesProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> namesProvider;
+  final StateNotifierProvider<KeyPathNotifier, dynamic> titlesProvider;
 
   NamesWidget({
     super.key,
