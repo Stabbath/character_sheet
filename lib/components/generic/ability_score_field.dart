@@ -1,3 +1,4 @@
+import 'package:character_sheet/components/generic/consumer_stateful_text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -35,20 +36,11 @@ class AbilityScoreField extends ConsumerWidget {
         const Spacer(),
         SizedBox(
           width: 50,
-          child: TextFormField(
-            controller: TextEditingController(text: abilityScore.toString()),
-            keyboardType: TextInputType.number,
-            onChanged: (value) {
-              final int? newScore = int.tryParse(value);
-              if (newScore != null) {
-                abilityScoreNotifier.update(newScore);
-              }
-            },
-            textAlign: TextAlign.center,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.all(8.0),
-            ),
+          child: ConsumerStatefulTextInput(
+            initialValue: abilityScore.toString(),
+            label: label,
+            isNumeric: true,
+            onChanged: (value) => abilityScoreNotifier.update(int.parse(value)),
           ),
         ),
         const Icon(

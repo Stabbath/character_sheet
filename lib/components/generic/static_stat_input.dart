@@ -1,3 +1,4 @@
+import 'package:character_sheet/components/generic/consumer_stateful_text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,17 +31,11 @@ class StaticStatInput extends ConsumerWidget {
         SizedBox(
           width: 50,
           height: 50,
-          child: TextFormField(
+          child: ConsumerStatefulTextInput(
             initialValue: stat.toString(),
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.all(8.0),
-            ),
-            onChanged: (newValue) {
-              statNotifier.update(int.tryParse(newValue) ?? stat);
-            },
+            label: label,
+            isNumeric: true,
+            onChanged: (value) => statNotifier.update(int.parse(value)),
           ),
         ),
       ],

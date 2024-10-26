@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/providers.dart';
+import 'consumer_stateful_text_input.dart';
 
 class SkillField extends ConsumerWidget {
   final String label;
@@ -34,20 +35,11 @@ class SkillField extends ConsumerWidget {
         const Spacer(),
         SizedBox(
           width: 50,
-          child: TextFormField(
-            controller: TextEditingController(text: skill.toString()),
-            keyboardType: TextInputType.number,
-            onChanged: (value) {
-              final int? newValue = int.tryParse(value);
-              if (newValue != null) {
-                skillNotifier.update(newValue);
-              }
-            },
-            textAlign: TextAlign.center,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.all(8.0),
-            ),
+          child: ConsumerStatefulTextInput(
+            initialValue: skill.toString(),
+            label: label,
+            isNumeric: true,
+            onChanged: (value) => skillNotifier.update(int.parse(value)),
           ),
         ),
       ],

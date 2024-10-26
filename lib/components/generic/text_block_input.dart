@@ -1,3 +1,4 @@
+import 'package:character_sheet/components/generic/consumer_stateful_text_input.dart';
 import 'package:flutter/material.dart';
 
 class TextBlockInput extends StatelessWidget {
@@ -14,16 +15,14 @@ class TextBlockInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return ConsumerStatefulTextInput(
       minLines: null,
       maxLines: null,
       expands: true,
-      controller: TextEditingController(text: initialValue),
+      initialValue: initialValue,
       onChanged: onChanged,
-      decoration: InputDecoration(
-        labelText: title.isEmpty ? null : title,
-        border: const OutlineInputBorder(),
-      ),
+      label: title,
+      isNumeric: false,
     );
   }
 }

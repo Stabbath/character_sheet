@@ -1,3 +1,4 @@
+import 'package:character_sheet/components/generic/consumer_stateful_text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -61,29 +62,29 @@ class BiometricsWidget extends ConsumerWidget {
         Row(
           children: [
             Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(labelText: 'Age'),
-                keyboardType: TextInputType.number,
-                controller: TextEditingController(text: age.toString()),
-                onChanged: (value) => ageNotifier.update(int.tryParse(value) ?? 0),
+              child: ConsumerStatefulTextInput(
+                initialValue: age.toString(),
+                label: 'Age',
+                isNumeric: true,
+                onChanged: (value) => ageNotifier.update(int.parse(value)),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(labelText: 'Height'),
-                keyboardType: TextInputType.number,
-                controller: TextEditingController(text: height.toString()),
-                onChanged: (value) => heightNotifier.update(double.tryParse(value) ?? 0),
+              child: ConsumerStatefulTextInput(
+                initialValue: height.toString(),
+                label: 'Height',
+                isNumeric: true,
+                onChanged: (value) => heightNotifier.update(double.parse(value)),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(labelText: 'Weight'),
-                keyboardType: TextInputType.number,
-                controller: TextEditingController(text: weight.toString()),
-                onChanged: (value) => weightNotifier.update(double.tryParse(value) ?? 0),
+              child: ConsumerStatefulTextInput(
+                initialValue: weight.toString(),
+                label: 'Weight',
+                isNumeric: true,
+                onChanged: (value) => weightNotifier.update(double.parse(value)),
               ),
             ),
           ],
@@ -92,26 +93,29 @@ class BiometricsWidget extends ConsumerWidget {
         Row(
           children: [
             Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(labelText: 'Eye Color'),
-                controller: TextEditingController(text: eyes.toString()),
+              child: ConsumerStatefulTextInput(
+                initialValue: eyes.toString(),
+                label: 'Eye Color',
                 onChanged: (value) => eyesNotifier.update(value),
+                isNumeric: false,
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(labelText: 'Skin Color'),
-                controller: TextEditingController(text: skin.toString()),
+              child: ConsumerStatefulTextInput(
+                initialValue: skin.toString(),
+                label: 'Skin Color',
                 onChanged: (value) => skinNotifier.update(value),
+                isNumeric: false,
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(labelText: 'Hair Color'),
-                controller: TextEditingController(text: hair.toString()),
+              child: ConsumerStatefulTextInput(
+                initialValue: hair.toString(),
+                label: 'Hair Color',
                 onChanged: (value) => hairNotifier.update(value),
+                isNumeric: false,
               ),
             ),
           ],

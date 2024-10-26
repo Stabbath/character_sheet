@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/component.dart';
 import '../core/providers.dart';
+import 'generic/consumer_stateful_text_input.dart';
 
 class OriginsWidget extends ConsumerWidget {
   final String id;
@@ -34,16 +35,18 @@ class OriginsWidget extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Race'),
-          controller: TextEditingController(text: race),
+        ConsumerStatefulTextInput(
+          initialValue: race,
+          label: 'Race',
           onChanged: (value) => raceNotifier.update(value),
+          isNumeric: false,
         ),
         const SizedBox(height: 16),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Background'),
-          controller: TextEditingController(text: background),
+        ConsumerStatefulTextInput(
+          initialValue: background,
+          label: 'Background',
           onChanged: (value) => backgroundNotifier.update(value),
+          isNumeric: false,
         ),
       ],
     );

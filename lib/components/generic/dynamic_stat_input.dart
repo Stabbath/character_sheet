@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/providers.dart';
+import 'consumer_stateful_text_input.dart';
 
 class DynamicStatInput extends ConsumerWidget {
   final String label;
@@ -39,35 +40,23 @@ class DynamicStatInput extends ConsumerWidget {
             SizedBox(
               height: 50,
               width: 50,
-              child: TextFormField(
+              child: ConsumerStatefulTextInput(
                 initialValue: currentValue.toString(),
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.center,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.all(8.0),
-                ),
-                onChanged: (value) {
-                  currentValueNotifier.update(int.tryParse(value) ?? 0);
-                },
+                label: label,
+                isNumeric: true,
+                onChanged: (value) => currentValueNotifier.update(int.parse(value)),
               ),
             ),
             const Text(' / ', style: TextStyle(fontSize: 20)),
             SizedBox(
               height: 50,
               width: 50,
-              child: TextFormField(
+              child: ConsumerStatefulTextInput(
                 initialValue: maxValue.toString(),
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.center,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.all(8.0),
-                ),
-                onChanged: (value) {
-                  maxValueNotifier.update(int.tryParse(value) ?? 0);
-                },
-              ),
+                label: label,
+                isNumeric: true,
+                onChanged: (value) => maxValueNotifier.update(int.parse(value)),
+              )
             ),
           ],
         ),
