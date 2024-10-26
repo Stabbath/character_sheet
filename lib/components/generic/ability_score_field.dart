@@ -38,8 +38,8 @@ class AbilityScoreField extends ConsumerWidget {
           width: 50,
           child: ConsumerStatefulTextInput(
             initialValue: abilityScore.toString(),
-            label: label,
             isNumeric: true,
+            textAlign: TextAlign.center,
             onChanged: (value) => abilityScoreNotifier.update(int.parse(value)),
           ),
         ),

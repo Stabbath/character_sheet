@@ -33,7 +33,6 @@ class StaticStatInput extends ConsumerWidget {
           height: 50,
           child: ConsumerStatefulTextInput(
             initialValue: stat.toString(),
-            label: label,
             isNumeric: true,
             onChanged: (value) => statNotifier.update(int.parse(value)),
           ),
