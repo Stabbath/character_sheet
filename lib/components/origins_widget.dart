@@ -39,14 +39,14 @@ class OriginsWidget extends ConsumerWidget {
           initialValue: race,
           label: 'Race',
           onChanged: (value) => raceNotifier.update(value),
-          isNumeric: false,
+          textInputType: TextInputType.text,
         ),
         const SizedBox(height: 16),
         ConsumerStatefulTextInput(
           initialValue: background,
           label: 'Background',
           onChanged: (value) => backgroundNotifier.update(value),
-          isNumeric: false,
+          textInputType: TextInputType.text,
         ),
       ],
     );

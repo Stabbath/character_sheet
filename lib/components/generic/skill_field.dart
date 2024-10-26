@@ -37,7 +37,7 @@ class SkillField extends ConsumerWidget {
           width: 50,
           child: ConsumerStatefulTextInput(
             initialValue: skill.toString(),
-            isNumeric: true,
+            textInputType: TextInputType.number,
             onChanged: (value) => skillNotifier.update(int.parse(value)),
           ),
         ),

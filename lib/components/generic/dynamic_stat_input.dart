@@ -42,7 +42,7 @@ class DynamicStatInput extends ConsumerWidget {
               width: 50,
               child: ConsumerStatefulTextInput(
                 initialValue: currentValue.toString(),
-                isNumeric: true,
+                textInputType: TextInputType.number,
                 onChanged: (value) => currentValueNotifier.update(int.parse(value)),
               ),
             ),
@@ -52,7 +52,7 @@ class DynamicStatInput extends ConsumerWidget {
               width: 50,
               child: ConsumerStatefulTextInput(
                 initialValue: maxValue.toString(),
-                isNumeric: true,
+                textInputType: TextInputType.number,
                 onChanged: (value) => maxValueNotifier.update(int.parse(value)),
               )
             ),

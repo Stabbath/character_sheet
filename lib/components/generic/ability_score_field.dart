@@ -38,7 +38,7 @@ class AbilityScoreField extends ConsumerWidget {
           width: 50,
           child: ConsumerStatefulTextInput(
             initialValue: abilityScore.toString(),
-            isNumeric: true,
+            textInputType: TextInputType.number,
             textAlign: TextAlign.center,
             onChanged: (value) => abilityScoreNotifier.update(int.parse(value)),
           ),

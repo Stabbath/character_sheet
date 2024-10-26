@@ -5,7 +5,7 @@ import 'dart:async';
 class ConsumerStatefulTextInput extends ConsumerStatefulWidget {
   final String initialValue;
   final String? label;
-  final bool isNumeric;
+  final TextInputType textInputType;
   final ValueChanged<String> onChanged;
   final int? minLines;
   final int? maxLines;
@@ -17,9 +17,9 @@ class ConsumerStatefulTextInput extends ConsumerStatefulWidget {
     required this.initialValue,
     this.label,
     required this.onChanged,
-    required this.isNumeric,
+    required this.textInputType,
     this.minLines,
-    this.maxLines = 1,
+    this.maxLines,
     this.expands = false,
     this.textAlign = TextAlign.start,
   });
@@ -69,7 +69,7 @@ class ConsumerStatefulTextInputState extends ConsumerState<ConsumerStatefulTextI
       expands: widget.expands,
       controller: _controller,
       focusNode: _focusNode,
-      keyboardType: widget.isNumeric ? TextInputType.number : TextInputType.text,
+      keyboardType: widget.textInputType,
       onChanged: _onTextChanged,
       textAlign: widget.textAlign,
       decoration: InputDecoration(

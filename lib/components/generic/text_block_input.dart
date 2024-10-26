@@ -22,7 +22,7 @@ class TextBlockInput extends StatelessWidget {
       initialValue: initialValue,
       onChanged: onChanged,
       label: title,
-      isNumeric: false,
+      textInputType: TextInputType.multiline,
     );
   }
 }
