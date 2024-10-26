@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,7 +29,9 @@ class CharacterSheetWrapperState extends ConsumerState<CharacterSheetWrapper> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            throw(snapshot.error, snapshot.stackTrace);
+            if (kDebugMode) {
+              throw(snapshot.error, snapshot.stackTrace);
+            }
             return Scaffold(
               body: Center(
                 child: Text('Error loading data: ${snapshot.error}'),

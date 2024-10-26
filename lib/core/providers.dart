@@ -12,6 +12,8 @@ import 'sheet_data.dart';
 class SheetDataNotifier extends StateNotifier<SheetData?> {
   SheetDataNotifier() : super(null);
 
+  Timer? _debounce;
+
   // Initialize the sheet data
   void initialize(SheetData sheetData) {
     state = sheetData;
@@ -22,9 +24,21 @@ class SheetDataNotifier extends StateNotifier<SheetData?> {
     state?.setValue(keyPath, newValue);
     // Trigger listeners by updating the state
     state = state;
+
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      // Write to file after the debounce period
+      _writeSheetDataToFile(File("test_sheet.yaml"), state!);
+    });
   }
 
   dynamic getValue(String keyPath) => state?.getValue(keyPath);
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
 }
 
 // Provider for SheetData
