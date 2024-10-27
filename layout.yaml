@@ -2,7 +2,7 @@ layout: |
   picture names names names names token
   picture origins origins biometrics biometrics biometrics
   classes classes personality personality personality personality
-  abilities skills stats stats attacks attacks
+  abilities skills combat combat attacks attacks
   saves skills actives actives actives actives
   proficiencies passives passives passives passives passives
   cash cash equipment3 equipment3 equipment4 equipment4
@@ -155,28 +155,6 @@ components:
       sleight_of_hand: character.skills.sleight_of_hand
       stealth: character.skills.stealth
       survival: character.skills.survival
-  stats:
-    type: stats
-    default_data:
-      hp: 0
-      max_hp: 0
-      exhaustion: 0
-      max_exhaustion: 0
-      temp_hp: 0
-      armor_class: 0
-      initiative: 0
-      speed: 0
-      proficiency_bonus: 0
-    data_bindings:
-      hp: character.hp
-      max_hp: character.max_hp
-      exhaustion: character.exhaustion
-      max_exhaustion: character.max_exhaustion
-      temp_hp: character.temp_hp
-      armor_class: character.armor_class
-      initiative: character.initiative
-      speed: character.speed
-      proficiency_bonus: character.proficiency_bonus
   proficiencies:
     type: generic_block
     readonly_data:
@@ -253,3 +231,27 @@ components:
       content: ""
     data_bindings:
       content: character.equipment4
+
+  # other
+  combat:
+    type: combat
+    default_data:
+      hp: 0
+      max_hp: 0
+      exhaustion: 0
+      max_exhaustion: 0
+      temp_hp: 0
+      armor_class: 0
+      initiative: 0
+      speed: 0
+      notes: ''
+    data_bindings:
+      hp: character.hp
+      max_hp: character.max_hp
+      exhaustion: character.exhaustion
+      max_exhaustion: character.max_exhaustion
+      temp_hp: character.temp_hp
+      armor_class: character.armor_class
+      initiative: character.initiative
+      speed: character.speed
+      notes: character.combat_notes

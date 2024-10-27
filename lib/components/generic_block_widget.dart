@@ -11,7 +11,14 @@ class GenericBlockWidget extends ConsumerWidget {
   final String title;
   final StateNotifierProvider<KeyPathNotifier, dynamic> contentProvider;
 
-  GenericBlockWidget({
+  const GenericBlockWidget({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.contentProvider,
+  });
+
+  GenericBlockWidget.fromKeyPaths({
     super.key, 
     required this.id,
     required this.title,
@@ -19,7 +26,7 @@ class GenericBlockWidget extends ConsumerWidget {
   }) : contentProvider = getKeyPathProvider(contentKeyPath);
 
   factory GenericBlockWidget.fromComponent(Component component) {
-    return GenericBlockWidget(
+    return GenericBlockWidget.fromKeyPaths(
       id: component.id,
       title: component.readOnlyData['title'],
       contentKeyPath: component.dataBindings['content'],

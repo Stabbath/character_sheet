@@ -43,7 +43,7 @@ class DynamicStatInput extends ConsumerWidget {
               child: ConsumerStatefulTextInput(
                 initialValue: currentValue.toString(),
                 textInputType: TextInputType.number,
-                onChanged: (value) => currentValueNotifier.update(int.parse(value)),
+                onChanged: (value) => currentValueNotifier.update(int.tryParse(value) ?? 0),
               ),
             ),
             const Text(' / ', style: TextStyle(fontSize: 20)),
@@ -53,7 +53,7 @@ class DynamicStatInput extends ConsumerWidget {
               child: ConsumerStatefulTextInput(
                 initialValue: maxValue.toString(),
                 textInputType: TextInputType.number,
-                onChanged: (value) => maxValueNotifier.update(int.parse(value)),
+                onChanged: (value) => maxValueNotifier.update(int.tryParse(value) ?? 0),
               )
             ),
           ],

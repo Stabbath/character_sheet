@@ -6,6 +6,7 @@ import '../components/ability_saves_widget.dart';
 import '../components/ability_scores_widget.dart';
 import '../components/biometrics_widget.dart';
 import '../components/character_classes_widget.dart';
+import '../components/combat_widget.dart';
 import '../components/generic_block_widget.dart';
 import '../components/image_widget.dart';
 import '../components/names_widget.dart';
@@ -55,6 +56,8 @@ class CharacterSheet extends ConsumerWidget {
         return StatsCoreWidget.fromComponent(component);
       case 'generic_block':
         return GenericBlockWidget.fromComponent(component);
+      case 'combat':
+        return CombatWidget.fromComponent(component);
       default:
         throw Exception('Unknown component type: ${component.type}');
     }
