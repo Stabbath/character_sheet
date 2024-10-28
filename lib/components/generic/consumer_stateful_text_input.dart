@@ -47,6 +47,15 @@ class ConsumerStatefulTextInputState extends ConsumerState<ConsumerStatefulTextI
     });
   }
 
+  @override
+  void didUpdateWidget(ConsumerStatefulTextInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Only update the controller if the initialValue has changed
+    if (widget.initialValue != oldWidget.initialValue) {
+      _controller.text = widget.initialValue;
+    }
+  }
+
   void _onTextChanged(String value) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () {
