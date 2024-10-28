@@ -6,6 +6,21 @@ import '../utils/file_utils.dart';
 import 'layout_data.dart';
 import 'sheet_data.dart';
 
+final layoutFilePathProvider = StateNotifierProvider<FilePathNotifier, String>((ref) {
+  return FilePathNotifier();
+});
+final sheetFilePathProvider = StateNotifierProvider<FilePathNotifier, String>((ref) {
+  return FilePathNotifier();
+});
+
+class FilePathNotifier extends StateNotifier<String> {
+  FilePathNotifier() : super('');
+
+  void update(String newPath) {
+    state = newPath;
+  }
+}
+
 class SheetDataNotifier extends StateNotifier<SheetData?> {
   final Ref ref;
   Timer? _debounce;
@@ -22,7 +37,8 @@ class SheetDataNotifier extends StateNotifier<SheetData?> {
 
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      writeSheetToPath(ref.read(sheetFilePathProvider), state!);
+      String filePath = ref.read(sheetFilePathProvider);
+      writeSheetToPath(filePath, state!);
     });
   }
 
@@ -35,16 +51,24 @@ class SheetDataNotifier extends StateNotifier<SheetData?> {
   }
 }
 
-final layoutFilePathProvider = StateProvider<String>((ref) => '');
-final sheetFilePathProvider = StateProvider<String>((ref) => '');
-
 // Provider for SheetData
 final sheetDataProvider = StateNotifierProvider<SheetDataNotifier, SheetData?>((ref) {
   return SheetDataNotifier(ref);
 });
 
 // Provider for LayoutData
-final layoutProvider = StateProvider<LayoutData?>((ref) => null);
+final layoutProvider = StateNotifierProvider<LayoutNotifier, LayoutData?>((ref) {
+  return LayoutNotifier(ref);
+});
+
+class LayoutNotifier extends StateNotifier<LayoutData?> {
+  final Ref ref;
+  LayoutNotifier(this.ref) : super(null);
+
+  void initialize(LayoutData? layoutData) {
+    state = layoutData;
+  }
+}
 
 // Provider for specific key paths
 StateNotifierProvider<KeyPathNotifier, dynamic> getKeyPathProvider(String keyPath) {
@@ -72,10 +96,12 @@ class KeyPathNotifier extends StateNotifier<dynamic> {
 
 void initializeProviders(ProviderContainer container, String layoutPath, String sheetPath) {
   LayoutData? layoutData = loadLayoutFromPath(layoutPath);
-  container.read(layoutProvider.notifier).state = layoutData;
+  container.read(layoutFilePathProvider.notifier).update(layoutPath);
+  container.read(layoutProvider.notifier).initialize(layoutData);
 
   if (layoutData != null) {
     SheetData? sheetData = loadSheetFromPath(sheetPath, layoutData);
+    container.read(sheetFilePathProvider.notifier).update(sheetPath);
     container.read(sheetDataProvider.notifier).initialize(sheetData);
   }
 }
