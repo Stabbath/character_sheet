@@ -1,3 +1,4 @@
+import 'package:character_sheet/components/generic/consumer_stateful_text_input.dart';
 import 'package:flutter/material.dart';
 
 class SingleClassInput extends StatelessWidget {
@@ -21,19 +22,22 @@ class SingleClassInput extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: TextFormField(
+          child: ConsumerStatefulTextInput(
+            label: 'Class',
+            border: null,
             initialValue: className,
-            decoration: const InputDecoration(labelText: 'Class'),
+            textInputType: TextInputType.text,
             onChanged: onNameChanged,
           ),
         ),
         const SizedBox(width: 16),
         SizedBox(
           width: 60,
-          child: TextFormField(
+          child: ConsumerStatefulTextInput(
+            label: 'Level',
+            border: null,
             initialValue: classLevel.toString(),
-            decoration: const InputDecoration(labelText: 'Level'),
-            keyboardType: TextInputType.number,
+            textInputType: TextInputType.number,
             onChanged: (value) {
               final parsedValue = int.tryParse(value) ?? 0;
               onLevelChanged(parsedValue);

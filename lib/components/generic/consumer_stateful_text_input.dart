@@ -12,6 +12,7 @@ class ConsumerStatefulTextInput extends ConsumerStatefulWidget {
   final bool expands;
   final TextAlign textAlign;
   final TextAlignVertical? textAlignVertical;
+  final InputBorder? border;
 
   const ConsumerStatefulTextInput({
     super.key,
@@ -23,6 +24,7 @@ class ConsumerStatefulTextInput extends ConsumerStatefulWidget {
     this.maxLines,
     this.expands = false,
     this.textAlign = TextAlign.start,
+    this.border = const OutlineInputBorder(),
   }) : textAlignVertical = textAlign == TextAlign.start ? TextAlignVertical.top : TextAlignVertical.center;
 
   @override
@@ -85,7 +87,7 @@ class ConsumerStatefulTextInputState extends ConsumerState<ConsumerStatefulTextI
       textAlignVertical: widget.textAlignVertical,
       decoration: InputDecoration(
         labelText: widget.label,
-        border: const OutlineInputBorder(),
+        border: widget.border,
         contentPadding: const EdgeInsets.all(8.0),
       ),
     );
