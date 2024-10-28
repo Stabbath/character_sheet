@@ -26,6 +26,7 @@ LayoutData? loadLayoutFromPath(String path) {
   return LayoutData.fromYaml(yaml);
 }
 
+// with validity checks - return null if invalid
 SheetData? loadSheetFromPath(String path, LayoutData layoutData) {
   final File file = File(path);
   if (!file.existsSync()) {
@@ -34,7 +35,7 @@ SheetData? loadSheetFromPath(String path, LayoutData layoutData) {
 
   final String contents = file.readAsStringSync();
   if (contents.isEmpty) {
-    return layoutData.generateDefaultSheetData(); // TODO - return a new default SheetData
+    return layoutData.generateDefaultSheetData(); // return default data if file is empty
   }
 
   final yaml = loadYaml(contents);
@@ -42,10 +43,10 @@ SheetData? loadSheetFromPath(String path, LayoutData layoutData) {
     return null;
   }
 
-  SheetData out = SheetData.fromYaml(yaml);
+  SheetData data = SheetData.fromYaml(yaml);
   if (false)
-    layoutData.crossCheckAndUpdateSheetData(out); // fill in missing fields; should probably not do this automatically on load
-  return out;
+    layoutData.crossCheckAndUpdateSheetData(data); // fill in missing fields; should probably not do this automatically on load
+  return data;
 }
 
 Future<void> writeSheetToPath(String path, SheetData sheetData) async {

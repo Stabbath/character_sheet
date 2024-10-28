@@ -1,14 +1,9 @@
-import 'dart:io';
-
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yaml/yaml.dart';
 
 import 'core/character_sheet_wrapper.dart';
-import 'core/layout_data.dart';
 import 'core/providers.dart';
-import 'core/sheet_data.dart';
 
 void main() {
   runApp(
@@ -35,7 +30,7 @@ class MainApp extends ConsumerWidget {
                 return IconButton(
                   icon: const Icon(Icons.settings),
                   onPressed: () {
-                    _showSettingsDialog(context);
+                    _showSettingsDialog(context, ref);
                   },
                 );
               },
@@ -51,7 +46,10 @@ class MainApp extends ConsumerWidget {
   }
 }
 
-void _showSettingsDialog(BuildContext context) {
+void _showSettingsDialog(BuildContext context, WidgetRef ref) {
+  var layoutPath = ref.read(layoutFilePathProvider);
+  var sheetPath = ref.read(sheetFilePathProvider);
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -69,12 +67,7 @@ void _showSettingsDialog(BuildContext context) {
                   ],
                 );
                 if (layoutFile != null) {
-                  final layoutYamlString = await File(layoutFile.path).readAsString();
-                  final layoutYaml = loadYaml(layoutYamlString);
-                  final layoutData = LayoutData.fromYaml(layoutYaml);
-                  
-                  container.read(layoutProvider.notifier).state = layoutData;
-                  container.read(sheetDataProvider.notifier).initialize(layoutData.generateDefaultSheetData());
+                  layoutPath = layoutFile.path;
                 }
               },
               child: const Text('Select Layout File'),
@@ -88,11 +81,7 @@ void _showSettingsDialog(BuildContext context) {
                   ],
                 );
                 if (dataFile != null) {
-                  final dataYamlString = await File(dataFile.path).readAsString();
-                  final dataYaml = loadYaml(dataYamlString);
-                  
-                  final sheetData = SheetData.fromYaml(dataYaml);
-                  container.read(sheetDataProvider.notifier).initialize(sheetData);
+                  sheetPath = dataFile.path;
                 }
               },
               child: const Text('Select Data File'),
@@ -101,8 +90,9 @@ void _showSettingsDialog(BuildContext context) {
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('Close'),
+            child: const Text('Submit'),
             onPressed: () {
+              initializeProviders(container, layoutPath, sheetPath);
               Navigator.of(context).pop();
             },
           ),

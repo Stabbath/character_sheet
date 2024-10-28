@@ -70,8 +70,7 @@ class KeyPathNotifier extends StateNotifier<dynamic> {
   }
 }
 
-// Initialize providers with loaded or default data
-Future<void> initializeProviders(ProviderContainer container, String layoutPath, String sheetPath) async {
+void initializeProviders(ProviderContainer container, String layoutPath, String sheetPath) {
   LayoutData? layoutData = loadLayoutFromPath(layoutPath);
   container.read(layoutProvider.notifier).state = layoutData;
 
