@@ -1,3 +1,6 @@
+name: "Standard D&D 5e Character Sheet"
+version: "1.0"
+
 layout: |
   picture names names names names token
   picture origins origins biometrics biometrics biometrics

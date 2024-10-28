@@ -1,34 +1,28 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yaml/yaml.dart';
-import 'package:yaml_writer/yaml_writer.dart';
 
+import '../utils/file_utils.dart';
 import 'layout_data.dart';
 import 'sheet_data.dart';
 
-// Notifier for SheetData to notify listeners of changes
 class SheetDataNotifier extends StateNotifier<SheetData?> {
-  SheetDataNotifier() : super(null);
-
+  final Ref ref;
   Timer? _debounce;
 
-  // Initialize the sheet data
-  void initialize(SheetData sheetData) {
+  SheetDataNotifier(this.ref) : super(null);
+
+  void initialize(SheetData? sheetData) {
     state = sheetData;
   }
 
-  // Function to update a value in the sheet data
   void updateValue(String keyPath, dynamic newValue) {
     state?.setValue(keyPath, newValue);
-    // Trigger listeners by updating the state
     state = state;
 
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      // Write to file after the debounce period
-      _writeSheetDataToFile(File("test_sheet.yaml"), state!);
+      writeSheetToPath(ref.read(sheetFilePathProvider), state!);
     });
   }
 
@@ -41,9 +35,12 @@ class SheetDataNotifier extends StateNotifier<SheetData?> {
   }
 }
 
+final layoutFilePathProvider = StateProvider<String>((ref) => '');
+final sheetFilePathProvider = StateProvider<String>((ref) => '');
+
 // Provider for SheetData
 final sheetDataProvider = StateNotifierProvider<SheetDataNotifier, SheetData?>((ref) {
-  return SheetDataNotifier();
+  return SheetDataNotifier(ref);
 });
 
 // Provider for LayoutData
@@ -74,90 +71,12 @@ class KeyPathNotifier extends StateNotifier<dynamic> {
 }
 
 // Initialize providers with loaded or default data
-Future<void> initializeProviders(ProviderContainer container) async {
-  // Load LayoutData
-  final layoutPath = 'layout.yaml';
-  final layoutFile = File(layoutPath);
-  if (!layoutFile.existsSync()) {
-    throw Exception('Layout file not found at path $layoutPath');
-  }
-  final layoutYamlString = await layoutFile.readAsString();
-  final layoutYaml = loadYaml(layoutYamlString);
-  final layoutData = LayoutData.fromYaml(layoutYaml);
-
-  // Load SheetData
-  final sheetPath = 'test_sheet.yaml';
-  final sheetFile = File(sheetPath);
-  SheetData sheetData;
-
-  if (!sheetFile.existsSync()) {
-    sheetData = _generateDefaultSheetData(layoutData);
-    await _writeSheetDataToFile(sheetFile, sheetData);
-  } else {
-    final dataYamlString = await sheetFile.readAsString();
-
-    if (dataYamlString.isEmpty) {
-      sheetData = _generateDefaultSheetData(layoutData);
-      await _writeSheetDataToFile(sheetFile, sheetData);
-    } else {
-      final dataYaml = loadYaml(dataYamlString);
-      
-      if (dataYaml == null) {
-        throw Exception('Error loading yaml data from file $sheetPath');
-      } else {
-        sheetData = SheetData.fromYaml(dataYaml);
-        _crossCheckAndUpdateSheetData(sheetData, layoutData);
-        await _writeSheetDataToFile(sheetFile, sheetData);
-      }
-    }
-  }
-
-  // Set data in providers
+Future<void> initializeProviders(ProviderContainer container, String layoutPath, String sheetPath) async {
+  LayoutData? layoutData = loadLayoutFromPath(layoutPath);
   container.read(layoutProvider.notifier).state = layoutData;
-  container.read(sheetDataProvider.notifier).initialize(sheetData);
-}
 
-// Helper functions to generate, cross-check, and write SheetData
-SheetData _generateDefaultSheetData(LayoutData layoutData) {
-  final SheetData defaultData = SheetData.empty();
-
-  for (var componentEntry in layoutData.components.entries) {
-    final component = componentEntry.value;
-    component.defaultData.forEach((field, defaultValue) {
-      final bindingPath = component.dataBindings[field];
-      if (bindingPath == null || bindingPath.isEmpty) {
-        throw Exception('Missing data binding for field "$field" in component "${componentEntry.key}"');
-      }
-      defaultData.setValue(bindingPath, defaultValue);
-    });
+  if (layoutData != null) {
+    SheetData? sheetData = loadSheetFromPath(sheetPath, layoutData);
+    container.read(sheetDataProvider.notifier).initialize(sheetData);
   }
-
-  return defaultData;
-}
-
-bool _crossCheckAndUpdateSheetData(SheetData sheetData, LayoutData layoutData) {
-  bool updated = false;
-
-  for (var componentEntry in layoutData.components.entries) {
-    final component = componentEntry.value;
-    component.defaultData.forEach((field, defaultValue) {
-      final bindingPath = component.dataBindings[field];
-      if (bindingPath == null || bindingPath.isEmpty) {
-        throw Exception('Missing data binding for field "$field" in component "${componentEntry.key}"');
-      }
-
-      if (sheetData.getValue(bindingPath) == null) {
-        sheetData.setValue(bindingPath, defaultValue);
-        updated = true;
-      }
-    });
-  }
-
-  return updated;
-}
-
-Future<void> _writeSheetDataToFile(File file, SheetData sheetData) async {
-  var yamlWriter = YamlWriter();
-  String yamlString = yamlWriter.write(sheetData.toYaml());
-  await file.writeAsString(yamlString);
 }

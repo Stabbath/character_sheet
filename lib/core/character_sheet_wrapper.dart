@@ -18,12 +18,14 @@ class CharacterSheetWrapperState extends ConsumerState<CharacterSheetWrapper> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // ensure init only happens once
-    _initializationFuture ??= initializeProviders(ProviderScope.containerOf(context));
+    _initializationFuture ??= initializeProviders(ProviderScope.containerOf(context), ref.watch(layoutFilePathProvider), ref.watch(sheetFilePathProvider));
   }
 
   @override
   Widget build(BuildContext context) {
+    final layout = ref.watch(layoutProvider);
+    final sheetData = ref.watch(sheetDataProvider);
+
     return FutureBuilder<void>(
       future: _initializationFuture,
       builder: (context, snapshot) {
@@ -38,7 +40,20 @@ class CharacterSheetWrapperState extends ConsumerState<CharacterSheetWrapper> {
               ),
             );
           } else {
-            return CharacterSheet();
+            if (layout != null && sheetData != null) {
+              return CharacterSheet();
+            } else {
+              return Scaffold(
+                body: Center(
+                  child: Column(
+                    children: [
+                      if (layout == null) Text('Invalid layout data'),
+                      if (sheetData == null) Text('Invalid sheet data'),
+                    ],
+                  ),
+                ),
+              );
+            }
           }
         } else {
           return Scaffold(

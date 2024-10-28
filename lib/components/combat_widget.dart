@@ -28,7 +28,7 @@ class CombatWidget extends ConsumerWidget {
   }) : statProviders = Map<String, StateNotifierProvider<KeyPathNotifier, dynamic>>.fromEntries(statKeyPaths.entries.map(
     (entry) => MapEntry<String, StateNotifierProvider<KeyPathNotifier, dynamic>>(entry.key, getKeyPathProvider(entry.value)),
   )),
-       notesProvider = getKeyPathProvider(notesKeyPath);
+    notesProvider = getKeyPathProvider(notesKeyPath);
 
   factory CombatWidget.fromComponent(Component component) {
     return CombatWidget.fromKeyPaths(

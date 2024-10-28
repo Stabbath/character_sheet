@@ -70,19 +70,14 @@ class CharacterSheet extends ConsumerWidget {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: LayoutGrid(
-            areas: layoutData.gridAreas,
-            columnSizes: layoutData.columnSizes,
-            rowSizes: layoutData.rowSizes,
-            columnGap: layoutData.columnGap,
-            rowGap: layoutData.rowGap,
-            children: buildChildren(layoutData),
-          ),
-        ),
+    return SingleChildScrollView(
+      child: LayoutGrid(
+        areas: layoutData.gridAreas,
+        columnSizes: layoutData.columnSizes,
+        rowSizes: layoutData.rowSizes,
+        columnGap: layoutData.columnGap,
+        rowGap: layoutData.rowGap,
+        children: buildChildren(layoutData),
       ),
     );
   }

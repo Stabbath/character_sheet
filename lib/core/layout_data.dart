@@ -2,8 +2,11 @@ import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:yaml/yaml.dart';
 
 import 'component.dart';
+import 'sheet_data.dart';
 
 class LayoutData {
+  final String name;
+  final String version;
   final String gridAreas;
   final List<TrackSize> columnSizes;
   final List<TrackSize> rowSizes;
@@ -12,6 +15,8 @@ class LayoutData {
   final Map<String, Component> components;
 
   LayoutData({
+    required this.name,
+    required this.version,
     required this.gridAreas,
     required this.columnSizes,
     required this.rowSizes,
@@ -31,6 +36,8 @@ class LayoutData {
     }
 
     return LayoutData(
+      name: yaml['name'],
+      version: yaml['version'],
       gridAreas: layout,
       columnSizes: List.generate(columnCount, (index) => auto),
       rowSizes: List.generate(rowCount, (index) => auto),
@@ -48,6 +55,44 @@ class LayoutData {
       areaNames.addAll(areas);
     }
     return areaNames;
+  }
+
+  SheetData generateDefaultSheetData() {
+    final SheetData defaultData = SheetData.empty();
+
+    for (var componentEntry in components.entries) {
+      final component = componentEntry.value;
+      component.defaultData.forEach((field, defaultValue) {
+        final bindingPath = component.dataBindings[field];
+        if (bindingPath == null || bindingPath.isEmpty) {
+          throw Exception('Missing data binding for field "$field" in component "${componentEntry.key}"');
+        }
+        defaultData.setValue(bindingPath, defaultValue);
+      });
+    }
+
+    return defaultData;
+  }
+
+  bool crossCheckAndUpdateSheetData(SheetData sheetData) {
+    bool updated = false;
+
+    for (var componentEntry in components.entries) {
+      final component = componentEntry.value;
+      component.defaultData.forEach((field, defaultValue) {
+        final bindingPath = component.dataBindings[field];
+        if (bindingPath == null || bindingPath.isEmpty) {
+          throw Exception('Missing data binding for field "$field" in component "${componentEntry.key}"');
+        }
+
+        if (sheetData.getValue(bindingPath) == null) {
+          sheetData.setValue(bindingPath, defaultValue);
+          updated = true;
+        }
+      });
+    }
+
+    return updated;
   }
 }
 
