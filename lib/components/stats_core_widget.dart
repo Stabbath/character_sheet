@@ -28,7 +28,7 @@ class StatsCoreWidget extends ConsumerWidget {
   factory StatsCoreWidget.fromComponent(Component component) {
     return StatsCoreWidget.fromKeyPaths(
       id: component.id,
-      statKeyPaths: component.dataBindings,
+      statKeyPaths: component.dataBindings as Map<String, String>,
     );
   }
 

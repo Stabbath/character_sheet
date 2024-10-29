@@ -43,14 +43,17 @@ class AbilitySavesWidget extends ConsumerWidget {
        charismaProvider = getKeyPathProvider(charismaKeyPath);
   
   factory AbilitySavesWidget.fromComponent(Component component) {
+    print(component.dataBindings['strength']);
+    print(component.dataBindings['strength']['bonus']);
+
     return AbilitySavesWidget.fromKeyPaths(
       id: component.id,
-      strengthKeyPath: component.dataBindings['strength'],
-      dexterityKeyPath: component.dataBindings['dexterity'],
-      constitutionKeyPath: component.dataBindings['constitution'],
-      intelligenceKeyPath: component.dataBindings['intelligence'],
-      wisdomKeyPath: component.dataBindings['wisdom'],
-      charismaKeyPath: component.dataBindings['charisma'],
+      strengthKeyPath: component.dataBindings['strength']['bonus'],
+      dexterityKeyPath: component.dataBindings['dexterity']['bonus'],
+      constitutionKeyPath: component.dataBindings['constitution']['bonus'],
+      intelligenceKeyPath: component.dataBindings['intelligence']['bonus'],
+      wisdomKeyPath: component.dataBindings['wisdom']['bonus'],
+      charismaKeyPath: component.dataBindings['charisma']['bonus'],
     );
   }
 

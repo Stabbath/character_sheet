@@ -33,7 +33,7 @@ class CombatWidget extends ConsumerWidget {
   factory CombatWidget.fromComponent(Component component) {
     return CombatWidget.fromKeyPaths(
       id: component.id,
-      statKeyPaths: component.dataBindings,
+      statKeyPaths: component.dataBindings.map((key, value) => MapEntry<String, String>(key, value),),
       notesKeyPath: component.dataBindings['notes']!,
     );
   }

@@ -2,29 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/component.dart';
 import '../core/providers.dart';
+import 'generic/proficiency_skill_field.dart';
 import 'generic/section_header.dart';
-import 'generic/skill_field.dart';
 
 class SkillsWidget extends ConsumerWidget {
   final String id;
-  final Map<String, StateNotifierProvider<KeyPathNotifier, dynamic>> skillProviders;
+  final Map<String, StateNotifierProvider<KeyPathNotifier, dynamic>> skillBonusProviders;
+  final Map<String, StateNotifierProvider<KeyPathNotifier, dynamic>> skillProficiencyProviders;
 
   const SkillsWidget({
     super.key,
     required this.id,
-    required this.skillProviders,
+    required this.skillBonusProviders,
+    required this.skillProficiencyProviders,
   });
 
   SkillsWidget.fromKeyPaths({
     super.key,
     required this.id,
-    required Map<String, String> skillKeyPaths,
-  }) : skillProviders = skillKeyPaths.map((label, keyPath) => MapEntry(label, getKeyPathProvider(keyPath)));
+    required Map<String, String> skillBonusKeyPaths,
+    required Map<String, String> skillProficiencyKeyPaths,
+  }) : skillBonusProviders = skillBonusKeyPaths.map((label, keyPath) => MapEntry(label, getKeyPathProvider(keyPath))),
+       skillProficiencyProviders = skillProficiencyKeyPaths.map((label, keyPath) => MapEntry(label, getKeyPathProvider(keyPath)));
 
   factory SkillsWidget.fromComponent(Component component) {
+    Map<String, String> skillBonusKeyPaths = {};
+    Map<String, String> skillProficiencyKeyPaths = {};
+
+    for (var key in component.dataBindings.keys) {
+      skillBonusKeyPaths[key] = component.dataBindings[key]['bonus'];
+      skillProficiencyKeyPaths[key] = component.dataBindings[key]['proficiency'];
+    }
+
     return SkillsWidget.fromKeyPaths(
       id: component.id,
-      skillKeyPaths: component.dataBindings,
+      skillBonusKeyPaths: skillBonusKeyPaths,
+      skillProficiencyKeyPaths: skillProficiencyKeyPaths,
     );
   }
 
@@ -51,7 +64,7 @@ class SkillsWidget extends ConsumerWidget {
       'survival',
     ];
     for (var stat in requiredStats) {
-      if (!skillProviders.containsKey(stat)) {
+      if (!skillBonusProviders.containsKey(stat) || !skillProficiencyProviders.containsKey(stat)) {
         throw Exception('SkillsWidget requires a binding for $stat');
       }
     }
@@ -62,77 +75,95 @@ class SkillsWidget extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SectionHeader(title: 'Skills'),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Acrobatics',
-            skillProvider: skillProviders['acrobatics']!,
+            skillBonusProvider: skillBonusProviders['acrobatics']!,
+            skillProficiencyProvider: skillProficiencyProviders['acrobatics']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Animal Handling',
-            skillProvider: skillProviders['animal_handling']!,
+            skillBonusProvider: skillBonusProviders['animal_handling']!,
+            skillProficiencyProvider: skillProficiencyProviders['animal_handling']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Arcana',
-            skillProvider: skillProviders['arcana']!,
+            skillBonusProvider: skillBonusProviders['arcana']!,
+            skillProficiencyProvider: skillProficiencyProviders['arcana']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Athletics',
-            skillProvider: skillProviders['athletics']!,
+            skillBonusProvider: skillBonusProviders['athletics']!,
+            skillProficiencyProvider: skillProficiencyProviders['athletics']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Deception',
-            skillProvider: skillProviders['deception']!,
+            skillBonusProvider: skillBonusProviders['deception']!,
+            skillProficiencyProvider: skillProficiencyProviders['deception']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'History',
-            skillProvider: skillProviders['history']!,
+            skillBonusProvider: skillBonusProviders['history']!,
+            skillProficiencyProvider: skillProficiencyProviders['history']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Insight',
-            skillProvider: skillProviders['insight']!,
+            skillBonusProvider: skillBonusProviders['insight']!,
+            skillProficiencyProvider: skillProficiencyProviders['insight']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Intimidation',
-            skillProvider: skillProviders['intimidation']!,
+            skillBonusProvider: skillBonusProviders['intimidation']!,
+            skillProficiencyProvider: skillProficiencyProviders['intimidation']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Investigation',
-            skillProvider: skillProviders['investigation']!,
+            skillBonusProvider: skillBonusProviders['investigation']!,
+            skillProficiencyProvider: skillProficiencyProviders['investigation']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Medicine',
-            skillProvider: skillProviders['medicine']!,
+            skillBonusProvider: skillBonusProviders['medicine']!,
+            skillProficiencyProvider: skillProficiencyProviders['medicine']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Nature',
-            skillProvider: skillProviders['nature']!,
+            skillBonusProvider: skillBonusProviders['nature']!,
+            skillProficiencyProvider: skillProficiencyProviders['nature']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Perception',
-            skillProvider: skillProviders['perception']!,
+            skillBonusProvider: skillBonusProviders['perception']!,
+            skillProficiencyProvider: skillProficiencyProviders['perception']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Performance',
-            skillProvider: skillProviders['performance']!,
+            skillBonusProvider: skillBonusProviders['performance']!,
+            skillProficiencyProvider: skillProficiencyProviders['performance']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Persuasion',
-            skillProvider: skillProviders['persuasion']!,
+            skillBonusProvider: skillBonusProviders['persuasion']!,
+            skillProficiencyProvider: skillProficiencyProviders['persuasion']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Religion',
-            skillProvider: skillProviders['religion']!,
+            skillBonusProvider: skillBonusProviders['religion']!,
+            skillProficiencyProvider: skillProficiencyProviders['religion']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Sleight of Hand',
-            skillProvider: skillProviders['sleight_of_hand']!,
+            skillBonusProvider: skillBonusProviders['sleight_of_hand']!,
+            skillProficiencyProvider: skillProficiencyProviders['sleight_of_hand']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Stealth',
-            skillProvider: skillProviders['stealth']!,
+            skillBonusProvider: skillBonusProviders['stealth']!,
+            skillProficiencyProvider: skillProficiencyProviders['stealth']!,
           ),
-          SkillField(
+          ProficiencySkillField.fromProviders(
             label: 'Survival',
-            skillProvider: skillProviders['survival']!,
+            skillBonusProvider: skillBonusProviders['survival']!,
+            skillProficiencyProvider: skillProficiencyProviders['survival']!,
           ),
         ],
       ),

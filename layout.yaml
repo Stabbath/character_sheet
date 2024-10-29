@@ -1,5 +1,5 @@
 name: "Standard D&D 5e Character Sheet"
-version: "1.0"
+version: "1.1"
 
 layout: |
   picture names names names names token
@@ -105,59 +105,155 @@ components:
   saves:
     type: saves
     default_data:
-      strength: 0
-      dexterity: 0
-      constitution: 0
-      intelligence: 0
-      wisdom: 0
-      charisma: 0
+      strength:
+        proficiency: 0
+        bonus: 0
+      dexterity:
+        proficiency: 0
+        bonus: 0
+      constitution:
+        proficiency: 0
+        bonus: 0
+      intelligence:
+        proficiency: 0
+        bonus: 0
+      wisdom:
+        proficiency: 0
+        bonus: 0
+      charisma:
+        proficiency: 0
+        bonus: 0
     data_bindings:
-      strength: character.saving_throws.strength
-      dexterity: character.saving_throws.dexterity
-      constitution: character.saving_throws.constitution
-      intelligence: character.saving_throws.intelligence
-      wisdom: character.saving_throws.wisdom
-      charisma: character.saving_throws.charisma
+      strength: 
+        proficiency: character.saving_throws.strength.proficiency
+        bonus: character.saving_throws.strength.bonus
+      dexterity:
+        proficiency: character.saving_throws.dexterity.proficiency
+        bonus: character.saving_throws.dexterity.bonus
+      constitution:
+        proficiency: character.saving_throws.constitution.proficiency
+        bonus: character.saving_throws.constitution.bonus
+      intelligence:
+        proficiency: character.saving_throws.intelligence.proficiency
+        bonus: character.saving_throws.intelligence.bonus
+      wisdom:
+        proficiency: character.saving_throws.wisdom.proficiency
+        bonus: character.saving_throws.wisdom.bonus
+      charisma:
+        proficiency: character.saving_throws.charisma.proficiency
+        bonus: character.saving_throws.charisma.bonus
   skills:
     type: skills
     default_data:
-      acrobatics: 0
-      animal_handling: 0
-      arcana: 0
-      athletics: 0
-      deception: 0
-      history: 0
-      insight: 0
-      intimidation: 0
-      investigation: 0
-      medicine: 0
-      nature: 0
-      perception: 0
-      performance: 0
-      persuasion: 0
-      religion: 0
-      sleight_of_hand: 0
-      stealth: 0
-      survival: 0
+      acrobatics: 
+        proficiency: 0
+        bonus: 0
+      animal_handling:
+        proficiency: 0
+        bonus: 0
+      arcana:
+        proficiency: 0
+        bonus: 0
+      athletics:
+        proficiency: 0
+        bonus: 0
+      deception:
+        proficiency: 0
+        bonus: 0
+      history:
+        proficiency: 0
+        bonus: 0
+      insight:
+        proficiency: 0
+        bonus: 0
+      intimidation:
+        proficiency: 0
+        bonus: 0
+      investigation:
+        proficiency: 0
+        bonus: 0
+      medicine:
+        proficiency: 0
+        bonus: 0
+      nature:
+        proficiency: 0
+        bonus: 0
+      perception:
+        proficiency: 0
+        bonus: 0
+      performance:
+        proficiency: 0
+        bonus: 0
+      persuasion:
+        proficiency: 0
+        bonus: 0
+      religion:
+        proficiency: 0
+        bonus: 0
+      sleight_of_hand:
+        proficiency: 0
+        bonus: 0
+      stealth:
+        proficiency: 0
+        bonus: 0
+      survival:
+        proficiency: 0
+        bonus: 0
     data_bindings:
-      acrobatics: character.skills.acrobatics
-      animal_handling: character.skills.animal_handling
-      arcana: character.skills.arcana
-      athletics: character.skills.athletics
-      deception: character.skills.deception
-      history: character.skills.history
-      insight: character.skills.insight
-      intimidation: character.skills.intimidation
-      investigation: character.skills.investigation
-      medicine: character.skills.medicine
-      nature: character.skills.nature
-      perception: character.skills.perception
-      performance: character.skills.performance
-      persuasion: character.skills.persuasion
-      religion: character.skills.religion
-      sleight_of_hand: character.skills.sleight_of_hand
-      stealth: character.skills.stealth
-      survival: character.skills.survival
+      acrobatics: 
+        proficiency: character.skills.acrobatics.proficiency
+        bonus: character.skills.acrobatics.bonus
+      animal_handling:
+        proficiency: character.skills.animal_handling.proficiency
+        bonus: character.skills.animal_handling.bonus
+      arcana:
+        proficiency: character.skills.arcana.proficiency
+        bonus: character.skills.arcana.bonus
+      athletics:
+        proficiency: character.skills.athletics.proficiency
+        bonus: character.skills.athletics.bonus
+      deception:
+        proficiency: character.skills.deception.proficiency
+        bonus: character.skills.deception.bonus
+      history:
+        proficiency: character.skills.history.proficiency
+        bonus: character.skills.history.bonus
+      insight:
+        proficiency: character.skills.insight.proficiency
+        bonus: character.skills.insight.bonus
+      intimidation:
+        proficiency: character.skills.intimidation.proficiency
+        bonus: character.skills.intimidation.bonus
+      investigation:
+        proficiency: character.skills.investigation.proficiency
+        bonus: character.skills.investigation.bonus
+      medicine:
+        proficiency: character.skills.medicine.proficiency
+        bonus: character.skills.medicine.bonus
+      nature:
+        proficiency: character.skills.nature.proficiency
+        bonus: character.skills.nature.bonus
+      perception:
+        proficiency: character.skills.perception.proficiency
+        bonus: character.skills.perception.bonus
+      performance:
+        proficiency: character.skills.performance.proficiency
+        bonus: character.skills.performance.bonus
+      persuasion:
+        proficiency: character.skills.persuasion.proficiency
+        bonus: character.skills.persuasion.bonus
+      religion:
+        proficiency: character.skills.religion.proficiency
+        bonus: character.skills.religion.bonus
+      sleight_of_hand:
+        proficiency: character.skills.sleight_of_hand.proficiency
+        bonus: character.skills.sleight_of_hand.bonus
+      stealth:
+        proficiency: character.skills.stealth.proficiency
+        bonus: character.skills.stealth.bonus
+      survival:
+        proficiency: character.skills.survival.proficiency
+        bonus: character.skills.survival.bonus
   proficiencies:
     type: generic_block
     readonly_data:
