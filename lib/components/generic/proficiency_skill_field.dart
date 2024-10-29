@@ -43,7 +43,7 @@ class ProficiencySkillField extends ConsumerWidget {
               Text('1'),
               Text('2'),
             ],
-            initialIndex: skillProficiency,
+            initialIndex: proficiencyValues.indexOf(skillProficiency),
             onChangedIndex: ((index) => skillProficiencyUpdater(proficiencyValues[index])),
           ),
         ),

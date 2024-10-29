@@ -29,4 +29,10 @@ class SheetData {
     }
     current[keys.last] = newValue;
   }
+
+  SheetData copyWith(String keyPath, dynamic newValue) {
+    SheetData newData = SheetData(Map.from(data));
+    newData.setValue(keyPath, newValue);
+    return newData;
+  }
 }

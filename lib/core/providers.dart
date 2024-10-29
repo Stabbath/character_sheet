@@ -32,8 +32,7 @@ class SheetDataNotifier extends StateNotifier<SheetData?> {
   }
 
   void updateValue(String keyPath, dynamic newValue) {
-    state?.setValue(keyPath, newValue);
-    state = state;
+    state = state?.copyWith(keyPath, newValue);
 
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {

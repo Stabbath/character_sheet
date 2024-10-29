@@ -13,10 +13,6 @@ class DataBinding<T> {
     return sheetData.getValue(outKey);
   }
 
-  void setInSheet(SheetData sheetData, T newValue) {
-    sheetData.setValue(outKey, newValue);
-  }
-
   Function(T value) createStateUpdater(SheetDataNotifier notifier) {
     return (newValue) {
       notifier.updateValue(outKey, newValue);
