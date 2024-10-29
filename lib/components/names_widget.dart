@@ -1,36 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/component.dart';
+import '../core/data_bindings.dart';
+import '../core/layout/component.dart';
 import '../core/providers.dart';
+import '../utils/map_utils.dart';
 
 class NamesWidget extends ConsumerWidget {
-  final String id;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> namesProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> titlesProvider;
+  static const requiredFields = [
+    'names',
+    'titles',
+  ];
 
-  NamesWidget({
+  final String id;
+  final Map<String, DataBinding> dataBindings;
+
+  const NamesWidget({
     super.key,
     required this.id,
-    required namesKeyPath,
-    required titlesKeyPath,
-  }) : namesProvider = getKeyPathProvider(namesKeyPath),
-       titlesProvider = getKeyPathProvider(titlesKeyPath);
+    required this.dataBindings,
+  });
+
 
   factory NamesWidget.fromComponent(Component component) {
+    final missingKeys = getMissingKeyPaths(component.dataBindings, [requiredFields]);
+    if (missingKeys.isNotEmpty) {
+      throw Exception('NamesWidget requires but is missing a binding for the following fields: $missingKeys');
+    }
+
     return NamesWidget(
-      id: component.id, 
-      namesKeyPath: component.dataBindings['names'],
-      titlesKeyPath: component.dataBindings['titles'],
+      id: component.id,
+      dataBindings: Map<String, DataBinding>.fromEntries(
+        requiredFields.map((field) => MapEntry(
+          field,
+          component.dataBindings[field],
+        )),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final names = ref.watch(namesProvider);
-    final titles = ref.watch(titlesProvider);
-    final namesNotifier = ref.read(namesProvider.notifier);
-    final titlesNotifier = ref.read(titlesProvider.notifier);
+    final names = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings['names']!.getInSheet(state) : null));
+    final titles = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings['titles']!.getInSheet(state) : null));
+    final namesUpdater = dataBindings['names']!.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final titlesUpdater = dataBindings['titles']!.createStateUpdater(ref.read(sheetDataProvider.notifier));
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -40,7 +54,7 @@ class NamesWidget extends ConsumerWidget {
             textAlign: TextAlign.center,
             controller: TextEditingController(text: names),
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            onChanged: (newValue) => namesNotifier.update(newValue),
+            onChanged: (newValue) => namesUpdater(newValue),
             decoration: const InputDecoration(
               hintText: 'Character Name',
               border: InputBorder.none,
@@ -50,7 +64,7 @@ class NamesWidget extends ConsumerWidget {
             textAlign: TextAlign.center,
             controller: TextEditingController(text: titles),
             style: const TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-            onChanged: (newValue) => titlesNotifier.update(newValue),
+            onChanged: (newValue) => titlesUpdater(newValue),
             decoration: const InputDecoration(
               hintText: 'Titles',
               border: InputBorder.none,

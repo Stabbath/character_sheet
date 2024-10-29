@@ -1,45 +1,34 @@
+import 'package:character_sheet/core/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/component.dart';
-import '../core/providers.dart';
+import '../core/data_bindings.dart';
+import '../core/layout/component.dart';
+import '../formulae/character_level_from_list.dart';
+import '../formulae/proficiency_bonus.dart';
 import 'generic/single_class_input.dart';
 
 class CharacterClassesWidget extends ConsumerWidget {
   final String id;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> classListProvider;
+  final DataBinding dataBinding;
   
-  CharacterClassesWidget({
+  const CharacterClassesWidget({
     super.key,
     required this.id,
-    required classListKeyPath,
-  }) : classListProvider = getKeyPathProvider(classListKeyPath);
+    required this.dataBinding,
+  });
 
   factory CharacterClassesWidget.fromComponent(Component component) {
     return CharacterClassesWidget(
       id: component.id,
-      classListKeyPath: component.dataBindings['list'],
+      dataBinding: component.dataBindings['list'],
     );
-  }
-
-  num getTotalLevel(WidgetRef ref) {
-    final classList = ref.watch(classListProvider);
-    num totalLevel = 0;
-    for (int i = 0; i < classList.length; i++) {
-      totalLevel += classList[i]["level"];
-    }
-    return totalLevel;
-  }
-
-  num getProficiencyBonus(WidgetRef ref) {
-    final totalLevel = getTotalLevel(ref);
-    return ((totalLevel - 1) / 4).floor() + 2;
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final classList = ref.watch(classListProvider);
-    final classListNotifier = ref.read(classListProvider.notifier);
+    final classList = ref.watch(sheetDataProvider.select((state) => state != null ? dataBinding.getInSheet(state) : null)) ?? [];
+    final updater = dataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +49,7 @@ class CharacterClassesWidget extends ConsumerWidget {
                         "name": newName,
                         "level": classList[i]["level"],
                       };
-                      classListNotifier.update(newClassList);
+                      updater(newClassList);
                     },
                     onLevelChanged: (newLevel) {
                       var newClassList = List.from(classList);
@@ -68,7 +57,7 @@ class CharacterClassesWidget extends ConsumerWidget {
                         "name": classList[i]["name"],
                         "level": newLevel,
                       };
-                      classListNotifier.update(newClassList);
+                      updater(newClassList);
                     },
                   ),
                 ),
@@ -77,7 +66,7 @@ class CharacterClassesWidget extends ConsumerWidget {
                   onPressed: () {
                     var newClassList = List.from(classList);
                     newClassList.removeAt(i);
-                    classListNotifier.update(newClassList);
+                    updater(newClassList);
                   }
                 ),
               ],
@@ -94,7 +83,7 @@ class CharacterClassesWidget extends ConsumerWidget {
               onPressed: () {
                 var newClassList = List.from(classList);
                 newClassList.add({"name": "", "level": 0});
-                classListNotifier.update(newClassList);
+                updater(newClassList);
               },
               icon: const Icon(Icons.add),
               label: const Text('Add Class'),

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../utils/file_utils.dart';
-import 'layout_data.dart';
+import 'layout/layout_data.dart';
 import 'sheet_data.dart';
 
 final layoutFilePathProvider = StateNotifierProvider<FilePathNotifier, String>((ref) {
@@ -67,30 +67,6 @@ class LayoutNotifier extends StateNotifier<LayoutData?> {
 
   void initialize(LayoutData? layoutData) {
     state = layoutData;
-  }
-}
-
-// Provider for specific key paths
-StateNotifierProvider<KeyPathNotifier, dynamic> getKeyPathProvider(String keyPath) {
-  return StateNotifierProvider<KeyPathNotifier, dynamic>((ref) {
-    return KeyPathNotifier(ref, keyPath);
-  });
-}
-
-// Notifier for KeyPath to handle updates to a specific path in SheetData
-class KeyPathNotifier extends StateNotifier<dynamic> {
-  KeyPathNotifier(this.ref, this._keyPath) : super(null) {
-    // Initialize the state to the current value at the key path
-    state = ref.read(sheetDataProvider.notifier).getValue(_keyPath);
-  }
-
-  final Ref ref;
-  final String _keyPath;
-
-  // Update function to notify SheetDataNotifier of a value change
-  void update(dynamic newValue) {
-    ref.read(sheetDataProvider.notifier).updateValue(_keyPath, newValue);
-    state = newValue;
   }
 }
 

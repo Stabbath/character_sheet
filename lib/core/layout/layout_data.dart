@@ -2,7 +2,7 @@ import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:yaml/yaml.dart';
 
 import 'component.dart';
-import 'sheet_data.dart';
+import '../sheet_data.dart';
 
 class LayoutData {
   final String name;

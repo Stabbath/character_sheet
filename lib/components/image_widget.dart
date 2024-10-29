@@ -4,30 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_selector/file_selector.dart';
 
-import '../core/component.dart';
+import '../core/data_bindings.dart';
+import '../core/layout/component.dart';
 import '../core/providers.dart';
 
 class ImageWidget extends ConsumerWidget {
   final String id;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> imagePathProvider;
+  final DataBinding dataBinding;
 
-  ImageWidget({
+  const ImageWidget({
     super.key,
     required this.id,
-    required imageKeyPath,
-  }) : imagePathProvider = getKeyPathProvider(imageKeyPath);
+    required this.dataBinding,
+  });
 
   factory ImageWidget.fromComponent(Component component) {
     return ImageWidget(
       id: component.id,
-      imageKeyPath: component.dataBindings['path'],
+      dataBinding: component.dataBindings['path'],
     );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final imagePath = ref.watch(imagePathProvider);
-    final imagePathNotifier = ref.read(imagePathProvider.notifier);
+    final imagePath = ref.watch(sheetDataProvider.select((state) => state != null ? dataBinding.getInSheet(state) : null));
+    final updater = dataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
     final File imageFile = File(imagePath);
 
     return Stack(
@@ -57,7 +58,7 @@ class ImageWidget extends ConsumerWidget {
                 acceptedTypeGroups: [XTypeGroup(extensions: ['jpg', 'png'])],
               );
               if (file != null) {
-                imagePathNotifier.update(file.path);
+                updater(file.path);
               }
             },
           ),

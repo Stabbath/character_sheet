@@ -1,54 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/component.dart';
+import '../core/data_bindings.dart';
+import '../core/layout/component.dart';
 import '../core/providers.dart';
+import '../utils/map_utils.dart';
 import 'generic/dynamic_stat_input.dart';
 import 'generic/section_header.dart';
 import 'generic/static_stat_input.dart';
 import 'generic/text_block_input.dart';
 
 class CombatWidget extends ConsumerWidget {
+  static const requiredFields = [
+    'hp',
+    'max_hp',
+    'temp_hp',
+    'exhaustion',
+    'max_exhaustion',
+    'armor_class',
+    'initiative',
+    'speed',
+    'notes',
+  ];
+
   final String id;
-  final Map<String, StateNotifierProvider<KeyPathNotifier, dynamic>> statProviders;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> notesProvider;
+  final Map<String, DataBinding> dataBindings;
 
   const CombatWidget({
     super.key,
     required this.id,
-    required this.statProviders,
-    required this.notesProvider,
+    required this.dataBindings,
   });
 
-  CombatWidget.fromKeyPaths({
-    super.key,
-    required this.id,
-    required Map<String, String> statKeyPaths,
-    required String notesKeyPath,
-  }) : statProviders = Map<String, StateNotifierProvider<KeyPathNotifier, dynamic>>.fromEntries(statKeyPaths.entries.map(
-    (entry) => MapEntry<String, StateNotifierProvider<KeyPathNotifier, dynamic>>(entry.key, getKeyPathProvider(entry.value)),
-  )),
-    notesProvider = getKeyPathProvider(notesKeyPath);
-
   factory CombatWidget.fromComponent(Component component) {
-    return CombatWidget.fromKeyPaths(
+    final missingKeys = getMissingKeyPaths(component.dataBindings, [requiredFields]);
+    if (missingKeys.isNotEmpty) {
+      throw Exception('CombatWidget requires but is missing a binding for the following fields: $missingKeys');
+    }
+
+    return CombatWidget(
       id: component.id,
-      statKeyPaths: component.dataBindings.map((key, value) => MapEntry<String, String>(key, value),),
-      notesKeyPath: component.dataBindings['notes']!,
+      dataBindings: Map<String, DataBinding>.fromEntries(
+        requiredFields.map((field) => MapEntry(
+          field,
+          component.dataBindings[field],
+        )),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const requiredStats = ['hp', 'max_hp', 'temp_hp', 'exhaustion', 'max_exhaustion', 'armor_class', 'initiative', 'speed', 'notes'];
-    for (var stat in requiredStats) {
-      if (!statProviders.containsKey(stat)) {
-        throw Exception('CombatWidget requires a binding for $stat');
-      }
-    }
-
-    final notes = ref.watch(notesProvider);
-    final notesNotifier = ref.read(notesProvider.notifier);
+    final Map<String, dynamic> values = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings.map((key, value) => MapEntry(key, value.getInSheet(state))) : null))!;
+    final notesUpdater = dataBindings['notes']!.createStateUpdater(ref.read(sheetDataProvider.notifier));
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -62,21 +66,21 @@ class CombatWidget extends ConsumerWidget {
               Expanded(
                 child: DynamicStatInput(
                   label: 'Hit Points',
-                  currentValueProvider: statProviders['hp']!,
-                  maxValueProvider: statProviders['max_hp']!,
+                  currentValueDataBinding: values['hp']!,
+                  maxValueDataBinding: values['max_hp']!,
                 ),
               ),
               Expanded(
                 child: StaticStatInput(
                   label: 'Temporary Hit Points',
-                  statProvider: statProviders['temp_hp']!,
+                  statDataBinding: values['temp_hp']!,
                 ),
               ),
               Expanded(
                 child: DynamicStatInput(
                   label: 'Exhaustion',
-                  currentValueProvider: statProviders['exhaustion']!,
-                  maxValueProvider: statProviders['max_exhaustion']!,
+                  currentValueDataBinding: values['exhaustion']!,
+                  maxValueDataBinding: values['max_exhaustion']!,
                 ),
               ),
             ],),
@@ -87,19 +91,19 @@ class CombatWidget extends ConsumerWidget {
               Expanded(
                 child: StaticStatInput(
                   label: 'Armor Class',
-                  statProvider: statProviders['armor_class']!,
+                  statDataBinding: values['armor_class']!,
                 ),
               ),
               Expanded(
                 child: StaticStatInput(
                   label: 'Initiative',
-                  statProvider: statProviders['initiative']!,
+                  statDataBinding: values['initiative']!,
                 ),
               ),
               Expanded(
                 child: StaticStatInput(
                   label: 'Speed',
-                  statProvider: statProviders['speed']!,
+                  statDataBinding: values['speed']!,
                 ),
               ),
             ]),
@@ -114,9 +118,9 @@ class CombatWidget extends ConsumerWidget {
                     const SizedBox(height: 8),
                     Expanded(
                       child: TextBlockInput(
-                        initialValue: notes,
+                        initialValue: values['notes'],
                         onChanged: (value) =>
-                          notesNotifier.update(value),
+                          notesUpdater(value),
                       ),
                     ),
                   ],

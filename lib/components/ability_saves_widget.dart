@@ -1,59 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/component.dart';
-import '../core/providers.dart';
+import '../core/data_bindings.dart';
+import '../core/layout/component.dart';
+import '../utils/map_utils.dart';
+import 'generic/proficiency_skill_field.dart';
 import 'generic/section_header.dart';
-import 'generic/skill_field.dart';
 
 class AbilitySavesWidget extends ConsumerWidget {
+  static const List<String> requiredFields = [
+    'strength',
+    'dexterity',
+    'constitution',
+    'intelligence',
+    'wisdom',
+    'charisma',
+  ];
+  static const List<String> requiredSubfields = [
+    'bonus',
+    'proficiency',
+  ];
+
+
   final String id;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> strengthProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> dexterityProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> constitutionProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> intelligenceProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> wisdomProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> charismaProvider;
+  final Map<String, Map<String, DataBinding>> dataBindings;
 
   const AbilitySavesWidget({
     super.key,
     required this.id,
-    required this.strengthProvider,
-    required this.dexterityProvider,
-    required this.constitutionProvider,
-    required this.intelligenceProvider,
-    required this.wisdomProvider,
-    required this.charismaProvider,
+    required this.dataBindings,
   });
-
-  AbilitySavesWidget.fromKeyPaths({
-    super.key,
-    required this.id,
-    required strengthKeyPath,
-    required dexterityKeyPath,
-    required constitutionKeyPath,
-    required intelligenceKeyPath,
-    required wisdomKeyPath,
-    required charismaKeyPath,
-  }) : strengthProvider = getKeyPathProvider(strengthKeyPath),
-       dexterityProvider = getKeyPathProvider(dexterityKeyPath),
-       constitutionProvider = getKeyPathProvider(constitutionKeyPath),
-       intelligenceProvider = getKeyPathProvider(intelligenceKeyPath),
-       wisdomProvider = getKeyPathProvider(wisdomKeyPath),
-       charismaProvider = getKeyPathProvider(charismaKeyPath);
   
   factory AbilitySavesWidget.fromComponent(Component component) {
-    print(component.dataBindings['strength']);
-    print(component.dataBindings['strength']['bonus']);
+    final missingKeys = getMissingKeyPaths(component.dataBindings, [requiredFields]);
+    if (missingKeys.isNotEmpty) {
+      throw Exception('AbilitySavesWidget requires but is missing a binding for the following fields: $missingKeys');
+    }
 
-    return AbilitySavesWidget.fromKeyPaths(
+    return AbilitySavesWidget(
       id: component.id,
-      strengthKeyPath: component.dataBindings['strength']['bonus'],
-      dexterityKeyPath: component.dataBindings['dexterity']['bonus'],
-      constitutionKeyPath: component.dataBindings['constitution']['bonus'],
-      intelligenceKeyPath: component.dataBindings['intelligence']['bonus'],
-      wisdomKeyPath: component.dataBindings['wisdom']['bonus'],
-      charismaKeyPath: component.dataBindings['charisma']['bonus'],
+      dataBindings: Map<String, Map<String, DataBinding>>.fromEntries(
+        requiredSubfields.map((subfield) => MapEntry(
+          subfield,
+          Map<String, DataBinding>.fromEntries(
+            requiredFields.map((field) => MapEntry(
+              field,
+              component.dataBindings[field][subfield],
+            )),
+          ),
+        )),
+      ),
     );
   }
 
@@ -65,34 +61,34 @@ class AbilitySavesWidget extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SectionHeader(title: 'Ability Saves'),
-          SkillField(
-            label: 'Strength', 
-            skillProvider: strengthProvider,
+          ProficiencySkillField(
+            label: 'Strength',
+            dataBindings: dataBindings['strength']!,
           ),
           const SizedBox(height: 10),
-          SkillField(
+          ProficiencySkillField(
             label: 'Dexterity',
-            skillProvider: dexterityProvider,
+            dataBindings: dataBindings['dexterity']!,
           ),
           const SizedBox(height: 10),
-          SkillField(
-            label: 'Constitution', 
-            skillProvider: constitutionProvider,
+          ProficiencySkillField(
+            label: 'Constitution',
+            dataBindings: dataBindings['constitution']!,
           ),
           const SizedBox(height: 10),
-          SkillField(
+          ProficiencySkillField(
             label: 'Intelligence',
-            skillProvider: intelligenceProvider,
+            dataBindings: dataBindings['intelligence']!,
           ),
           const SizedBox(height: 10),
-          SkillField(
+          ProficiencySkillField(
             label: 'Wisdom',
-            skillProvider: wisdomProvider,
+            dataBindings: dataBindings['wisdom']!,
           ),
           const SizedBox(height: 10),
-          SkillField(
+          ProficiencySkillField(
             label: 'Charisma',
-            skillProvider: charismaProvider,
+            dataBindings: dataBindings['charisma']!,
           ),
         ],
       ),

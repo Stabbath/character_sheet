@@ -1,3 +1,4 @@
+import 'package:character_sheet/core/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,30 +7,22 @@ import 'consumer_stateful_text_input.dart';
 
 class DynamicStatInput extends ConsumerWidget {
   final String label;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> currentValueProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> maxValueProvider;
+  final DataBinding currentValueDataBinding;
+  final DataBinding maxValueDataBinding;
 
   const DynamicStatInput({
     super.key,
     required this.label,
-    required this.currentValueProvider,
-    required this.maxValueProvider,
+    required this.currentValueDataBinding,
+    required this.maxValueDataBinding,
   });
-
-  DynamicStatInput.fromKeyPaths({
-    super.key,
-    required this.label,
-    required currentValueKeyPath,
-    required maxValueKeyPath,
-  }) : currentValueProvider = getKeyPathProvider(currentValueKeyPath),
-       maxValueProvider = getKeyPathProvider(maxValueKeyPath);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentValue = ref.watch(currentValueProvider);
-    final maxValue = ref.watch(maxValueProvider);
-    final currentValueNotifier = ref.read(currentValueProvider.notifier);
-    final maxValueNotifier = ref.read(maxValueProvider.notifier);
+    final currentValue = ref.watch(sheetDataProvider.select((state) => state != null ? currentValueDataBinding.getInSheet(state) : null));
+    final maxValue = ref.watch(sheetDataProvider.select((state) => state != null ? maxValueDataBinding.getInSheet(state) : null));
+    final currentValueUpdater = currentValueDataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final maxValueUpdater = maxValueDataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
 
     return Column(
       children: [
@@ -43,7 +36,7 @@ class DynamicStatInput extends ConsumerWidget {
               child: ConsumerStatefulTextInput(
                 initialValue: currentValue.toString(),
                 textInputType: TextInputType.number,
-                onChanged: (value) => currentValueNotifier.update(int.tryParse(value) ?? 0),
+                onChanged: (value) => currentValueUpdater(int.tryParse(value) ?? 0),
               ),
             ),
             const Text(' / ', style: TextStyle(fontSize: 20)),
@@ -53,7 +46,7 @@ class DynamicStatInput extends ConsumerWidget {
               child: ConsumerStatefulTextInput(
                 initialValue: maxValue.toString(),
                 textInputType: TextInputType.number,
-                onChanged: (value) => maxValueNotifier.update(int.tryParse(value) ?? 0),
+                onChanged: (value) => maxValueUpdater(int.tryParse(value) ?? 0),
               )
             ),
           ],

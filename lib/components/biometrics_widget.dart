@@ -1,61 +1,52 @@
 import 'package:character_sheet/components/generic/consumer_stateful_text_input.dart';
+import 'package:character_sheet/core/data_bindings.dart';
+import 'package:character_sheet/core/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/component.dart';
-import '../core/providers.dart';
+import '../core/layout/component.dart';
+import '../utils/map_utils.dart';
 
 class BiometricsWidget extends ConsumerWidget {
-  final String id;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> ageProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> heightProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> weightProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> eyesProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> skinProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> hairProvider;
+  static const List<String> requiredFields = [
+    'age',
+    'height',
+    'weight',
+    'eyes',
+    'skin',
+    'hair',
+  ];
 
-  BiometricsWidget({
+  final String id;
+  final Map<String, DataBinding> dataBindings;
+
+  const BiometricsWidget({
     super.key,
     required this.id,
-    required ageKeyPath,
-    required heightKeyPath,
-    required weightKeyPath,
-    required eyesKeyPath,
-    required skinKeyPath,
-    required hairKeyPath,
-  }) : ageProvider = getKeyPathProvider(ageKeyPath),
-       heightProvider = getKeyPathProvider(heightKeyPath),
-       weightProvider = getKeyPathProvider(weightKeyPath),
-       eyesProvider = getKeyPathProvider(eyesKeyPath),
-       skinProvider = getKeyPathProvider(skinKeyPath),
-       hairProvider = getKeyPathProvider(hairKeyPath);
+    required this.dataBindings,
+  });
 
   factory BiometricsWidget.fromComponent(Component component) {
+    final missingKeys = getMissingKeyPaths(component.dataBindings, [requiredFields]);
+    if (missingKeys.isNotEmpty) {
+      throw Exception('BiometricsWidget requires but is missing a binding for the following fields: $missingKeys');
+    }
+
     return BiometricsWidget(
       id: component.id,
-      ageKeyPath: component.dataBindings['age'],
-      heightKeyPath: component.dataBindings['height'],
-      weightKeyPath: component.dataBindings['weight'],
-      eyesKeyPath: component.dataBindings['eyes'],
-      skinKeyPath: component.dataBindings['skin'],
-      hairKeyPath: component.dataBindings['hair'],
+      dataBindings: Map<String, DataBinding>.fromEntries(
+        requiredFields.map((field) => MapEntry(
+          field,
+          component.dataBindings[field],
+        )),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final age = ref.watch(ageProvider);
-    final height = ref.watch(heightProvider);
-    final weight = ref.watch(weightProvider);
-    final eyes = ref.watch(eyesProvider);
-    final skin = ref.watch(skinProvider);
-    final hair = ref.watch(hairProvider);
-    final ageNotifier = ref.read(ageProvider.notifier);
-    final heightNotifier = ref.read(heightProvider.notifier);
-    final weightNotifier = ref.read(weightProvider.notifier);
-    final eyesNotifier = ref.read(eyesProvider.notifier);
-    final skinNotifier = ref.read(skinProvider.notifier);
-    final hairNotifier = ref.read(hairProvider.notifier);
+    final Map<String, dynamic> values = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings.map((key, value) => MapEntry(key, value.getInSheet(state))) : null))!;
+    final Map<String, Function(dynamic)> updaters = dataBindings.map((key, value) => MapEntry(key, value.createStateUpdater(ref.read(sheetDataProvider.notifier))));
 
     return Column(
       children: [
@@ -63,28 +54,28 @@ class BiometricsWidget extends ConsumerWidget {
           children: [
             Expanded(
               child: ConsumerStatefulTextInput(
-                initialValue: age.toString(),
+                initialValue: values['age'].toString(),
                 label: 'Age',
                 textInputType: TextInputType.number,
-                onChanged: (value) => ageNotifier.update(int.tryParse(value) ?? 0),
+                onChanged: (value) => updaters['age']!(int.tryParse(value) ?? 0),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: ConsumerStatefulTextInput(
-                initialValue: height.toString(),
+                initialValue: values['height'].toString(),
                 label: 'Height',
                 textInputType: TextInputType.numberWithOptions(decimal: true),
-                onChanged: (value) => heightNotifier.update(double.tryParse(value) ?? 0),
+                onChanged: (value) => updaters['height']!(double.tryParse(value) ?? 0),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: ConsumerStatefulTextInput(
-                initialValue: weight.toString(),
+                initialValue: values['weight'].toString(),
                 label: 'Weight',
                 textInputType: TextInputType.numberWithOptions(decimal: true),
-                onChanged: (value) => weightNotifier.update(double.tryParse(value) ?? 0),
+                onChanged: (value) => updaters['weight']!(double.tryParse(value) ?? 0),
               ),
             ),
           ],
@@ -94,27 +85,27 @@ class BiometricsWidget extends ConsumerWidget {
           children: [
             Expanded(
               child: ConsumerStatefulTextInput(
-                initialValue: eyes.toString(),
+                initialValue: values['eyes'].toString(),
                 label: 'Eye Color',
-                onChanged: (value) => eyesNotifier.update(value),
+                onChanged: (value) => updaters['eyes']!(value),
                 textInputType: TextInputType.text,
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: ConsumerStatefulTextInput(
-                initialValue: skin.toString(),
+                initialValue: values['skin'].toString(),
                 label: 'Skin Color',
-                onChanged: (value) => skinNotifier.update(value),
+                onChanged: (value) => updaters['skin']!(value),
                 textInputType: TextInputType.text,
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: ConsumerStatefulTextInput(
-                initialValue: hair.toString(),
+                initialValue: values['hair'].toString(),
                 label: 'Hair Color',
-                onChanged: (value) => hairNotifier.update(value),
+                onChanged: (value) => updaters['hair']!(value),
                 textInputType: TextInputType.text,
               ),
             ),

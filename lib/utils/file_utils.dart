@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:yaml/yaml.dart';
 import 'package:yaml_writer/yaml_writer.dart';
 
-import '../core/layout_data.dart';
+import '../core/layout/layout_data.dart';
 import '../core/sheet_data.dart';
 
 // with validity checks - return null if invalid
@@ -44,8 +44,6 @@ SheetData? loadSheetFromPath(String path, LayoutData layoutData) {
   }
 
   SheetData data = SheetData.fromYaml(yaml);
-  if (false)
-    layoutData.crossCheckAndUpdateSheetData(data); // fill in missing fields; should probably not do this automatically on load
   return data;
 }
 

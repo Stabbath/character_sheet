@@ -13,9 +13,8 @@ import '../components/names_widget.dart';
 import '../components/origins_widget.dart';
 import '../components/personality_widget.dart';
 import '../components/skills_widget.dart';
-import '../components/stats_core_widget.dart';
-import 'component.dart';
-import 'layout_data.dart';
+import 'layout/component.dart';
+import 'layout/layout_data.dart';
 import 'providers.dart';
 
 class CharacterSheet extends ConsumerWidget {
@@ -52,8 +51,6 @@ class CharacterSheet extends ConsumerWidget {
         return AbilitySavesWidget.fromComponent(component);
       case 'skills':
         return SkillsWidget.fromComponent(component);
-      case 'stats':
-        return StatsCoreWidget.fromComponent(component);
       case 'generic_block':
         return GenericBlockWidget.fromComponent(component);
       case 'combat':

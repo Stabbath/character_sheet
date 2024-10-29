@@ -1,55 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../core/component.dart';
-import '../core/providers.dart';
+import '../core/data_bindings.dart';
+import '../core/layout/component.dart';
+import '../utils/map_utils.dart';
 import 'generic/ability_score_field.dart';
 import 'generic/section_header.dart';
 
 class AbilityScoresWidget extends ConsumerWidget {
+  static const List<String> requiredFields = [
+    'strength',
+    'dexterity',
+    'constitution',
+    'intelligence',
+    'wisdom',
+    'charisma',
+  ];
+  static const List<String> requiredSubfields = [
+    'base',
+    'bonus',
+  ];
+
   final String id;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> strengthProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> dexterityProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> constitutionProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> intelligenceProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> wisdomProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> charismaProvider;
+  final Map<String, DataBinding> dataBindings;
 
   const AbilityScoresWidget({
     super.key,
     required this.id,
-    required this.strengthProvider,
-    required this.dexterityProvider,
-    required this.constitutionProvider,
-    required this.intelligenceProvider,
-    required this.wisdomProvider,
-    required this.charismaProvider,
+    required this.dataBindings,
   });
 
-  AbilityScoresWidget.fromKeyPaths({
-    super.key,
-    required this.id,
-    required strengthKeyPath,
-    required dexterityKeyPath,
-    required constitutionKeyPath,
-    required intelligenceKeyPath,
-    required wisdomKeyPath,
-    required charismaKeyPath,
-  }) : strengthProvider = getKeyPathProvider(strengthKeyPath),
-       dexterityProvider = getKeyPathProvider(dexterityKeyPath),
-       constitutionProvider = getKeyPathProvider(constitutionKeyPath),
-       intelligenceProvider = getKeyPathProvider(intelligenceKeyPath),
-       wisdomProvider = getKeyPathProvider(wisdomKeyPath),
-       charismaProvider = getKeyPathProvider(charismaKeyPath);
-
   factory AbilityScoresWidget.fromComponent(Component component) {
-    return AbilityScoresWidget.fromKeyPaths(
+    final missingKeys = getMissingKeyPaths(component.dataBindings, [requiredFields]);
+    if (missingKeys.isNotEmpty) {
+      throw Exception('AbilityScoresWidget requires but is missing a binding for the following fields: $missingKeys');
+    }
+
+    return AbilityScoresWidget(
       id: component.id,
-      strengthKeyPath: component.dataBindings['strength'],
-      dexterityKeyPath: component.dataBindings['dexterity'],
-      constitutionKeyPath: component.dataBindings['constitution'],
-      intelligenceKeyPath: component.dataBindings['intelligence'],
-      wisdomKeyPath: component.dataBindings['wisdom'],
-      charismaKeyPath: component.dataBindings['charisma'],
+      dataBindings: Map<String, DataBinding>.fromEntries(
+        requiredFields.map((field) => MapEntry(
+          field,
+          component.dataBindings[field],
+        )),
+      ),
     );
   }
 
@@ -63,32 +56,32 @@ class AbilityScoresWidget extends ConsumerWidget {
           const SectionHeader(title: 'Ability Scores'),
           AbilityScoreField(
             label: 'Strength',
-            abilityScoreProvider: strengthProvider,
+            dataBinding: dataBindings['strength']!,
           ),
           const SizedBox(height: 10),
           AbilityScoreField(
             label: 'Dexterity',
-            abilityScoreProvider: dexterityProvider,
+            dataBinding: dataBindings['dexterity']!,
           ),
           const SizedBox(height: 10),
           AbilityScoreField(
             label: 'Constitution',
-            abilityScoreProvider: constitutionProvider,
+            dataBinding: dataBindings['constitution']!,
           ),
           const SizedBox(height: 10),
           AbilityScoreField(
             label: 'Intelligence',
-            abilityScoreProvider: intelligenceProvider,
+            dataBinding: dataBindings['intelligence']!,
           ),
           const SizedBox(height: 10),
           AbilityScoreField(
             label: 'Wisdom',
-            abilityScoreProvider: wisdomProvider,
+            dataBinding: dataBindings['wisdom']!,
           ),
           const SizedBox(height: 10),
           AbilityScoreField(
             label: 'Charisma',
-            abilityScoreProvider: charismaProvider,
+            dataBinding: dataBindings['charisma']!,
           ),
         ],
       ),

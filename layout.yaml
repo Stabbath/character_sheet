@@ -89,12 +89,24 @@ components:
   abilities:
     type: abilities
     default_data:
-      strength: 10
-      dexterity: 10
-      constitution: 10
-      intelligence: 10
-      wisdom: 10
-      charisma: 10
+      strength:
+        base: 10
+        bonus: 0
+      dexterity:
+        base: 10
+        bonus: 0
+      constitution:
+        base: 10
+        bonus: 0
+      intelligence:
+        base: 10
+        bonus: 0
+      wisdom:
+        base: 10
+        bonus: 0
+      charisma:
+        base: 10
+        bonus: 0
     data_bindings:
       strength: character.ability_scores.strength
       dexterity: character.ability_scores.dexterity

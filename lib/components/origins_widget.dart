@@ -1,36 +1,49 @@
+import 'package:character_sheet/core/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../core/component.dart';
-import '../core/providers.dart';
+import '../core/data_bindings.dart';
+import '../core/layout/component.dart';
+import '../utils/map_utils.dart';
 import 'generic/consumer_stateful_text_input.dart';
 
 class OriginsWidget extends ConsumerWidget {
-  final String id;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> raceProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> backgroundProvider;
+  static const requiredFields = [
+    'race',
+    'background',
+  ];
 
-  OriginsWidget({
+  final String id;
+  final Map<String, DataBinding> dataBindings;
+
+  const OriginsWidget({
     super.key,
     required this.id,
-    required raceKeyPath,
-    required backgroundKeyPath,
-  }) : raceProvider = getKeyPathProvider(raceKeyPath),
-       backgroundProvider = getKeyPathProvider(backgroundKeyPath);
+    required this.dataBindings,
+  });
 
   factory OriginsWidget.fromComponent(Component component) {
+    final missingKeys = getMissingKeyPaths(component.dataBindings, [requiredFields]);
+    if (missingKeys.isNotEmpty) {
+      throw Exception('OriginsWidget requires but is missing a binding for the following fields: $missingKeys');
+    }
+
     return OriginsWidget(
       id: component.id, 
-      raceKeyPath: component.dataBindings['race'],
-      backgroundKeyPath: component.dataBindings['background'],
+      dataBindings: Map<String, DataBinding>.fromEntries(
+        requiredFields.map((field) => MapEntry(
+          field,
+          component.dataBindings[field],
+        )),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final race = ref.watch(raceProvider);
-    final background = ref.watch(backgroundProvider);
-    final raceNotifier = ref.read(raceProvider.notifier);
-    final backgroundNotifier = ref.read(backgroundProvider.notifier);
+    final race = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings['race']!.getInSheet(state) : null));
+    final background = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings['background']!.getInSheet(state) : null));
+    final raceUpdater = dataBindings['race']!.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final backgroundUpdater = dataBindings['background']!.createStateUpdater(ref.read(sheetDataProvider.notifier));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,18 +51,17 @@ class OriginsWidget extends ConsumerWidget {
         ConsumerStatefulTextInput(
           initialValue: race,
           label: 'Race',
-          onChanged: (value) => raceNotifier.update(value),
+          onChanged: (value) => raceUpdater(value),
           textInputType: TextInputType.text,
         ),
         const SizedBox(height: 16),
         ConsumerStatefulTextInput(
           initialValue: background,
           label: 'Background',
-          onChanged: (value) => backgroundNotifier.update(value),
+          onChanged: (value) => backgroundUpdater(value),
           textInputType: TextInputType.text,
         ),
       ],
     );
   }
 }
-

@@ -1,49 +1,50 @@
+import 'package:character_sheet/core/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/component.dart';
+import '../core/layout/component.dart';
 import '../core/providers.dart';
+import '../utils/map_utils.dart';
 import 'generic/text_block_input.dart';
 
 class PersonalityWidget extends ConsumerWidget {
-  final String id;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> traitsProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> idealsProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> bondsProvider;
-  final StateNotifierProvider<KeyPathNotifier, dynamic> flawsProvider;
+  static const requiredFields = [
+    'traits',
+    'ideals',
+    'bonds',
+    'flaws',
+  ];
 
-  PersonalityWidget({
+  final String id;
+  final Map<String, DataBinding> dataBindings;
+
+  const PersonalityWidget({
     super.key,
     required this.id,
-    required traitsKeyPath,
-    required idealsKeyPath,
-    required bondsKeyPath,
-    required flawsKeyPath,
-  }) : traitsProvider = getKeyPathProvider(traitsKeyPath),
-       idealsProvider = getKeyPathProvider(idealsKeyPath),
-       bondsProvider = getKeyPathProvider(bondsKeyPath),
-       flawsProvider = getKeyPathProvider(flawsKeyPath);
+    required this.dataBindings,
+  });
 
   factory PersonalityWidget.fromComponent(Component component) {
+    final missingKeys = getMissingKeyPaths(component.dataBindings, [requiredFields]);
+    if (missingKeys.isNotEmpty) {
+      throw Exception('PersonalityWidget requires but is missing a binding for the following fields: $missingKeys');
+    }
+
     return PersonalityWidget(
       id: component.id,
-      traitsKeyPath: component.dataBindings['traits'],
-      idealsKeyPath: component.dataBindings['ideals'],
-      bondsKeyPath: component.dataBindings['bonds'],
-      flawsKeyPath: component.dataBindings['flaws'],
+      dataBindings: Map<String, DataBinding>.fromEntries(
+        requiredFields.map((field) => MapEntry(
+          field,
+          component.dataBindings[field],
+        )),
+      ),
     );
   }
   
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final traits = ref.watch(traitsProvider);
-    final ideals = ref.watch(idealsProvider);
-    final bonds = ref.watch(bondsProvider);
-    final flaws = ref.watch(flawsProvider);
-    final traitsNotifier = ref.read(traitsProvider.notifier);
-    final idealsNotifier = ref.read(idealsProvider.notifier);
-    final bondsNotifier = ref.read(bondsProvider.notifier);
-    final flawsNotifier = ref.read(flawsProvider.notifier);
+    final values = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings.map((key, value) => MapEntry(key, value.getInSheet(state))) : null))!;
+    final updaters = dataBindings.map((key, value) => MapEntry(key, value.createStateUpdater(ref.read(sheetDataProvider.notifier))));
 
     return Column(
       children: [
@@ -52,9 +53,9 @@ class PersonalityWidget extends ConsumerWidget {
             Expanded(
               child: TextBlockInput(
                 title: 'Personality Traits',
-                initialValue: traits,
+                initialValue: values['traits'],
                 onChanged: (newValue) {
-                  traitsNotifier.update(newValue);
+                  updaters['traits']!(newValue);
                 },
               ),
             ),
@@ -62,9 +63,9 @@ class PersonalityWidget extends ConsumerWidget {
             Expanded(
               child: TextBlockInput(
                 title: 'Ideals',
-                initialValue: ideals,
+                initialValue: values['ideals'],
                 onChanged: (newValue) {
-                  idealsNotifier.update(newValue);
+                  updaters['ideals']!(newValue);
                 },
               ),
             ),
@@ -76,9 +77,9 @@ class PersonalityWidget extends ConsumerWidget {
             Expanded(
               child: TextBlockInput(
                 title: 'Bonds',
-                initialValue: bonds,
+                initialValue: values['bonds'],
                 onChanged: (newValue) {
-                  bondsNotifier.update(newValue);
+                  updaters['bonds']!(newValue);
                 },
               ),
             ),
@@ -86,9 +87,9 @@ class PersonalityWidget extends ConsumerWidget {
             Expanded(
               child: TextBlockInput(
                 title: 'Flaws',
-                initialValue: flaws,
+                initialValue: values['flaws'],
                 onChanged: (newValue) {
-                  flawsNotifier.update(newValue);
+                  updaters['flaws']!(newValue);
                 },
               ),
             ),
