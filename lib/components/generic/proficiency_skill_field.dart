@@ -1,5 +1,5 @@
 import 'package:character_sheet/components/generic/cycle_checkbox.dart';
-import 'package:character_sheet/core/data_bindings.dart';
+import 'package:character_sheet/core/layout/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

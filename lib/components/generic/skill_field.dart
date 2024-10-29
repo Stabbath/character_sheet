@@ -2,7 +2,7 @@ import 'package:character_sheet/core/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/data_bindings.dart';
+import '../../core/layout/data_bindings.dart';
 import 'consumer_stateful_text_input.dart';
 
 class SkillField extends ConsumerWidget {

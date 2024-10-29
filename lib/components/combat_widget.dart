@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/data_bindings.dart';
+import '../core/layout/data_bindings.dart';
 import '../core/layout/component.dart';
 import '../core/providers.dart';
-import '../utils/map_utils.dart';
 import 'generic/dynamic_stat_input.dart';
 import 'generic/section_header.dart';
 import 'generic/static_stat_input.dart';
@@ -33,7 +32,7 @@ class CombatWidget extends ConsumerWidget {
   });
 
   factory CombatWidget.fromComponent(Component component) {
-    final missingKeys = getMissingKeyPaths(component.dataBindings, [requiredFields]);
+    final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, requiredFields);
     if (missingKeys.isNotEmpty) {
       throw Exception('CombatWidget requires but is missing a binding for the following fields: $missingKeys');
     }
@@ -43,7 +42,7 @@ class CombatWidget extends ConsumerWidget {
       dataBindings: Map<String, DataBinding>.fromEntries(
         requiredFields.map((field) => MapEntry(
           field,
-          component.dataBindings[field],
+          component.dataBindings[field]!,
         )),
       ),
     );
@@ -51,7 +50,7 @@ class CombatWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Map<String, dynamic> values = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings.map((key, value) => MapEntry(key, value.getInSheet(state))) : null))!;
+    final notesValue = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings['notes']!.getInSheet(state) : null));
     final notesUpdater = dataBindings['notes']!.createStateUpdater(ref.read(sheetDataProvider.notifier));
 
     return Padding(
@@ -66,21 +65,21 @@ class CombatWidget extends ConsumerWidget {
               Expanded(
                 child: DynamicStatInput(
                   label: 'Hit Points',
-                  currentValueDataBinding: values['hp']!,
-                  maxValueDataBinding: values['max_hp']!,
+                  currentValueDataBinding: dataBindings['hp']!,
+                  maxValueDataBinding: dataBindings['max_hp']!,
                 ),
               ),
               Expanded(
                 child: StaticStatInput(
                   label: 'Temporary Hit Points',
-                  statDataBinding: values['temp_hp']!,
+                  statDataBinding: dataBindings['temp_hp']!,
                 ),
               ),
               Expanded(
                 child: DynamicStatInput(
                   label: 'Exhaustion',
-                  currentValueDataBinding: values['exhaustion']!,
-                  maxValueDataBinding: values['max_exhaustion']!,
+                  currentValueDataBinding: dataBindings['exhaustion']!,
+                  maxValueDataBinding: dataBindings['max_exhaustion']!,
                 ),
               ),
             ],),
@@ -91,19 +90,19 @@ class CombatWidget extends ConsumerWidget {
               Expanded(
                 child: StaticStatInput(
                   label: 'Armor Class',
-                  statDataBinding: values['armor_class']!,
+                  statDataBinding: dataBindings['armor_class']!,
                 ),
               ),
               Expanded(
                 child: StaticStatInput(
                   label: 'Initiative',
-                  statDataBinding: values['initiative']!,
+                  statDataBinding: dataBindings['initiative']!,
                 ),
               ),
               Expanded(
                 child: StaticStatInput(
                   label: 'Speed',
-                  statDataBinding: values['speed']!,
+                  statDataBinding: dataBindings['speed']!,
                 ),
               ),
             ]),
@@ -118,7 +117,7 @@ class CombatWidget extends ConsumerWidget {
                     const SizedBox(height: 8),
                     Expanded(
                       child: TextBlockInput(
-                        initialValue: values['notes'],
+                        initialValue: notesValue,
                         onChanged: (value) =>
                           notesUpdater(value),
                       ),

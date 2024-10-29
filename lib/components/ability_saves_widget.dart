@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/data_bindings.dart';
+import '../core/layout/data_bindings.dart';
 import '../core/layout/component.dart';
-import '../utils/map_utils.dart';
 import 'generic/proficiency_skill_field.dart';
 import 'generic/section_header.dart';
 
@@ -21,7 +20,6 @@ class AbilitySavesWidget extends ConsumerWidget {
     'proficiency',
   ];
 
-
   final String id;
   final Map<String, Map<String, DataBinding>> dataBindings;
 
@@ -32,7 +30,7 @@ class AbilitySavesWidget extends ConsumerWidget {
   });
   
   factory AbilitySavesWidget.fromComponent(Component component) {
-    final missingKeys = getMissingKeyPaths(component.dataBindings, [requiredFields]);
+    final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, buildInKeyPaths(requiredFields, requiredSubfields));
     if (missingKeys.isNotEmpty) {
       throw Exception('AbilitySavesWidget requires but is missing a binding for the following fields: $missingKeys');
     }
@@ -40,12 +38,12 @@ class AbilitySavesWidget extends ConsumerWidget {
     return AbilitySavesWidget(
       id: component.id,
       dataBindings: Map<String, Map<String, DataBinding>>.fromEntries(
-        requiredSubfields.map((subfield) => MapEntry(
-          subfield,
+        requiredFields.map((field) => MapEntry(
+          field,
           Map<String, DataBinding>.fromEntries(
-            requiredFields.map((field) => MapEntry(
-              field,
-              component.dataBindings[field][subfield],
+            requiredSubfields.map((subfield) => MapEntry(
+              subfield,
+              component.dataBindings[buildInKeyPath(field, subfield)]!,
             )),
           ),
         )),

@@ -1,5 +1,5 @@
 import 'package:character_sheet/components/generic/section_header.dart';
-import 'package:character_sheet/core/data_bindings.dart';
+import 'package:character_sheet/core/layout/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,7 +23,7 @@ class GenericBlockWidget extends ConsumerWidget {
     return GenericBlockWidget(
       id: component.id,
       title: component.readOnlyData['title'],
-      dataBinding: component.dataBindings['content'],
+      dataBinding: component.dataBindings['content']!,
     );
   }
 

@@ -63,11 +63,11 @@ class LayoutData {
     for (var componentEntry in components.entries) {
       final component = componentEntry.value;
       component.defaultData.forEach((field, defaultValue) {
-        final bindingPath = component.dataBindings[field];
-        if (bindingPath == null || bindingPath.isEmpty) {
+        final binding = component.dataBindings[field];
+        if (binding == null) {
           throw Exception('Missing data binding for field "$field" in component "${componentEntry.key}"');
         }
-        defaultData.setValue(bindingPath, defaultValue);
+        defaultData.setValue(binding.outKey, defaultValue);
       });
     }
 
@@ -80,13 +80,13 @@ class LayoutData {
     for (var componentEntry in components.entries) {
       final component = componentEntry.value;
       component.defaultData.forEach((field, defaultValue) {
-        final bindingPath = component.dataBindings[field];
-        if (bindingPath == null || bindingPath.isEmpty) {
+        final binding = component.dataBindings[field];
+        if (binding == null) {
           throw Exception('Missing data binding for field "$field" in component "${componentEntry.key}"');
         }
 
-        if (sheetData.getValue(bindingPath) == null) {
-          sheetData.setValue(bindingPath, defaultValue);
+        if (sheetData.getValue(binding.outKey) == null) {
+          sheetData.setValue(binding.outKey, defaultValue);
           updated = true;
         }
       });

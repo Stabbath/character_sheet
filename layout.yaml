@@ -108,12 +108,24 @@ components:
         base: 10
         bonus: 0
     data_bindings:
-      strength: character.ability_scores.strength
-      dexterity: character.ability_scores.dexterity
-      constitution: character.ability_scores.constitution
-      intelligence: character.ability_scores.intelligence
-      wisdom: character.ability_scores.wisdom
-      charisma: character.ability_scores.charisma
+      strength: 
+        base: character.ability_scores.strength.base
+        bonus: character.ability_scores.strength.bonus
+      dexterity:
+        base: character.ability_scores.dexterity.base
+        bonus: character.ability_scores.dexterity.bonus
+      constitution:
+        base: character.ability_scores.constitution.base
+        bonus: character.ability_scores.constitution.bonus
+      intelligence:
+        base: character.ability_scores.intelligence.base
+        bonus: character.ability_scores.intelligence.bonus
+      wisdom:
+        base: character.ability_scores.wisdom.base
+        bonus: character.ability_scores.wisdom.bonus
+      charisma:
+        base: character.ability_scores.charisma.base
+        bonus: character.ability_scores.charisma.bonus
   saves:
     type: saves
     default_data:

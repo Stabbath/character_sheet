@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/data_bindings.dart';
+import '../core/layout/data_bindings.dart';
 import '../core/layout/component.dart';
 import '../core/providers.dart';
-import '../utils/map_utils.dart';
 
 class NamesWidget extends ConsumerWidget {
   static const requiredFields = [
@@ -23,7 +22,8 @@ class NamesWidget extends ConsumerWidget {
 
 
   factory NamesWidget.fromComponent(Component component) {
-    final missingKeys = getMissingKeyPaths(component.dataBindings, [requiredFields]);
+    final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, requiredFields);
+
     if (missingKeys.isNotEmpty) {
       throw Exception('NamesWidget requires but is missing a binding for the following fields: $missingKeys');
     }
@@ -33,7 +33,7 @@ class NamesWidget extends ConsumerWidget {
       dataBindings: Map<String, DataBinding>.fromEntries(
         requiredFields.map((field) => MapEntry(
           field,
-          component.dataBindings[field],
+          component.dataBindings[field]!,
         )),
       ),
     );

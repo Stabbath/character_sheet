@@ -1,10 +1,9 @@
-import 'package:character_sheet/core/data_bindings.dart';
+import 'package:character_sheet/core/layout/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/layout/component.dart';
 import '../core/providers.dart';
-import '../utils/map_utils.dart';
 import 'generic/text_block_input.dart';
 
 class PersonalityWidget extends ConsumerWidget {
@@ -25,7 +24,7 @@ class PersonalityWidget extends ConsumerWidget {
   });
 
   factory PersonalityWidget.fromComponent(Component component) {
-    final missingKeys = getMissingKeyPaths(component.dataBindings, [requiredFields]);
+    final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, requiredFields);
     if (missingKeys.isNotEmpty) {
       throw Exception('PersonalityWidget requires but is missing a binding for the following fields: $missingKeys');
     }
@@ -35,7 +34,7 @@ class PersonalityWidget extends ConsumerWidget {
       dataBindings: Map<String, DataBinding>.fromEntries(
         requiredFields.map((field) => MapEntry(
           field,
-          component.dataBindings[field],
+          component.dataBindings[field]!,
         )),
       ),
     );

@@ -2,7 +2,7 @@ import 'package:character_sheet/core/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/data_bindings.dart';
+import '../core/layout/data_bindings.dart';
 import '../core/layout/component.dart';
 import '../formulae/character_level_from_list.dart';
 import '../formulae/proficiency_bonus.dart';
@@ -21,7 +21,7 @@ class CharacterClassesWidget extends ConsumerWidget {
   factory CharacterClassesWidget.fromComponent(Component component) {
     return CharacterClassesWidget(
       id: component.id,
-      dataBinding: component.dataBindings['list'],
+      dataBinding: component.dataBindings['list']!,
     );
   }
 
