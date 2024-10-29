@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/layout/data_bindings.dart';
-import '../core/layout/component.dart';
+import '../core/layout/components.dart';
 import '../core/providers.dart';
 
 class NamesWidget extends ConsumerWidget {
@@ -21,7 +21,7 @@ class NamesWidget extends ConsumerWidget {
   });
 
 
-  factory NamesWidget.fromComponent(Component component) {
+  factory NamesWidget.fromComponent(ComponentData component) {
     final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, requiredFields);
 
     if (missingKeys.isNotEmpty) {

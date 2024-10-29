@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/layout/data_bindings.dart';
-import '../core/layout/component.dart';
+import '../core/layout/components.dart';
 import 'generic/ability_score_field.dart';
 import 'generic/section_header.dart';
 
@@ -28,7 +28,7 @@ class AbilityScoresWidget extends ConsumerWidget {
     required this.dataBindings,
   });
 
-  factory AbilityScoresWidget.fromComponent(Component component) {
+  factory AbilityScoresWidget.fromComponent(ComponentData component) {
     final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, buildInKeyPaths(requiredFields, requiredSubfields));
     if (missingKeys.isNotEmpty) {
       throw Exception('AbilityScoresWidget requires but is missing a binding for the following fields: $missingKeys');

@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_selector/file_selector.dart';
 
 import '../core/layout/data_bindings.dart';
-import '../core/layout/component.dart';
+import '../core/layout/components.dart';
 import '../core/providers.dart';
 
 class ImageWidget extends ConsumerWidget {
@@ -18,7 +18,7 @@ class ImageWidget extends ConsumerWidget {
     required this.dataBinding,
   });
 
-  factory ImageWidget.fromComponent(Component component) {
+  factory ImageWidget.fromComponent(ComponentData component) {
     return ImageWidget(
       id: component.id,
       dataBinding: component.dataBindings['path']!,

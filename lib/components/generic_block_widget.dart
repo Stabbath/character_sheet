@@ -3,7 +3,7 @@ import 'package:character_sheet/core/layout/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/layout/component.dart';
+import '../core/layout/components.dart';
 import '../core/providers.dart';
 import 'generic/text_block_input.dart';
 
@@ -19,7 +19,7 @@ class GenericBlockWidget extends ConsumerWidget {
     required this.dataBinding,
   });
 
-  factory GenericBlockWidget.fromComponent(Component component) {
+  factory GenericBlockWidget.fromComponent(ComponentData component) {
     return GenericBlockWidget(
       id: component.id,
       title: component.readOnlyData['title'],

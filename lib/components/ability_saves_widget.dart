@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/layout/data_bindings.dart';
-import '../core/layout/component.dart';
+import '../core/layout/components.dart';
 import 'generic/proficiency_skill_field.dart';
 import 'generic/section_header.dart';
 
@@ -29,7 +29,7 @@ class AbilitySavesWidget extends ConsumerWidget {
     required this.dataBindings,
   });
   
-  factory AbilitySavesWidget.fromComponent(Component component) {
+  factory AbilitySavesWidget.fromComponent(ComponentData component) {
     final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, buildInKeyPaths(requiredFields, requiredSubfields));
     if (missingKeys.isNotEmpty) {
       throw Exception('AbilitySavesWidget requires but is missing a binding for the following fields: $missingKeys');

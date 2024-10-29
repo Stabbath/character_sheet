@@ -2,7 +2,7 @@ import 'package:character_sheet/core/layout/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/layout/component.dart';
+import '../core/layout/components.dart';
 import '../core/providers.dart';
 import 'generic/text_block_input.dart';
 
@@ -23,7 +23,7 @@ class PersonalityWidget extends ConsumerWidget {
     required this.dataBindings,
   });
 
-  factory PersonalityWidget.fromComponent(Component component) {
+  factory PersonalityWidget.fromComponent(ComponentData component) {
     final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, requiredFields);
     if (missingKeys.isNotEmpty) {
       throw Exception('PersonalityWidget requires but is missing a binding for the following fields: $missingKeys');

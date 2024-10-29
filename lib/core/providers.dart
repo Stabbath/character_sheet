@@ -42,8 +42,6 @@ class SheetDataNotifier extends StateNotifier<SheetData?> {
     });
   }
 
-  dynamic getValue(String keyPath) => state?.getValue(keyPath);
-
   @override
   void dispose() {
     _debounce?.cancel();

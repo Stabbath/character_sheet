@@ -3,25 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/layout/data_bindings.dart';
-import '../core/layout/component.dart';
-import '../formulae/character_level_from_list.dart';
-import '../formulae/proficiency_bonus.dart';
+import '../core/layout/components.dart';
+import '../core/layout/formulae.dart';
 import 'generic/single_class_input.dart';
 
 class CharacterClassesWidget extends ConsumerWidget {
   final String id;
   final DataBinding dataBinding;
+  final DataBinding characterLevelBinding;
+  final DataBinding proficiencyBinding;
   
   const CharacterClassesWidget({
     super.key,
     required this.id,
     required this.dataBinding,
+    required this.characterLevelBinding,
+    required this.proficiencyBinding,
   });
 
-  factory CharacterClassesWidget.fromComponent(Component component) {
+  factory CharacterClassesWidget.fromComponent(ComponentData component) {
     return CharacterClassesWidget(
       id: component.id,
       dataBinding: component.dataBindings['list']!,
+      characterLevelBinding: component.formulaBindings['character_level']!,
+      proficiencyBinding: component.formulaBindings['proficiency_bonus']!,
     );
   }
 
@@ -29,6 +34,9 @@ class CharacterClassesWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final classList = ref.watch(sheetDataProvider.select((state) => state != null ? dataBinding.getInSheet(state) : null)) ?? [];
     final updater = dataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
+
+    Formula levelFormula = ref.watch(layoutProvider.select((state) => state?.getFormulaFromOutKey(characterLevelBinding.outKey)))!;
+    Formula proficiencyFormula = ref.watch(layoutProvider.select((state) => state?.getFormulaFromOutKey(proficiencyBinding.outKey)))!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,9 +83,9 @@ class CharacterClassesWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('Character Level: ${getTotalLevel(ref)}'),
+            Text('Character Level: ${levelFormula.evaluate(ref)}'),
             const Spacer(),
-            Text('Proficiency Modifier: ${getProficiencyBonus(ref)}'),
+            Text('Proficiency Modifier: ${proficiencyFormula.evaluate(ref)}'),
             const Spacer(),
             ElevatedButton.icon(
               onPressed: () {

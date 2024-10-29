@@ -1,7 +1,15 @@
-import 'package:character_sheet/formulae/character_level_from_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-num getProficiencyBonus(WidgetRef ref) {
-  final totalLevel = getTotalLevel(ref);
-  return ((totalLevel - 1) / 4).floor() + 2;
+import '../core/layout/formulae.dart';
+import '../core/providers.dart';
+
+class ProficiencyBonusFromLevel extends Formula {
+  ProficiencyBonusFromLevel({required super.id, required super.formulaData});
+
+  @override
+  num evaluate(WidgetRef ref) {
+    final levelCalculator = ref.read(layoutProvider.select((state) => state?.getFormulaFromOutKey('character_level')));
+    final totalLevel = levelCalculator!.evaluate(ref);
+    return ((totalLevel - 1) / 4).floor() + 2;
+  }
 }

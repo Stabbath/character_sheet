@@ -2,7 +2,7 @@ import 'package:character_sheet/core/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/layout/data_bindings.dart';
-import '../core/layout/component.dart';
+import '../core/layout/components.dart';
 import 'generic/consumer_stateful_text_input.dart';
 
 class OriginsWidget extends ConsumerWidget {
@@ -20,7 +20,7 @@ class OriginsWidget extends ConsumerWidget {
     required this.dataBindings,
   });
 
-  factory OriginsWidget.fromComponent(Component component) {
+  factory OriginsWidget.fromComponent(ComponentData component) {
     final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, requiredFields);
     if (missingKeys.isNotEmpty) {
       throw Exception('OriginsWidget requires but is missing a binding for the following fields: $missingKeys');

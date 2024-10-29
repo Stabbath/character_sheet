@@ -2,7 +2,7 @@ import 'package:character_sheet/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/layout/data_bindings.dart';
-import '../core/layout/component.dart';
+import '../core/layout/components.dart';
 import 'generic/proficiency_skill_field.dart';
 import 'generic/section_header.dart';
 
@@ -41,7 +41,7 @@ class SkillsWidget extends ConsumerWidget {
     required this.dataBindings,
   });
 
-  factory SkillsWidget.fromComponent(Component component) {
+  factory SkillsWidget.fromComponent(ComponentData component) {
     final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, buildInKeyPaths(requiredFields, requiredSubfields));
     if (missingKeys.isNotEmpty) {
       throw Exception('SkillsWidget requires but is missing a binding for the following fields: $missingKeys');

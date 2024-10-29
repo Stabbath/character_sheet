@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/layout/data_bindings.dart';
-import '../core/layout/component.dart';
+import '../core/layout/components.dart';
 import '../core/providers.dart';
 import 'generic/dynamic_stat_input.dart';
 import 'generic/section_header.dart';
@@ -31,7 +31,7 @@ class CombatWidget extends ConsumerWidget {
     required this.dataBindings,
   });
 
-  factory CombatWidget.fromComponent(Component component) {
+  factory CombatWidget.fromComponent(ComponentData component) {
     final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, requiredFields);
     if (missingKeys.isNotEmpty) {
       throw Exception('CombatWidget requires but is missing a binding for the following fields: $missingKeys');

@@ -4,7 +4,7 @@ import 'package:character_sheet/core/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/layout/component.dart';
+import '../core/layout/components.dart';
 
 class BiometricsWidget extends ConsumerWidget {
   static const List<String> requiredFields = [
@@ -25,7 +25,7 @@ class BiometricsWidget extends ConsumerWidget {
     required this.dataBindings,
   });
 
-  factory BiometricsWidget.fromComponent(Component component) {
+  factory BiometricsWidget.fromComponent(ComponentData component) {
     final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, requiredFields);
     if (missingKeys.isNotEmpty) {
       throw Exception('BiometricsWidget requires but is missing a binding for the following fields: $missingKeys');

@@ -1,5 +1,5 @@
 name: "Standard D&D 5e Character Sheet"
-version: "1.1"
+version: "1.2"
 
 layout: |
   picture names names names names token
@@ -10,6 +10,18 @@ layout: |
   proficiencies passives passives passives passives passives
   cash cash equipment3 equipment3 equipment4 equipment4
   equipment1 equipment2 equipment3 equipment3 equipment4 equipment4
+
+formulae:
+  character_level:
+    type: character_level_from_classes
+    data_bindings:
+      classlist: character.classes.list
+  proficiency_bonus:
+    type: proficiency_bonus_from_level
+    formula_bindings:
+      character_level: character_level
+
+# Components that require character_level: classes, saves, skills
 
 components:
   # images
@@ -84,6 +96,9 @@ components:
       ]
     data_bindings:
       list: character.classes.list
+    formula_bindings:
+      character_level: character_level
+      proficiency_bonus: proficiency_bonus
 
   # stats
   abilities:
@@ -166,6 +181,8 @@ components:
       charisma:
         proficiency: character.saving_throws.charisma.proficiency
         bonus: character.saving_throws.charisma.bonus
+    formula_bindings:
+      character_level: character_level
   skills:
     type: skills
     default_data:
@@ -278,6 +295,8 @@ components:
       survival:
         proficiency: character.skills.survival.proficiency
         bonus: character.skills.survival.bonus
+    formula_bindings:
+      character_level: character_level
   proficiencies:
     type: generic_block
     readonly_data:

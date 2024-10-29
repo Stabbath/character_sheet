@@ -1,7 +1,8 @@
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:yaml/yaml.dart';
 
-import 'component.dart';
+import 'components.dart';
+import 'formulae.dart';
 import '../sheet_data.dart';
 
 class LayoutData {
@@ -12,7 +13,8 @@ class LayoutData {
   final List<TrackSize> rowSizes;
   final double columnGap;
   final double rowGap;
-  final Map<String, Component> components;
+  final Map<String, ComponentData> components;
+  final Map<String, Formula> formulae;
 
   LayoutData({
     required this.name,
@@ -22,7 +24,8 @@ class LayoutData {
     required this.rowSizes,
     required this.columnGap,
     required this.rowGap,
-    required this.components
+    required this.components,
+    required this.formulae,
   });
 
   factory LayoutData.fromYaml(YamlMap yaml) {
@@ -30,9 +33,14 @@ class LayoutData {
     final rowCount = layout.split('\n').length - 1; // I guess the last line also includes a \n, so we get an extra row which just contains an empty string
     final columnCount = layout.split('\n')[0].split(' ').length; 
 
-    Map<String, Component> components = {};
+    Map<String, ComponentData> components = {};
     for (var entry in (yaml['components']).entries) {
-      components[entry.key] = Component.fromYaml(entry.key, entry.value);
+      components[entry.key] = ComponentData.fromYaml(entry.key, entry.value);
+    }
+
+    Map<String, Formula> formulae = {};
+    for (var entry in (yaml['formulae']).entries) {
+      formulae[entry.key] = createFormulaFromData(FormulaData.fromYaml(entry.key, entry.value));
     }
 
     return LayoutData(
@@ -44,7 +52,15 @@ class LayoutData {
       columnGap: 16.0,
       rowGap: 16.0,
       components: components,
+      formulae: formulae,
     );
+  }
+
+  Formula getFormulaFromOutKey(String key) {
+    if (!formulae.containsKey(key)) {
+      throw Exception('Unknown formula key: $key');
+    }
+    return formulae[key]!;
   }
 
   Set<String> getAreaNames() {
