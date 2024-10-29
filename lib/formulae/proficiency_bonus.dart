@@ -4,7 +4,7 @@ import '../core/layout/formulae.dart';
 import '../core/providers.dart';
 
 class ProficiencyBonusFromLevel extends Formula {
-  ProficiencyBonusFromLevel({required super.id, required super.formulaData});
+  ProficiencyBonusFromLevel.fromYaml(super.id, super.yaml) : super.fromYaml();
 
   @override
   num evaluate(WidgetRef ref) {
