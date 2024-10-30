@@ -34,11 +34,13 @@ class SkillsWidget extends ConsumerWidget {
 
   final String id;
   final Map<String, Map<String, DataBinding>> dataBindings;
+  final DataBinding proficiencyBinding;
 
   const SkillsWidget({
     super.key,
     required this.id,
     required this.dataBindings,
+    required this.proficiencyBinding,
   });
 
   factory SkillsWidget.fromComponent(ComponentData component) {
@@ -60,6 +62,7 @@ class SkillsWidget extends ConsumerWidget {
           ),
         )),
       ),
+      proficiencyBinding: component.formulaBindings['proficiency_bonus']!,
     );
   }
 
@@ -75,6 +78,7 @@ class SkillsWidget extends ConsumerWidget {
             return ProficiencySkillField(
               label: underscoreToNormal(field),
               dataBindings: dataBindings[field]!,
+              proficiencyBinding: proficiencyBinding,
             );
           }),
         ],

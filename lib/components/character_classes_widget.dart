@@ -35,8 +35,8 @@ class CharacterClassesWidget extends ConsumerWidget {
     final classList = ref.watch(sheetDataProvider.select((state) => state != null ? dataBinding.getInSheet(state) : null)) ?? [];
     final updater = dataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
 
-    Formula levelFormula = ref.watch(layoutProvider.select((state) => state?.getFormulaFromOutKey(characterLevelBinding.outKey)))!;
-    Formula proficiencyFormula = ref.watch(layoutProvider.select((state) => state?.getFormulaFromOutKey(proficiencyBinding.outKey)))!;
+    final Formula levelFormula = ref.watch(layoutProvider.select((state) => state?.getFormulaFromOutKey(characterLevelBinding.outKey)))!;
+    final Formula proficiencyFormula = ref.watch(layoutProvider.select((state) => state?.getFormulaFromOutKey(proficiencyBinding.outKey)))!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -36,7 +36,21 @@ class CycleCheckboxState extends State<CycleCheckbox> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _nextSymbol,
-      child: widget.symbols[_currentIndex],
+      child: SizedBox(
+        width: 50,
+        height: 50,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black, // Border color
+              width: 1.0, // Border width
+            ),
+            borderRadius: BorderRadius.circular(4.0), // Optional: rounded corners
+          ),
+          padding: const EdgeInsets.all(10.0),
+          child: Center(child: widget.symbols[_currentIndex]),
+        )
+      ),
     );
   }
 }

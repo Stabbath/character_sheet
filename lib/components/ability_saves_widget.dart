@@ -22,11 +22,13 @@ class AbilitySavesWidget extends ConsumerWidget {
 
   final String id;
   final Map<String, Map<String, DataBinding>> dataBindings;
+  final DataBinding proficiencyBinding;
 
   const AbilitySavesWidget({
     super.key,
     required this.id,
     required this.dataBindings,
+    required this.proficiencyBinding,
   });
   
   factory AbilitySavesWidget.fromComponent(ComponentData component) {
@@ -48,6 +50,7 @@ class AbilitySavesWidget extends ConsumerWidget {
           ),
         )),
       ),
+      proficiencyBinding: component.formulaBindings['proficiency_bonus']!,
     );
   }
 
@@ -62,31 +65,37 @@ class AbilitySavesWidget extends ConsumerWidget {
           ProficiencySkillField(
             label: 'Strength',
             dataBindings: dataBindings['strength']!,
+            proficiencyBinding: proficiencyBinding,
           ),
           const SizedBox(height: 10),
           ProficiencySkillField(
             label: 'Dexterity',
             dataBindings: dataBindings['dexterity']!,
+            proficiencyBinding: proficiencyBinding,
           ),
           const SizedBox(height: 10),
           ProficiencySkillField(
             label: 'Constitution',
             dataBindings: dataBindings['constitution']!,
+            proficiencyBinding: proficiencyBinding,
           ),
           const SizedBox(height: 10),
           ProficiencySkillField(
             label: 'Intelligence',
             dataBindings: dataBindings['intelligence']!,
+            proficiencyBinding: proficiencyBinding,
           ),
           const SizedBox(height: 10),
           ProficiencySkillField(
             label: 'Wisdom',
             dataBindings: dataBindings['wisdom']!,
+            proficiencyBinding: proficiencyBinding,
           ),
           const SizedBox(height: 10),
           ProficiencySkillField(
             label: 'Charisma',
             dataBindings: dataBindings['charisma']!,
+            proficiencyBinding: proficiencyBinding,
           ),
         ],
       ),

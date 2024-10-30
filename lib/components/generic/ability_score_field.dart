@@ -77,7 +77,8 @@ class AbilityScoreField extends ConsumerWidget {
               style: const TextStyle(fontSize: 18),
             ),
           )
-        ),        const Icon(
+        ),
+        const Icon(
           Icons.arrow_right,
         ),
         SizedBox( 
@@ -85,10 +86,10 @@ class AbilityScoreField extends ConsumerWidget {
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: Colors.black, // Border color
-                width: 1.0, // Border width
+                color: Colors.black,
+                width: 1.0,
               ),
-              borderRadius: BorderRadius.circular(4.0), // Optional: rounded corners
+              borderRadius: BorderRadius.circular(4.0),
             ),
             padding: const EdgeInsets.all(10.0),
             child: Text(
