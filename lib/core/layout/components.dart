@@ -59,15 +59,31 @@ Widget getWidgetFromComponent(ComponentData component) {
     case 'classes':
       return CharacterClassesWidget.fromComponent(component);
     case 'abilities':
-      return AbilityScoresWidget.fromComponent(component);
+      return IntrinsicWidth(
+        child: IntrinsicHeight(
+          child: AbilityScoresWidget.fromComponent(component),
+        ),
+      );
     case 'saves':
-      return AbilitySavesWidget.fromComponent(component);
+      return IntrinsicWidth(
+        child: IntrinsicHeight(
+          child: AbilitySavesWidget.fromComponent(component),
+        ),
+      );
     case 'skills':
-      return SkillsWidget.fromComponent(component);
+      return IntrinsicWidth(
+        child: IntrinsicHeight(
+          child: SkillsWidget.fromComponent(component),
+        ),
+      );
     case 'generic_block':
       return GenericBlockWidget.fromComponent(component);
     case 'combat':
-      return CombatWidget.fromComponent(component);
+      return IntrinsicWidth(
+        child: IntrinsicHeight(
+          child: CombatWidget.fromComponent(component),
+        ),
+      );
     default:
       throw Exception('Unknown component type: ${component.type}');
   }

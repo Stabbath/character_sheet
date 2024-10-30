@@ -31,7 +31,10 @@ class CharacterSheet extends ConsumerWidget {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return SingleChildScrollView(
+    return InteractiveViewer(
+      constrained: false,
+      panEnabled: true,
+      scaleEnabled: true,
       child: LayoutGrid(
         areas: layoutData.gridAreas,
         columnSizes: layoutData.columnSizes,
