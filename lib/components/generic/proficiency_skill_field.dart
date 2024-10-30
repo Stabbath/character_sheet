@@ -9,27 +9,29 @@ import 'consumer_stateful_text_input.dart';
 
 class ProficiencySkillField extends ConsumerWidget {
   final String label;
-  final Map<String, DataBinding> dataBindings;
-  final DataBinding proficiencyBinding;
+  final DataBinding bonusDataBinding;
+  final DataBinding proficiencyDataBinding;
+  final DataBinding proficiencyBonusFormulaBinding;
 
   const ProficiencySkillField({
     super.key,
     required this.label,
-    required this.dataBindings,
-    required this.proficiencyBinding,
+    required this.bonusDataBinding,
+    required this.proficiencyDataBinding,
+    required this.proficiencyBonusFormulaBinding,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final skillBonus = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings['bonus']!.getInSheet(state) : null));
-    final skillBonusUpdater = dataBindings['bonus']!.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final skillBonus = ref.watch(sheetDataProvider.select((state) => state != null ? bonusDataBinding.getInSheet(state) : null));
+    final skillBonusUpdater = bonusDataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
 
-    final skillProficiency = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings['proficiency']!.getInSheet(state) : null));
-    final skillProficiencyUpdater = dataBindings['proficiency']!.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final skillProficiency = ref.watch(sheetDataProvider.select((state) => state != null ? proficiencyDataBinding.getInSheet(state) : null));
+    final skillProficiencyUpdater = proficiencyDataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
 
     const proficiencyValues = [0, 0.5, 1, 2];
 
-    final Formula proficiencyFormula = ref.watch(layoutProvider.select((state) => state?.getFormulaFromOutKey(proficiencyBinding.outKey)))!;
+    final Formula proficiencyFormula = ref.watch(layoutProvider.select((state) => state?.getFormulaFromOutKey(proficiencyBonusFormulaBinding.outKey)))!;
     final total = (skillProficiency * proficiencyFormula.evaluate(ref) + skillBonus).floor();
 
     return Row(

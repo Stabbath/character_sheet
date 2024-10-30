@@ -23,7 +23,7 @@ class ComponentData {
   final Map<String, DataBinding> dataBindings;
   final Map<String, DataBinding> formulaBindings;
 
-  ComponentData({
+  const ComponentData({
     required this.id,
     required this.type,
     required this.readOnlyData,
@@ -32,16 +32,13 @@ class ComponentData {
     required this.formulaBindings,
   });
 
-  factory ComponentData.fromYaml(String id, YamlMap yaml) {
-    return ComponentData(
-      id: id,
-      type: yaml['type'],
-      readOnlyData: mapFromYaml(yaml['readonly_data'] ?? YamlMap.wrap({})),
-      defaultData: mapFromYaml(yaml['default_data'] ?? YamlMap.wrap({})),
-      dataBindings: getDataBindingsFromYaml(yaml['data_bindings'] ?? YamlMap.wrap({})),
-      formulaBindings: getDataBindingsFromYaml(yaml['formula_bindings'] ?? YamlMap.wrap({})),
-    );
-  }
+  ComponentData.fromYaml(this.id, YamlMap yaml) :
+    type = yaml['type'],
+    readOnlyData = mapFromYaml(yaml['readonly_data'] ?? YamlMap.wrap({})),
+    defaultData = mapFromYaml(yaml['default_data'] ?? YamlMap.wrap({})),
+    dataBindings = getDataBindingsFromYaml(yaml['data_bindings'] ?? YamlMap.wrap({})),
+    formulaBindings = getDataBindingsFromYaml(yaml['formula_bindings'] ?? YamlMap.wrap({}));
+
 }
 
 Widget getWidgetFromComponent(ComponentData component) {

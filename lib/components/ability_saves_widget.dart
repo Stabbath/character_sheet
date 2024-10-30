@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/layout/data_bindings.dart';
 import '../core/layout/components.dart';
+import '../utils/string_utils.dart';
 import 'generic/proficiency_skill_field.dart';
 import 'generic/section_header.dart';
 
@@ -62,41 +63,14 @@ class AbilitySavesWidget extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SectionHeader(title: 'Ability Saves'),
-          ProficiencySkillField(
-            label: 'Strength',
-            dataBindings: dataBindings['strength']!,
-            proficiencyBinding: proficiencyBinding,
-          ),
-          const SizedBox(height: 10),
-          ProficiencySkillField(
-            label: 'Dexterity',
-            dataBindings: dataBindings['dexterity']!,
-            proficiencyBinding: proficiencyBinding,
-          ),
-          const SizedBox(height: 10),
-          ProficiencySkillField(
-            label: 'Constitution',
-            dataBindings: dataBindings['constitution']!,
-            proficiencyBinding: proficiencyBinding,
-          ),
-          const SizedBox(height: 10),
-          ProficiencySkillField(
-            label: 'Intelligence',
-            dataBindings: dataBindings['intelligence']!,
-            proficiencyBinding: proficiencyBinding,
-          ),
-          const SizedBox(height: 10),
-          ProficiencySkillField(
-            label: 'Wisdom',
-            dataBindings: dataBindings['wisdom']!,
-            proficiencyBinding: proficiencyBinding,
-          ),
-          const SizedBox(height: 10),
-          ProficiencySkillField(
-            label: 'Charisma',
-            dataBindings: dataBindings['charisma']!,
-            proficiencyBinding: proficiencyBinding,
-          ),
+            ...requiredFields.map((field) {
+            return ProficiencySkillField(
+              label: underscoreToNormal(field),
+              bonusDataBinding: dataBindings[field]!['bonus']!,
+              proficiencyDataBinding: dataBindings[field]!['proficiency']!,
+              proficiencyBonusFormulaBinding: proficiencyBinding,
+            );
+          }),
         ],
       ),
     );

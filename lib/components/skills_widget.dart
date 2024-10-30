@@ -77,8 +77,9 @@ class SkillsWidget extends ConsumerWidget {
           ...requiredFields.map((field) {
             return ProficiencySkillField(
               label: underscoreToNormal(field),
-              dataBindings: dataBindings[field]!,
-              proficiencyBinding: proficiencyBinding,
+              bonusDataBinding: dataBindings[field]!['bonus']!,
+              proficiencyDataBinding: dataBindings[field]!['proficiency']!,
+              proficiencyBonusFormulaBinding: proficiencyBinding,
             );
           }),
         ],
