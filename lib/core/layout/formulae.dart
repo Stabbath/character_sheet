@@ -30,16 +30,16 @@ class Formula {
   dynamic evaluate(WidgetRef ref) {
     throw UnimplementedError();
   }
-}
 
-Formula createFormulaFromYaml(String id, YamlMap yaml) {
-  final type = yaml['type'];
-  switch (type) {
-    case 'character_level_from_classes':
-      return CharacterLevelFromClasses.fromYaml(id, yaml);
-    case 'proficiency_bonus_from_level':
-      return ProficiencyBonusFromLevel.fromYaml(id, yaml);
-    default:
-      throw Exception('Unknown formula type: $type');
+  factory Formula.createFromYaml(String id, YamlMap yaml) {
+    final type = yaml['type'];
+    switch (type) {
+      case 'character_level_from_classes':
+        return CharacterLevelFromClasses.fromYaml(id, yaml);
+      case 'proficiency_bonus_from_level':
+        return ProficiencyBonusFromLevel.fromYaml(id, yaml);
+      default:
+        throw Exception('Unknown formula type: $type');
+    }
   }
 }

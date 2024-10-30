@@ -40,7 +40,7 @@ class LayoutData {
 
     Map<String, Formula> formulae = {};
     for (var entry in (yaml['formulae']).entries) {
-      formulae[entry.key] = createFormulaFromYaml(entry.key, entry.value);
+      formulae[entry.key] = Formula.createFromYaml(entry.key, entry.value);
     }
 
     return LayoutData(
