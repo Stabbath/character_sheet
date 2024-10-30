@@ -1,3 +1,4 @@
+import 'package:character_sheet/components/spellsheet_widget.dart';
 import 'package:character_sheet/utils/yaml_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:yaml/yaml.dart';
@@ -43,6 +44,8 @@ class ComponentData {
 
 Widget getWidgetFromComponent(ComponentData component) {
   switch (component.type) {
+    case 'spell_sheet':
+      return SpellSheetWidget.fromComponentData(component);
     case 'image':
       return ImageWidget.fromComponent(component);
     case 'names':
