@@ -1,3 +1,4 @@
+import 'package:character_sheet/components/generic/consumer_stateful_text_input.dart';
 import 'package:character_sheet/components/generic/section_header.dart';
 import 'package:character_sheet/components/generic/spell_block.dart';
 import 'package:character_sheet/core/providers/providers.dart';
@@ -32,8 +33,10 @@ class SpellSheetWidget extends Component {
 
     final blocksPerRow = 4;
 
-    return IntrinsicHeight(
-      child: IntrinsicWidth(
+    return SizedBox(
+      width: 1200,
+      child: SizedBox(
+        height: (200 + 400 * (lists.length ~/ blocksPerRow)).toDouble(),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -49,23 +52,26 @@ class SpellSheetWidget extends Component {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(width: 16),
-                  DropdownButton<String>(
-                    value: spellcastingAbility,
-                    items: spellcastingAbilityOptions.map((option) {
-                      return DropdownMenuItem(value: option, child: Text(option));
-                    }).toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        spellcastingAbilityUpdater(value);
-                      }
-                    },
+                  SizedBox(
+                    width: 120,
+                    child: DropdownButton<String>(
+                      value: spellcastingAbility,
+                      items: spellcastingAbilityOptions.map((option) {
+                        return DropdownMenuItem(value: option, child: Text(option));
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          spellcastingAbilityUpdater(value);
+                        }
+                      },
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(labelText: 'Spell Save DC'),
-                      keyboardType: TextInputType.number,
-                      controller: TextEditingController(text: spellSaveDC.toString()),
+                    child: ConsumerStatefulTextInput(
+                      label: 'Spell Save DC',
+                      textInputType: TextInputType.number,
+                      initialValue: spellSaveDC.toString(),
                       onChanged: (value) {
                         spellSaveDCUpdater(int.tryParse(value) ?? 0);
                       },
@@ -73,10 +79,10 @@ class SpellSheetWidget extends Component {
                   ),
                   const SizedBox(width: 16),
                   Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(labelText: 'Spell Attack'),
-                      keyboardType: TextInputType.number,
-                      controller: TextEditingController(text: spellAttack.toString()),
+                    child: ConsumerStatefulTextInput(
+                      label: 'Spell Attack',
+                      textInputType: TextInputType.number,
+                      initialValue: spellAttack.toString(),
                       onChanged: (value) {
                         spellAttackUpdater(int.tryParse(value) ?? 0);
                       },
@@ -108,7 +114,9 @@ class SpellSheetWidget extends Component {
                                   ),
                                   defaultListEntry: defaultListEntry,
                                   onChange: (newValue) {
-                                    listsUpdater([...lists]..[rowIndex * blocksPerRow + colIndex] = newValue);
+                                    final newLists = [...lists];
+                                    newLists[rowIndex * blocksPerRow + colIndex] = newValue;
+                                    listsUpdater(newLists);
                                   },
                                 ),
                               ),
@@ -134,7 +142,9 @@ class SpellSheetWidget extends Component {
                                   ),
                                   defaultListEntry: defaultListEntry,
                                   onChange: (newValue) {
-                                    listsUpdater([...lists]..[i] = newValue);
+                                    final newLists = [...lists];
+                                    newLists[i] = newValue;
+                                    listsUpdater(newLists);
                                   },
                                 ),
                               ),
@@ -148,8 +158,6 @@ class SpellSheetWidget extends Component {
               // Button to add a new Spell Block
               ElevatedButton.icon(
                 onPressed: () {
-                  print('Current lists: $lists');
-                  print('Default entry: $defaultListsEntry');
                   listsUpdater([...lists, {
                     'title': defaultListsEntry['title'],
                     'slots': defaultListsEntry['slots'],

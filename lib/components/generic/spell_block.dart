@@ -78,7 +78,8 @@ class SpellBlockWidgetState extends ConsumerState<SpellBlockWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
+    return SizedBox(
+      height: 400,
       child: SizedBox(
         width: 300,
         child: Column(
@@ -101,7 +102,7 @@ class SpellBlockWidgetState extends ConsumerState<SpellBlockWidget> {
                 SizedBox(
                   width: 60,
                   child: ConsumerStatefulTextInput(
-                    label: 'Current',
+                    label: 'Slots',
                     textInputType: TextInputType.number,
                     onChanged: (newValue) => _updateParent('slots', int.tryParse(newValue) ?? 0),
                     initialValue: widget.currentSlots.toString(),
@@ -111,7 +112,7 @@ class SpellBlockWidgetState extends ConsumerState<SpellBlockWidget> {
                 SizedBox(
                   width: 60,
                   child: ConsumerStatefulTextInput(
-                    label: 'Max Slots',
+                    label: 'Max',
                     textInputType: TextInputType.number,
                     onChanged: (newValue) => _updateParent('max_slots', int.tryParse(newValue) ?? 0),
                     initialValue: widget.maxSlots.toString(),
