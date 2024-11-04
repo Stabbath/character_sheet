@@ -1,3 +1,4 @@
+import 'package:character_sheet/components/generic/consumer_stateful_text_input.dart';
 import 'package:flutter/material.dart';
 
 class SingleSpellInput extends StatelessWidget {
@@ -21,10 +22,10 @@ class SingleSpellInput extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: TextField(
-            decoration: const InputDecoration(labelText: 'Spell'),
-            controller: TextEditingController(text: spellName),
-            onChanged: onSpellNameChanged,
+          child: ConsumerStatefulTextInput(
+            onChanged: onSpellNameChanged, 
+            initialValue: spellName,
+            textInputType: TextInputType.text,
           ),
         ),
         const SizedBox(width: 8),

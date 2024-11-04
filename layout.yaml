@@ -12,8 +12,8 @@ layout: |
   proficiencies passives passives passives passives passives
   cash cash equipment3 equipment3 equipment4 equipment4
   equipment1 equipment2 equipment3 equipment3 equipment4 equipment4
-#  spells1 spells1 spells1 spells1 spells1 spells1
-#  spells2 spells2 spells2 spells2 spells2 spells2
+  spells1 spells1 spells1 spells1 spells1 spells1
+  spells2 spells2 spells2 spells2 spells2 spells2
 
 anchors:
   var_bool: &var_bool
@@ -78,7 +78,7 @@ sources:
       spellcasting_ability:
         method: variable
         type: string
-        value: Intelligence
+        default: Intelligence
       spell_save_dc: *var_num
       spell_attack: *var_num
       lists:
@@ -93,7 +93,7 @@ sources:
       spellcasting_ability:
         method: variable
         type: string
-        value: Intelligence
+        default: Intelligence
       spell_save_dc: *var_num
       spell_attack: *var_num
       lists:

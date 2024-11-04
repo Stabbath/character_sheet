@@ -1,6 +1,7 @@
 import 'package:character_sheet/components/generic/section_header.dart';
 import 'package:character_sheet/components/generic/spell_block.dart';
 import 'package:character_sheet/core/providers/providers.dart';
+import 'package:character_sheet/utils/yaml_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,6 +29,8 @@ class SpellSheetWidget extends Component {
     final spellSaveDCUpdater = ref.read(sheetDataProvider.notifier).getUpdater(definition.sourceKeys['spell_save_dc']!);
     final spellAttackUpdater = ref.read(sheetDataProvider.notifier).getUpdater(definition.sourceKeys['spell_attack']!);
     final listsUpdater = ref.read(sheetDataProvider.notifier).getUpdater(definition.sourceKeys['lists']!);
+
+    final blocksPerRow = 4;
 
     return IntrinsicHeight(
       child: IntrinsicWidth(
@@ -83,24 +86,63 @@ class SpellSheetWidget extends Component {
               ),
               const SizedBox(height: 24),
               // List of Spell Blocks
-              Wrap(
-                alignment: WrapAlignment.start,
-                direction: Axis.horizontal,
-                spacing: 16.0, // horizontal space between items
-                runSpacing: 16.0, // vertical space between rows
-                children: [
-                  for (var index = 0; index < lists.length; index++)
-                    SpellBlockWidget(
-                      title: lists[index]['title'],
-                      currentSlots: lists[index]['slots'],
-                      maxSlots: lists[index]['max_slots'],
-                      list: List<Map<String, dynamic>>.from(lists[index]['list']),
-                      defaultListEntry: defaultListEntry,
-                      onChange: (newValue) {
-                        listsUpdater([...lists]..[index] = newValue);
-                      },
-                    ),
-                ],
+              Expanded(
+                child: Column(
+                  children: [
+                    // Complete rows
+                    for (var rowIndex = 0; rowIndex < lists.length ~/ blocksPerRow; rowIndex++)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (var colIndex = 0; colIndex < blocksPerRow; colIndex++)
+                              Expanded(
+                                child: SpellBlockWidget(
+                                  title: lists[rowIndex * blocksPerRow + colIndex]['title'],
+                                  currentSlots: lists[rowIndex * blocksPerRow + colIndex]['slots'],
+                                  maxSlots: lists[rowIndex * blocksPerRow + colIndex]['max_slots'],
+                                  list: List<Map<String, dynamic>>.from(
+                                    parseYamlValue(lists[rowIndex * blocksPerRow + colIndex]['list'])
+                                  ),
+                                  defaultListEntry: defaultListEntry,
+                                  onChange: (newValue) {
+                                    listsUpdater([...lists]..[rowIndex * blocksPerRow + colIndex] = newValue);
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    // Remaining items in last row
+                    if (lists.length % blocksPerRow != 0)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (var i = (lists.length ~/ blocksPerRow) * blocksPerRow; i < lists.length; i++)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 16.0),
+                              child: Expanded(
+                                child: SpellBlockWidget(
+                                  title: lists[i]['title'],
+                                  currentSlots: lists[i]['slots'],
+                                  maxSlots: lists[i]['max_slots'],
+                                  list: List<Map<String, dynamic>>.from(
+                                    parseYamlValue(lists[i]['list'])
+                                  ),
+                                  defaultListEntry: defaultListEntry,
+                                  onChange: (newValue) {
+                                    listsUpdater([...lists]..[i] = newValue);
+                                  },
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                  ],
+                ),
               ),
               const SizedBox(height: 16),
               // Button to add a new Spell Block

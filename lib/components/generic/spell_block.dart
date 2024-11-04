@@ -1,3 +1,4 @@
+import 'package:character_sheet/components/generic/consumer_stateful_text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,26 +27,21 @@ class SpellBlockWidget extends ConsumerStatefulWidget {
 }
 
 class SpellBlockWidgetState extends ConsumerState<SpellBlockWidget> {
-  late TextEditingController _titleController;
-  late TextEditingController _currentSlotsController;
-  late TextEditingController _maxSlotsController;
   late List<Map<String, dynamic>> _spellList;
 
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController(text: widget.title);
-    _currentSlotsController = TextEditingController(text: widget.currentSlots.toString());
-    _maxSlotsController = TextEditingController(text: widget.maxSlots.toString());
     _spellList = List<Map<String, dynamic>>.from(widget.list);
   }
 
-  void _updateParent() {
+  void _updateParent(String key, dynamic value) {
     widget.onChange({
-      'title': _titleController.text,
-      'slots': int.tryParse(_currentSlotsController.text) ?? 0,
-      'max_slots': int.tryParse(_maxSlotsController.text) ?? 0,
+      'title': widget.title,
+      'slots': widget.currentSlots,
+      'max_slots': widget.maxSlots,
       'list': _spellList,
+      key: value,
     });
   }
 
@@ -55,35 +51,36 @@ class SpellBlockWidgetState extends ConsumerState<SpellBlockWidget> {
         'name': widget.defaultListEntry['name'],
         'checked': widget.defaultListEntry['checked'],
       });
-      _updateParent();
+      _updateParent('list', _spellList);
     });
   }
 
   void removeSpell(int index) {
     setState(() {
       _spellList.removeAt(index);
-      _updateParent();
+      _updateParent('list', _spellList);
     });
   }
 
   void updateSpellName(int index, String name) {
     setState(() {
       _spellList[index]['name'] = name;
-      _updateParent();
+      _updateParent('list', _spellList);
     });
   }
 
   void togglePrepared(int index, bool value) {
     setState(() {
       _spellList[index]['checked'] = value;
-      _updateParent();
+      _updateParent('list', _spellList);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
-      child: IntrinsicWidth(
+      child: SizedBox(
+        width: 300,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,30 +90,31 @@ class SpellBlockWidgetState extends ConsumerState<SpellBlockWidget> {
               children: [
                 SizedBox(
                   width: 120,
-                  child: TextField(
-                    decoration: const InputDecoration(labelText: 'Spell Block'),
-                    controller: _titleController,
-                    onChanged: (_) => _updateParent(),
+                  child: ConsumerStatefulTextInput(
+                    label: 'Spell Block',
+                    onChanged: (newValue) => _updateParent('title', newValue),
+                    initialValue: widget.title,
+                    textInputType: TextInputType.text,
                   ),
                 ),
                 const SizedBox(width: 16),
                 SizedBox(
                   width: 60,
-                  child: TextField(
-                    decoration: const InputDecoration(labelText: 'Current'),
-                    keyboardType: TextInputType.number,
-                    controller: _currentSlotsController,
-                    onChanged: (_) => _updateParent(),
+                  child: ConsumerStatefulTextInput(
+                    label: 'Current',
+                    textInputType: TextInputType.number,
+                    onChanged: (newValue) => _updateParent('slots', int.tryParse(newValue) ?? 0),
+                    initialValue: widget.currentSlots.toString(),
                   ),
                 ),
                 const SizedBox(width: 16),
                 SizedBox(
                   width: 60,
-                  child: TextField(
-                    decoration: const InputDecoration(labelText: 'Max Slots'),
-                    keyboardType: TextInputType.number,
-                    controller: _maxSlotsController,
-                    onChanged: (_) => _updateParent(),
+                  child: ConsumerStatefulTextInput(
+                    label: 'Max Slots',
+                    textInputType: TextInputType.number,
+                    onChanged: (newValue) => _updateParent('max_slots', int.tryParse(newValue) ?? 0),
+                    initialValue: widget.maxSlots.toString(),
                   ),
                 ),
               ],
