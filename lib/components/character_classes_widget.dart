@@ -1,47 +1,28 @@
-import 'package:character_sheet/core/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/layout/data_bindings.dart';
-import '../core/layout/components.dart';
-import '../core/layout/formulae.dart';
+import '../core/components.dart';
+import '../core/providers/providers.dart';
 import 'generic/single_class_input.dart';
 
-class CharacterClassesWidget extends ConsumerWidget {
-  final String id;
-  final DataBinding dataBinding;
-  final DataBinding characterLevelBinding;
-  final DataBinding proficiencyBinding;
-  
+class CharacterClassesWidget extends Component {
   const CharacterClassesWidget({
     super.key,
-    required this.id,
-    required this.dataBinding,
-    required this.characterLevelBinding,
-    required this.proficiencyBinding,
+    required super.definition,
   });
-
-  factory CharacterClassesWidget.fromComponent(ComponentData component) {
-    return CharacterClassesWidget(
-      id: component.id,
-      dataBinding: component.dataBindings['list']!,
-      characterLevelBinding: component.formulaBindings['character_level']!,
-      proficiencyBinding: component.formulaBindings['proficiency_bonus']!,
-    );
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final classList = ref.watch(sheetDataProvider.select((state) => state != null ? dataBinding.getInSheet(state) : null)) ?? [];
-    final updater = dataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final list = ref.watch(sheetDataProvider.select((state) => state?.get(definition.sourceKeys['list']!))) ?? [];
+    final characterLevel = ref.watch(sheetDataProvider.select((state) => state?.get(definition.sourceKeys['character_level']!)));
+    final proficiencyBonus = ref.watch(sheetDataProvider.select((state) => state?.get(definition.sourceKeys['proficiency_bonus']!)));
 
-    final Formula levelFormula = ref.watch(layoutProvider.select((state) => state?.getFormulaFromOutKey(characterLevelBinding.outKey)))!;
-    final Formula proficiencyFormula = ref.watch(layoutProvider.select((state) => state?.getFormulaFromOutKey(proficiencyBinding.outKey)))!;
+    final listUpdater = ref.read(sheetDataProvider.notifier).getUpdater(definition.sourceKeys['list']!);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (int i = 0; i < classList.length; i++)
+        for (int i = 0; i < list.length; i++)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Row(
@@ -49,32 +30,32 @@ class CharacterClassesWidget extends ConsumerWidget {
                 Expanded(
                   child: SingleClassInput(
                     index: i,
-                    className: classList[i]["name"],
-                    classLevel: classList[i]["level"],
+                    className: list[i]["name"],
+                    classLevel: list[i]["level"],
                     onNameChanged: (newName) {
-                      var newClassList = List.from(classList);
+                      var newClassList = List.from(list);
                       newClassList[i] = {
                         "name": newName,
-                        "level": classList[i]["level"],
+                        "level": list[i]["level"],
                       };
-                      updater(newClassList);
+                      listUpdater(newClassList);
                     },
                     onLevelChanged: (newLevel) {
-                      var newClassList = List.from(classList);
+                      var newClassList = List.from(list);
                       newClassList[i] = {
-                        "name": classList[i]["name"],
+                        "name": list[i]["name"],
                         "level": newLevel,
                       };
-                      updater(newClassList);
+                      listUpdater(newClassList);
                     },
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.remove_circle_outline),
                   onPressed: () {
-                    var newClassList = List.from(classList);
+                    var newClassList = List.from(list);
                     newClassList.removeAt(i);
-                    updater(newClassList);
+                    listUpdater(newClassList);
                   }
                 ),
               ],
@@ -83,15 +64,15 @@ class CharacterClassesWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('Character Level: ${levelFormula.evaluate(ref)}'),
+            Text('Character Level: $characterLevel'),
             const Spacer(),
-            Text('Proficiency Modifier: ${proficiencyFormula.evaluate(ref)}'),
+            Text('Proficiency Modifier: $proficiencyBonus'),
             const Spacer(),
             ElevatedButton.icon(
               onPressed: () {
-                var newClassList = List.from(classList);
+                var newClassList = List.from(list);
                 newClassList.add({"name": "", "level": 0});
-                updater(newClassList);
+                listUpdater(newClassList);
               },
               icon: const Icon(Icons.add),
               label: const Text('Add Class'),

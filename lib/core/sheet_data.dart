@@ -1,38 +1,79 @@
-import 'package:yaml/yaml.dart';
+import 'dart:io';
 
-import '../utils/yaml_utils.dart';
+import 'package:yaml/yaml.dart';
+import 'package:yaml_writer/yaml_writer.dart';
+
+import 'sources.dart';
 
 class SheetData {
-  Map<String, dynamic> data;
+  final SourceMap sourceMap;
 
-  SheetData(this.data);
-  SheetData.empty() : data = {};
-  factory SheetData.fromYaml(YamlMap yaml) => SheetData(mapFromYaml(yaml));
+  SheetData(this.sourceMap);
+  SheetData.empty() : sourceMap = SourceMap.empty();
+  SheetData.fromSourceMap(this.sourceMap);
 
-  YamlMap toYaml() => YamlMap.wrap(data);
-
-  dynamic getValue(String path) {
-    List<String> keys = path.split('.');
-    dynamic value = data;
-    for (String key in keys) {
-      value = (value as Map?)?[key];
-      if (value == null) return null;
+  factory SheetData.fromFilePath(String path) {
+    String contents = File(path).readAsStringSync();
+    if (contents.isEmpty) {
+      return SheetData.empty();
     }
-    return value;
+    final yaml = loadYaml(contents);
+    SourceMap sourceMap = SourceMap.empty();
+    yaml.forEach((key, value) {
+      sourceMap[key] = VariableSource(value: value);
+    });
+    return SheetData.fromSourceMap(sourceMap);
   }
 
-  void setValue(String path, dynamic newValue) {
-    List<String> keys = path.split('.');
-    Map current = data;
-    for (int i = 0; i < keys.length - 1; i++) {
-      current = current.putIfAbsent(keys[i], () => {});
+  void saveToFilePath(String path) {
+    File file = File(path);
+    var yamlWriter = YamlWriter();
+    String yamlString = yamlWriter.write(toYaml());
+    file.writeAsStringSync(yamlString);
+  }
+
+  factory SheetData.fromYaml(Map yaml) {
+    SourceMap sourceMap = SourceMap.empty();
+    yaml.forEach((key, value) {
+      sourceMap[key] = VariableSource(value: value);
+    });
+    return SheetData.fromSourceMap(sourceMap);
+  }
+
+  Map<String, dynamic> toYaml() {
+    Map<String, dynamic> yaml = {};
+    sourceMap.sources.forEach((key, source) {
+      if (source is VariableSource) {
+        yaml[key] = source.get();
+      }
+    });
+    return yaml;
+  }
+
+  dynamic get(String path) {
+    Source? source = sourceMap[path];
+    print('SheetData.get: $path -> ${sourceMap[path]} -> ${source?.get(sourceMap: sourceMap)}');
+
+    return sourceMap.getValue(path);
+  }
+
+  void set(String path, dynamic newValue) {
+    Source? source = sourceMap[path];
+    if (source is VariableSource) {
+      source.setValue(newValue);
+    } else {
+      throw Exception('Cannot set value for non-variable source at path: $path');
     }
-    current[keys.last] = newValue;
   }
 
   SheetData copyWith(String keyPath, dynamic newValue) {
-    SheetData newData = SheetData(Map.from(data));
-    newData.setValue(keyPath, newValue);
-    return newData;
+    SourceMap newSourceMap = SourceMap.clone(sourceMap);
+    Source? source = newSourceMap[keyPath];
+    if (source is VariableSource) {
+      source.setValue(newValue);
+    } else {
+      throw Exception('Cannot set value for non-variable source at path: $keyPath');
+    }
+    return SheetData(newSourceMap);
   }
 }

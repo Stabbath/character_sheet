@@ -1,36 +1,23 @@
 import 'package:character_sheet/components/generic/section_header.dart';
-import 'package:character_sheet/core/layout/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/layout/components.dart';
-import '../core/providers.dart';
+import '../core/components.dart';
+import '../core/providers/providers.dart';
 import 'generic/text_block_input.dart';
 
-class GenericBlockWidget extends ConsumerWidget {
-  final String id;
-  final String title;
-  final DataBinding dataBinding;
-
+class GenericBlockWidget extends Component {
   const GenericBlockWidget({
     super.key,
-    required this.id,
-    required this.title,
-    required this.dataBinding,
+    required super.definition,
   });
-
-  factory GenericBlockWidget.fromComponent(ComponentData component) {
-    return GenericBlockWidget(
-      id: component.id,
-      title: component.readOnlyData['title'],
-      dataBinding: component.dataBindings['content']!,
-    );
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final content = ref.watch(sheetDataProvider.select((state) => state != null ? dataBinding.getInSheet(state) : null));
-    final updater = dataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final title = ref.watch(sheetDataProvider.select((state) => state?.get(definition.sourceKeys['title']!)));
+    final content = ref.watch(sheetDataProvider.select((state) => state?.get(definition.sourceKeys['content']!)));
+
+    final contentUpdater = ref.read(sheetDataProvider.notifier).getUpdater(definition.sourceKeys['content']!);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -42,8 +29,7 @@ class GenericBlockWidget extends ConsumerWidget {
           Expanded(
             child: TextBlockInput(
               initialValue: content,
-              onChanged: (value) =>
-                updater(value),
+              onChanged: (value) => contentUpdater(value),
             ),
           ),
         ],

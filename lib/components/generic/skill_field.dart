@@ -1,24 +1,24 @@
-import 'package:character_sheet/core/providers.dart';
+import 'package:character_sheet/core/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/layout/data_bindings.dart';
 import 'consumer_stateful_text_input.dart';
 
 class SkillField extends ConsumerWidget {
   final String label;
-  final DataBinding skillDataBinding;
+  final String skillKey;
 
   const SkillField({
     super.key,
     required this.label,
-    required this.skillDataBinding,
+    required this.skillKey,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final skill = ref.watch(sheetDataProvider.select((state) => state != null ? skillDataBinding.getInSheet(state) : null));
-    final skillUpdater = skillDataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final skill = ref.watch(sheetDataProvider.select((state) => state?.get(skillKey)));
+
+    final skillUpdater = ref.read(sheetDataProvider.notifier).getUpdater(skillKey);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

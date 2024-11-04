@@ -1,28 +1,28 @@
-import 'package:character_sheet/core/layout/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/providers.dart';
+import '../../core/providers/providers.dart';
 import 'consumer_stateful_text_input.dart';
 
 class DynamicStatInput extends ConsumerWidget {
   final String label;
-  final DataBinding currentValueDataBinding;
-  final DataBinding maxValueDataBinding;
+  final String currentValueKey;
+  final String maxValueKey;
 
   const DynamicStatInput({
     super.key,
     required this.label,
-    required this.currentValueDataBinding,
-    required this.maxValueDataBinding,
+    required this.currentValueKey,
+    required this.maxValueKey,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentValue = ref.watch(sheetDataProvider.select((state) => state != null ? currentValueDataBinding.getInSheet(state) : null));
-    final maxValue = ref.watch(sheetDataProvider.select((state) => state != null ? maxValueDataBinding.getInSheet(state) : null));
-    final currentValueUpdater = currentValueDataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
-    final maxValueUpdater = maxValueDataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final currentValue = ref.watch(sheetDataProvider.select((state) => state?.get(currentValueKey)));
+    final maxValue = ref.watch(sheetDataProvider.select((state) => state?.get(maxValueKey)));
+
+    final currentValueUpdater = ref.read(sheetDataProvider.notifier).getUpdater(currentValueKey);
+    final maxValueUpdater = ref.read(sheetDataProvider.notifier).getUpdater(maxValueKey);
 
     return Column(
       children: [

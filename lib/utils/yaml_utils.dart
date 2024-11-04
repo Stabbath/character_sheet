@@ -1,5 +1,15 @@
 import 'package:yaml/yaml.dart';
 
+dynamic parseYamlValue(dynamic value) {
+  if (value is YamlMap) {
+    return mapFromYaml(value);
+  } else if (value is YamlList) {
+    return listFromYamlList(value);
+  } else {
+    return value;
+  }
+}
+
 Map<String, dynamic> mapFromYaml(YamlMap yaml) {
   final Map<String, dynamic> result = {};
   yaml.forEach((key, value) {

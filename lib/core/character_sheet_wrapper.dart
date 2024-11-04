@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'character_sheet_widget.dart';
-import 'providers.dart';
+import 'providers/providers.dart';
 
 class CharacterSheetWrapper extends ConsumerWidget {
   const CharacterSheetWrapper({super.key});

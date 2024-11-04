@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'layout/components.dart';
-import 'layout/layout_data.dart';
-import 'providers.dart';
+import 'providers/providers.dart';
+import 'layout_data.dart';
 
 class CharacterSheet extends ConsumerWidget {
   const CharacterSheet({
@@ -14,14 +13,10 @@ class CharacterSheet extends ConsumerWidget {
   List<Widget> buildChildren(LayoutData layoutData) {
     Set<String> areaNames = layoutData.getAreaNames();
     return areaNames.map((areaName) {
-      final component = layoutData.components[areaName];
+      final component = layoutData.componentMap.components[areaName];
       if (component == null) return const SizedBox.shrink();
-      return buildWidgetForComponent(component).inGridArea(areaName);
+      return component.inGridArea(areaName);
     }).toList();
-  }
-
-  Widget buildWidgetForComponent(ComponentData component) {
-    return getWidgetFromComponent(component);
   }
 
   @override

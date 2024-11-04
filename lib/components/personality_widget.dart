@@ -1,49 +1,32 @@
-import 'package:character_sheet/core/layout/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/layout/components.dart';
-import '../core/providers.dart';
+import '../core/components.dart';
+import '../core/providers/providers.dart';
 import 'generic/text_block_input.dart';
 
-class PersonalityWidget extends ConsumerWidget {
-  static const requiredFields = [
-    'traits',
-    'ideals',
-    'bonds',
-    'flaws',
-  ];
-
-  final String id;
-  final Map<String, DataBinding> dataBindings;
-
+class PersonalityWidget extends Component {
   const PersonalityWidget({
     super.key,
-    required this.id,
-    required this.dataBindings,
+    required super.definition,
   });
-
-  factory PersonalityWidget.fromComponent(ComponentData component) {
-    final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, requiredFields);
-    if (missingKeys.isNotEmpty) {
-      throw Exception('PersonalityWidget requires but is missing a binding for the following fields: $missingKeys');
-    }
-
-    return PersonalityWidget(
-      id: component.id,
-      dataBindings: Map<String, DataBinding>.fromEntries(
-        requiredFields.map((field) => MapEntry(
-          field,
-          component.dataBindings[field]!,
-        )),
-      ),
-    );
-  }
   
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final values = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings.map((key, value) => MapEntry(key, value.getInSheet(state))) : null))!;
-    final updaters = dataBindings.map((key, value) => MapEntry(key, value.createStateUpdater(ref.read(sheetDataProvider.notifier))));
+    final traitsKey = definition.sourceKeys['traits']!;
+    final idealsKey = definition.sourceKeys['ideals']!;
+    final bondsKey = definition.sourceKeys['bonds']!;
+    final flawsKey = definition.sourceKeys['flaws']!;
+
+    final traits = ref.watch(sheetDataProvider.select((state) => state?.get(traitsKey)));
+    final ideals = ref.watch(sheetDataProvider.select((state) => state?.get(idealsKey)));
+    final bonds = ref.watch(sheetDataProvider.select((state) => state?.get(bondsKey)));
+    final flaws = ref.watch(sheetDataProvider.select((state) => state?.get(flawsKey)));
+
+    final traitsUpdater = ref.read(sheetDataProvider.notifier).getUpdater(traitsKey);
+    final idealsUpdater = ref.read(sheetDataProvider.notifier).getUpdater(idealsKey);
+    final bondsUpdater = ref.read(sheetDataProvider.notifier).getUpdater(bondsKey);
+    final flawsUpdater = ref.read(sheetDataProvider.notifier).getUpdater(flawsKey);
 
     return Column(
       children: [
@@ -52,9 +35,9 @@ class PersonalityWidget extends ConsumerWidget {
             Expanded(
               child: TextBlockInput(
                 title: 'Personality Traits',
-                initialValue: values['traits'],
+                initialValue: traits,
                 onChanged: (newValue) {
-                  updaters['traits']!(newValue);
+                  traitsUpdater(newValue);
                 },
               ),
             ),
@@ -62,9 +45,9 @@ class PersonalityWidget extends ConsumerWidget {
             Expanded(
               child: TextBlockInput(
                 title: 'Ideals',
-                initialValue: values['ideals'],
+                initialValue: ideals,
                 onChanged: (newValue) {
-                  updaters['ideals']!(newValue);
+                  idealsUpdater(newValue);
                 },
               ),
             ),
@@ -76,9 +59,9 @@ class PersonalityWidget extends ConsumerWidget {
             Expanded(
               child: TextBlockInput(
                 title: 'Bonds',
-                initialValue: values['bonds'],
+                initialValue: bonds,
                 onChanged: (newValue) {
-                  updaters['bonds']!(newValue);
+                  bondsUpdater(newValue);
                 },
               ),
             ),
@@ -86,9 +69,9 @@ class PersonalityWidget extends ConsumerWidget {
             Expanded(
               child: TextBlockInput(
                 title: 'Flaws',
-                initialValue: values['flaws'],
+                initialValue: flaws,
                 onChanged: (newValue) {
-                  updaters['flaws']!(newValue);
+                  flawsUpdater(newValue);
                 },
               ),
             ),

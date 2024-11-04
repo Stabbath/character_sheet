@@ -3,28 +3,8 @@ import 'dart:io';
 import 'package:yaml/yaml.dart';
 import 'package:yaml_writer/yaml_writer.dart';
 
-import '../core/layout/layout_data.dart';
+import '../core/layout_data.dart';
 import '../core/sheet_data.dart';
-
-// with validity checks - return null if invalid
-LayoutData? loadLayoutFromPath(String path) {
-  final File file = File(path);
-  if (!file.existsSync()) {
-    return null;
-  }
-
-  final String contents = file.readAsStringSync();
-  if (contents.isEmpty) {
-    return null;
-  }
-
-  final yaml = loadYaml(contents);
-  if (yaml == null) {
-    return null;
-  }
-
-  return LayoutData.fromYaml(yaml);
-}
 
 // with validity checks - return null if invalid
 SheetData? loadSheetFromPath(String path, LayoutData layoutData) {

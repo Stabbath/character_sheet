@@ -1,5 +1,5 @@
 versions:
   core: 0.1.0 # keep this version in sync with pubspec.yaml
-  characterSheet: 0.1.1
+  characterSheet: 1.0.0
   layoutEditor: 0.0.0
   characterCreator: 0.0.0

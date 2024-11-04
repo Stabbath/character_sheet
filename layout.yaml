@@ -1,5 +1,7 @@
 name: "Standard D&D 5e Character Sheet"
-version: "1.2"
+version: "2.0"
+description: "A standard D&D 5e character sheet with all the usual sections."
+author: "Francisco \"Stabby\" Pesquita"
 
 layout: |
   picture names names names names token
@@ -10,61 +12,297 @@ layout: |
   proficiencies passives passives passives passives passives
   cash cash equipment3 equipment3 equipment4 equipment4
   equipment1 equipment2 equipment3 equipment3 equipment4 equipment4
+#  spells1 spells1 spells1 spells1 spells1 spells1
+#  spells2 spells2 spells2 spells2 spells2 spells2
 
-formulae:
-  character_level:
-    type: character_level_from_classes
-    data_bindings:
-      classlist: character.classes.list
-  proficiency_bonus:
-    type: proficiency_bonus_from_level
-    formula_bindings:
-      character_level: character_level
+anchors:
+  var_bool: &var_bool
+    method: variable
+    type: bool
+    default: false
+  const_string: &const_string
+    method: constant
+    type: string
+    value: ""
+  var_string: &var_string
+    method: variable
+    type: string
+    default: ""
+  var_num: &var_num
+    method: variable
+    type: num
+    default: 0
+  var_num_ten: &var_num_ten
+    method: variable
+    type: num
+    default: 10
+  ability: &ability
+    base: *var_num_ten
+    bonus: *var_num
+  prof_stat: &prof_stat
+    proficiency: *var_num
+    bonus: *var_num
 
-# Components that require character_level: classes, saves, skills
+sources:
+  common:
+    ability_list:
+      method: constant
+      type: list
+      value:
+        - Strength
+        - Dexterity
+        - Constitution
+        - Intelligence
+        - Wisdom
+        - Charisma
+    spells:
+      default_lists_entry:
+        method: constant
+        type: object
+        value:
+          title: ''
+          slots: 0
+          max_slots: 0
+          list: []
+      default_list_entry:
+        method: constant
+        type: object
+        value:
+          name: ''
+          checked: false
+    spells1:
+      title:
+        method: constant
+        type: string
+        value: Primary Spell Sheet
+      spellcasting_ability:
+        method: variable
+        type: string
+        value: Intelligence
+      spell_save_dc: *var_num
+      spell_attack: *var_num
+      lists:
+        method: variable
+        type: list
+        default: [] 
+    spells2:
+      title:
+        method: constant
+        type: string
+        value: Secondary Spell Sheet
+      spellcasting_ability:
+        method: variable
+        type: string
+        value: Intelligence
+      spell_save_dc: *var_num
+      spell_attack: *var_num
+      lists:
+        method: variable
+        type: list
+        default: [] 
+    proficiencies_title:
+      method: constant
+      type: string
+      value: Proficiencies
+    attacks_title:
+      method: constant
+      type: string
+      value: Attacks
+    actives_title:
+      method: constant
+      type: string
+      value: Actives
+    passives_title:
+      method: constant
+      type: string
+      value: Passives
+    cash_title:
+      method: constant
+      type: string
+      value: Cash
+    equipment1_title:
+      method: constant
+      type: string
+      value: Equipment 1
+    equipment2_title:
+      method: constant
+      type: string
+      value: Equipment 2
+    equipment3_title:
+      method: constant
+      type: string
+      value: Equipment 3
+    equipment4_title:
+      method: constant
+      type: string
+      value: Equipment 4
+
+  character:
+    classes:
+      list:
+        method: variable
+        type: list
+        default:
+          - name: Class Name
+            level: 1
+    abilities:
+      strength: *ability
+      dexterity: *ability
+      constitution: *ability
+      intelligence: *ability
+      wisdom: *ability 
+      charisma: *ability
+    saving_throws:
+      strength: *prof_stat
+      dexterity: *prof_stat
+      constitution: *prof_stat
+      intelligence: *prof_stat
+      wisdom: *prof_stat
+      charisma: *prof_stat
+    skills:
+      acrobatics: *prof_stat
+      animal_handling: *prof_stat
+      arcana: *prof_stat
+      athletics: *prof_stat
+      deception: *prof_stat
+      history: *prof_stat
+      insight: *prof_stat
+      intimidation: *prof_stat
+      investigation: *prof_stat
+      medicine: *prof_stat
+      nature: *prof_stat
+      perception: *prof_stat
+      performance: *prof_stat
+      persuasion: *prof_stat
+      religion: *prof_stat
+      sleight_of_hand: *prof_stat
+      stealth: *prof_stat
+      survival: *prof_stat
+    hp: *var_num
+    max_hp: *var_num
+    exhaustion: *var_num
+    max_exhaustion: *var_num
+    temp_hp: *var_num
+    armor_class: *var_num
+    initiative: *var_num
+    speed: *var_num
+    combat_notes: *var_string
+    names:
+      method: variable
+      type: string
+      default: "Character Names"
+    titles:
+      method: variable
+      type: string
+      default: "Titles"
+    origins:
+      race: *var_string
+      background: *var_string
+    biometrics:
+      age: *var_string
+      height: *var_string
+      weight: *var_string
+      eye_color: *var_string
+      skin_color: *var_string
+      hair_color: *var_string
+    personality:
+      traits: *var_string
+      ideals: *var_string
+      bonds: *var_string
+      flaws: *var_string
+    proficiencies: *var_string
+    attacks: *var_string
+    actives: *var_string
+    passives: *var_string
+    cash: *var_string
+    equipment1: *var_string
+    equipment2: *var_string
+    equipment3: *var_string
+    equipment4: *var_string
+    spells1:
+      spellcasting_ability:
+        method: variable
+        type: string
+        default: Intelligence
+      lists:
+        method: variable
+        type: list
+        default:
+          - title: ''
+            list: 
+              - name: 'Spell name'
+                checked: false
+    spells2:
+      spellcasting_ability:
+        method: variable
+        type: string
+        default: Intelligence
+      lists:
+        method: variable
+        type: list
+        default: []
+    character_level:
+      method: function
+      formula: character_level_from_classes
+      inputs:
+        class_list: character.classes.list
+    proficiency_bonus:
+      method: function
+      formula: proficiency_bonus_from_level
+      inputs:
+        character_level: character.character_level
+    tokenPath: *var_string
+    picturePath: *var_string
 
 components:
+  # spells
+  spells1:
+    type: spell_sheet
+    sources:
+      title: common.spells1.title
+      spellcasting_ability: common.spells1.spellcasting_ability
+      spell_save_dc: common.spells1.spell_save_dc
+      spell_attack: common.spells1.spell_attack
+      lists: common.spells1.lists
+      spellcasting_ability_options: common.ability_list
+      default_lists_entry: common.spells.default_lists_entry
+      default_list_entry: common.spells.default_list_entry
+  spells2:
+    type: spell_sheet
+    sources:
+      title: common.spells2.title
+      spellcasting_ability: common.spells2.spellcasting_ability
+      spell_save_dc: common.spells2.spell_save_dc
+      spell_attack: common.spells2.spell_attack
+      lists: common.spells2.lists
+      spellcasting_ability_options: common.ability_list
+      default_lists_entry: common.spells.default_lists_entry
+      default_list_entry: common.spells.default_list_entry
+  
   # images
   picture:
     type: image
-    default_data:
-      path: ""
-    data_bindings:
+    sources:
       path: character.picturePath
   token:
     type: image
-    default_data:
-      path: ""
-    data_bindings:
+    sources:
       path: character.tokenPath
 
   # personal info
   names:
     type: names
-    default_data:
-      names: "Character Names"
-      titles: "Titles"
-    data_bindings:
+    sources:
       names: character.names
       titles: character.titles
   origins:
     type: origins
-    default_data:
-      race: ""
-      background: ""
-    data_bindings:
+    sources:
       race: character.origins.race
       background: character.origins.background
   biometrics:
     type: biometrics
-    default_data:
-      age: ""
-      height: ""
-      weight: ""
-      eyes: ""
-      skin: ""
-      hair: ""
-    data_bindings:
+    sources:
       age: character.biometrics.age
       height: character.biometrics.height
       weight: character.biometrics.weight
@@ -73,12 +311,7 @@ components:
       hair: character.biometrics.hair_color
   personality:
     type: personality
-    default_data:
-      traits: ""
-      ideals: ""
-      bonds: ""
-      flaws: ""
-    data_bindings:
+    sources:
       traits: character.personality.traits
       ideals: character.personality.ideals
       bonds: character.personality.bonds
@@ -87,307 +320,137 @@ components:
   # classes and levels
   classes:
     type: classes
-    default_data:
-      list: [
-        {
-          name: "Class Name",
-          level: 0
-        }
-      ]
-    data_bindings:
+    sources:
       list: character.classes.list
-    formula_bindings:
-      character_level: character_level
-      proficiency_bonus: proficiency_bonus
+      character_level: character.character_level
+      proficiency_bonus: character.proficiency_bonus
 
   # stats
   abilities:
     type: abilities
-    default_data:
-      strength:
-        base: 10
-        bonus: 0
-      dexterity:
-        base: 10
-        bonus: 0
-      constitution:
-        base: 10
-        bonus: 0
-      intelligence:
-        base: 10
-        bonus: 0
-      wisdom:
-        base: 10
-        bonus: 0
-      charisma:
-        base: 10
-        bonus: 0
-    data_bindings:
-      strength: 
-        base: character.ability_scores.strength.base
-        bonus: character.ability_scores.strength.bonus
-      dexterity:
-        base: character.ability_scores.dexterity.base
-        bonus: character.ability_scores.dexterity.bonus
-      constitution:
-        base: character.ability_scores.constitution.base
-        bonus: character.ability_scores.constitution.bonus
-      intelligence:
-        base: character.ability_scores.intelligence.base
-        bonus: character.ability_scores.intelligence.bonus
-      wisdom:
-        base: character.ability_scores.wisdom.base
-        bonus: character.ability_scores.wisdom.bonus
-      charisma:
-        base: character.ability_scores.charisma.base
-        bonus: character.ability_scores.charisma.bonus
+    sources:
+      strength.base: character.abilities.strength.base
+      strength.bonus: character.abilities.strength.bonus
+      dexterity.base: character.abilities.dexterity.base
+      dexterity.bonus: character.abilities.dexterity.bonus
+      constitution.base: character.abilities.constitution.base
+      constitution.bonus: character.abilities.constitution.bonus
+      intelligence.base: character.abilities.intelligence.base
+      intelligence.bonus: character.abilities.intelligence.bonus
+      wisdom.base: character.abilities.wisdom.base
+      wisdom.bonus: character.abilities.wisdom.bonus
+      charisma.base: character.abilities.charisma.base
+      charisma.bonus: character.abilities.charisma.bonus
   saves:
     type: saves
-    default_data:
-      strength:
-        proficiency: 0
-        bonus: 0
-      dexterity:
-        proficiency: 0
-        bonus: 0
-      constitution:
-        proficiency: 0
-        bonus: 0
-      intelligence:
-        proficiency: 0
-        bonus: 0
-      wisdom:
-        proficiency: 0
-        bonus: 0
-      charisma:
-        proficiency: 0
-        bonus: 0
-    data_bindings:
-      strength: 
-        proficiency: character.saving_throws.strength.proficiency
-        bonus: character.saving_throws.strength.bonus
-      dexterity:
-        proficiency: character.saving_throws.dexterity.proficiency
-        bonus: character.saving_throws.dexterity.bonus
-      constitution:
-        proficiency: character.saving_throws.constitution.proficiency
-        bonus: character.saving_throws.constitution.bonus
-      intelligence:
-        proficiency: character.saving_throws.intelligence.proficiency
-        bonus: character.saving_throws.intelligence.bonus
-      wisdom:
-        proficiency: character.saving_throws.wisdom.proficiency
-        bonus: character.saving_throws.wisdom.bonus
-      charisma:
-        proficiency: character.saving_throws.charisma.proficiency
-        bonus: character.saving_throws.charisma.bonus
-    formula_bindings:
-      character_level: character_level
+    sources:
+      strength.proficiency: character.saving_throws.strength.proficiency
+      strength.bonus: character.saving_throws.strength.bonus
+      dexterity.proficiency: character.saving_throws.dexterity.proficiency
+      dexterity.bonus: character.saving_throws.dexterity.bonus
+      constitution.proficiency: character.saving_throws.constitution.proficiency
+      constitution.bonus: character.saving_throws.constitution.bonus
+      intelligence.proficiency: character.saving_throws.intelligence.proficiency
+      intelligence.bonus: character.saving_throws.intelligence.bonus
+      wisdom.proficiency: character.saving_throws.wisdom.proficiency
+      wisdom.bonus: character.saving_throws.wisdom.bonus
+      charisma.proficiency: character.saving_throws.charisma.proficiency
+      charisma.bonus: character.saving_throws.charisma.bonus
+      proficiency_bonus: character.proficiency_bonus
   skills:
     type: skills
-    default_data:
-      acrobatics: 
-        proficiency: 0
-        bonus: 0
-      animal_handling:
-        proficiency: 0
-        bonus: 0
-      arcana:
-        proficiency: 0
-        bonus: 0
-      athletics:
-        proficiency: 0
-        bonus: 0
-      deception:
-        proficiency: 0
-        bonus: 0
-      history:
-        proficiency: 0
-        bonus: 0
-      insight:
-        proficiency: 0
-        bonus: 0
-      intimidation:
-        proficiency: 0
-        bonus: 0
-      investigation:
-        proficiency: 0
-        bonus: 0
-      medicine:
-        proficiency: 0
-        bonus: 0
-      nature:
-        proficiency: 0
-        bonus: 0
-      perception:
-        proficiency: 0
-        bonus: 0
-      performance:
-        proficiency: 0
-        bonus: 0
-      persuasion:
-        proficiency: 0
-        bonus: 0
-      religion:
-        proficiency: 0
-        bonus: 0
-      sleight_of_hand:
-        proficiency: 0
-        bonus: 0
-      stealth:
-        proficiency: 0
-        bonus: 0
-      survival:
-        proficiency: 0
-        bonus: 0
-    data_bindings:
-      acrobatics: 
-        proficiency: character.skills.acrobatics.proficiency
-        bonus: character.skills.acrobatics.bonus
-      animal_handling:
-        proficiency: character.skills.animal_handling.proficiency
-        bonus: character.skills.animal_handling.bonus
-      arcana:
-        proficiency: character.skills.arcana.proficiency
-        bonus: character.skills.arcana.bonus
-      athletics:
-        proficiency: character.skills.athletics.proficiency
-        bonus: character.skills.athletics.bonus
-      deception:
-        proficiency: character.skills.deception.proficiency
-        bonus: character.skills.deception.bonus
-      history:
-        proficiency: character.skills.history.proficiency
-        bonus: character.skills.history.bonus
-      insight:
-        proficiency: character.skills.insight.proficiency
-        bonus: character.skills.insight.bonus
-      intimidation:
-        proficiency: character.skills.intimidation.proficiency
-        bonus: character.skills.intimidation.bonus
-      investigation:
-        proficiency: character.skills.investigation.proficiency
-        bonus: character.skills.investigation.bonus
-      medicine:
-        proficiency: character.skills.medicine.proficiency
-        bonus: character.skills.medicine.bonus
-      nature:
-        proficiency: character.skills.nature.proficiency
-        bonus: character.skills.nature.bonus
-      perception:
-        proficiency: character.skills.perception.proficiency
-        bonus: character.skills.perception.bonus
-      performance:
-        proficiency: character.skills.performance.proficiency
-        bonus: character.skills.performance.bonus
-      persuasion:
-        proficiency: character.skills.persuasion.proficiency
-        bonus: character.skills.persuasion.bonus
-      religion:
-        proficiency: character.skills.religion.proficiency
-        bonus: character.skills.religion.bonus
-      sleight_of_hand:
-        proficiency: character.skills.sleight_of_hand.proficiency
-        bonus: character.skills.sleight_of_hand.bonus
-      stealth:
-        proficiency: character.skills.stealth.proficiency
-        bonus: character.skills.stealth.bonus
-      survival:
-        proficiency: character.skills.survival.proficiency
-        bonus: character.skills.survival.bonus
-    formula_bindings:
-      character_level: character_level
+    sources:
+      acrobatics.proficiency: character.skills.acrobatics.proficiency
+      acrobatics.bonus: character.skills.acrobatics.bonus
+      animal_handling.proficiency: character.skills.animal_handling.proficiency
+      animal_handling.bonus: character.skills.animal_handling.bonus
+      arcana.proficiency: character.skills.arcana.proficiency
+      arcana.bonus: character.skills.arcana.bonus
+      athletics.proficiency: character.skills.athletics.proficiency
+      athletics.bonus: character.skills.athletics.bonus
+      deception.proficiency: character.skills.deception.proficiency
+      deception.bonus: character.skills.deception.bonus
+      history.proficiency: character.skills.history.proficiency
+      history.bonus: character.skills.history.bonus
+      insight.proficiency: character.skills.insight.proficiency
+      insight.bonus: character.skills.insight.bonus
+      intimidation.proficiency: character.skills.intimidation.proficiency
+      intimidation.bonus: character.skills.intimidation.bonus
+      investigation.proficiency: character.skills.investigation.proficiency
+      investigation.bonus: character.skills.investigation.bonus
+      medicine.proficiency: character.skills.medicine.proficiency
+      medicine.bonus: character.skills.medicine.bonus
+      nature.proficiency: character.skills.nature.proficiency
+      nature.bonus: character.skills.nature.bonus
+      perception.proficiency: character.skills.perception.proficiency
+      perception.bonus: character.skills.perception.bonus
+      performance.proficiency: character.skills.performance.proficiency
+      performance.bonus: character.skills.performance.bonus
+      persuasion.proficiency: character.skills.persuasion.proficiency
+      persuasion.bonus: character.skills.persuasion.bonus
+      religion.proficiency: character.skills.religion.proficiency
+      religion.bonus: character.skills.religion.bonus
+      sleight_of_hand.proficiency: character.skills.sleight_of_hand.proficiency
+      sleight_of_hand.bonus: character.skills.sleight_of_hand.bonus
+      stealth.proficiency: character.skills.stealth.proficiency
+      stealth.bonus: character.skills.stealth.bonus
+      survival.proficiency: character.skills.survival.proficiency
+      survival.bonus: character.skills.survival.bonus
+      proficiency_bonus: character.proficiency_bonus
+
+  # actions and traits and so on
   proficiencies:
     type: generic_block
-    readonly_data:
-      title: Proficiencies
-    default_data:
-      content: ""
-    data_bindings:
+    sources:
+      title: common.proficiencies_title
       content: character.proficiencies
-
-  # actions and traits
   attacks:
     type: generic_block
-    readonly_data:
-      title: Attacks
-    default_data:
-      content: ""
-    data_bindings:
+    sources:
+      title: common.attacks_title
       content: character.attacks
   actives:
     type: generic_block
-    readonly_data:
-      title: Actives
-    default_data:
-      content: ""
-    data_bindings:
+    sources:
+      title: common.actives_title
       content: character.actives
   passives:
     type: generic_block
-    readonly_data:
-      title: Passives
-    default_data:
-      content: ""
-    data_bindings:
+    sources:
+      title: common.passives_title
       content: character.passives
   
   # cash and gear
   cash:
     type: generic_block
-    readonly_data:
-      title: Cash
-    default_data:
-      content: ""
-    data_bindings:
+    sources:
+      title: common.cash_title
       content: character.cash
   equipment1:
     type: generic_block
-    readonly_data:
-      title: Equipment 1
-    default_data:
-      content: ""
-    data_bindings: 
+    sources:
+      title: common.equipment1_title
       content: character.equipment1
   equipment2:
     type: generic_block
-    readonly_data:
-      title: Equipment 2
-    default_data:
-      content: ""
-    data_bindings:
+    sources:
+      title: common.equipment2_title
       content: character.equipment2
   equipment3:
     type: generic_block
-    readonly_data:
-      title: Equipment 3
-    default_data:
-      content: ""
-    data_bindings:
+    sources:
+      title: common.equipment3_title
       content: character.equipment3
   equipment4:
     type: generic_block
-    readonly_data:
-      title: Equipment 4
-    default_data:
-      content: ""
-    data_bindings:
+    sources:
+      title: common.equipment4_title
       content: character.equipment4
 
   # other
   combat:
     type: combat
-    default_data:
-      hp: 0
-      max_hp: 0
-      exhaustion: 0
-      max_exhaustion: 0
-      temp_hp: 0
-      armor_class: 0
-      initiative: 0
-      speed: 0
-      notes: ''
-    data_bindings:
+    sources:
       hp: character.hp
       max_hp: character.max_hp
       exhaustion: character.exhaustion

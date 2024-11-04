@@ -1,31 +1,30 @@
 import 'package:character_sheet/components/generic/consumer_stateful_text_input.dart';
-import 'package:character_sheet/core/layout/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/providers.dart';
+import '../../core/providers/providers.dart';
 
 class AbilityScoreField extends ConsumerWidget {
-  static const requiredFields = [
-    'base',
-    'bonus',
-  ];
-
   final String label;
-  final Map<String, DataBinding> dataBindings;
+  final String baseValueKey;
+  final String bonusValueKey;
 
   const AbilityScoreField({
     super.key,
     required this.label,
-    required this.dataBindings,
+    required this.baseValueKey,
+    required this.bonusValueKey,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Map<String, dynamic> values = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings.map((key, value) => MapEntry(key, value.getInSheet(state))) : null))!;
-    final Map<String, Function(dynamic)> updaters = dataBindings.map((key, value) => MapEntry(key, value.createStateUpdater(ref.read(sheetDataProvider.notifier))));
+    final baseValue = ref.watch(sheetDataProvider.select((state) => state?.get(baseValueKey)));
+    final bonusValue = ref.watch(sheetDataProvider.select((state) => state?.get(bonusValueKey)));
 
-    final total = values['base'] + values['bonus'];
+    final baseValueUpdater = ref.read(sheetDataProvider.notifier).getUpdater(baseValueKey);
+    final bonusValueUpdater = ref.read(sheetDataProvider.notifier).getUpdater(bonusValueKey);
+
+    final total = baseValue + bonusValue;
     final modifier = (total - 10) ~/ 2;
 
     return Row(
@@ -39,10 +38,10 @@ class AbilityScoreField extends ConsumerWidget {
         SizedBox(
           width: 50,
           child: ConsumerStatefulTextInput(
-            initialValue: values['base'].toString(),
+            initialValue: baseValue.toString(),
             textInputType: TextInputType.number,
             textAlign: TextAlign.center,
-            onChanged: (value) => updaters['base']!(int.parse(value)),
+            onChanged: (value) => baseValueUpdater(int.tryParse(value) ?? 0),
           ),
         ),
         const Icon(
@@ -51,10 +50,10 @@ class AbilityScoreField extends ConsumerWidget {
         SizedBox(
           width: 50,
           child: ConsumerStatefulTextInput(
-            initialValue: values['bonus'].toString(),
+            initialValue: bonusValue.toString(),
             textInputType: TextInputType.number,
             textAlign: TextAlign.center,
-            onChanged: (value) => updaters['bonus']!(int.parse(value)),
+            onChanged: (value) => bonusValueUpdater(int.tryParse(value) ?? 0),
           ),
         ),
         const Icon(

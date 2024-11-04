@@ -1,24 +1,23 @@
 import 'package:character_sheet/components/generic/consumer_stateful_text_input.dart';
-import 'package:character_sheet/core/providers.dart';
+import 'package:character_sheet/core/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/layout/data_bindings.dart';
-
 class StaticStatInput extends ConsumerWidget {
   final String label;
-  final DataBinding statDataBinding;
+  final String statKey;
 
   const StaticStatInput({
     super.key,
     required this.label, 
-    required this.statDataBinding,
+    required this.statKey,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final stat = ref.watch(sheetDataProvider.select((state) => state != null ? statDataBinding.getInSheet(state) : null));
-    final statUpdater = statDataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final stat = ref.watch(sheetDataProvider.select((state) => state?.get(statKey)));
+
+    final statUpdater = ref.read(sheetDataProvider.notifier).getUpdater(statKey);
 
     return Column(
       children: [

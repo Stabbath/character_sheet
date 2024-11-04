@@ -1,48 +1,22 @@
-import 'package:character_sheet/core/providers.dart';
+import 'package:character_sheet/core/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../core/layout/data_bindings.dart';
-import '../core/layout/components.dart';
+import '../core/components.dart';
 import 'generic/consumer_stateful_text_input.dart';
 
-class OriginsWidget extends ConsumerWidget {
-  static const requiredFields = [
-    'race',
-    'background',
-  ];
-
-  final String id;
-  final Map<String, DataBinding> dataBindings;
-
+class OriginsWidget extends Component {
   const OriginsWidget({
     super.key,
-    required this.id,
-    required this.dataBindings,
+    required super.definition,
   });
-
-  factory OriginsWidget.fromComponent(ComponentData component) {
-    final missingKeys = getMissingInKeysFromDataBindings(component.dataBindings, requiredFields);
-    if (missingKeys.isNotEmpty) {
-      throw Exception('OriginsWidget requires but is missing a binding for the following fields: $missingKeys');
-    }
-
-    return OriginsWidget(
-      id: component.id, 
-      dataBindings: Map<String, DataBinding>.fromEntries(
-        requiredFields.map((field) => MapEntry(
-          field,
-          component.dataBindings[field]!,
-        )),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final race = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings['race']!.getInSheet(state) : null));
-    final background = ref.watch(sheetDataProvider.select((state) => state != null ? dataBindings['background']!.getInSheet(state) : null));
-    final raceUpdater = dataBindings['race']!.createStateUpdater(ref.read(sheetDataProvider.notifier));
-    final backgroundUpdater = dataBindings['background']!.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final race = ref.watch(sheetDataProvider.select((state) => state?.get(definition.sourceKeys['race']!)));
+    final background = ref.watch(sheetDataProvider.select((state) => state?.get(definition.sourceKeys['background']!)));
+
+    final raceUpdater = ref.read(sheetDataProvider.notifier).getUpdater(definition.sourceKeys['race']!);
+    final backgroundUpdater = ref.read(sheetDataProvider.notifier).getUpdater(definition.sourceKeys['background']!);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

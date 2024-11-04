@@ -7,18 +7,18 @@ class SpellBlockWidget extends ConsumerStatefulWidget {
   final String title;
   final int currentSlots;
   final int maxSlots;
-  final ValueChanged<String> onTitleChanged;
-  final ValueChanged<int> onCurrentSlotsChanged;
-  final ValueChanged<int> onMaxSlotsChanged;
+  final List<Map<String, dynamic>> list;
+  final Map<String, dynamic> defaultListEntry;
+  final ValueChanged<Map<String, dynamic>> onChange;
 
   const SpellBlockWidget({
     super.key,
     required this.title,
     required this.currentSlots,
     required this.maxSlots,
-    required this.onTitleChanged,
-    required this.onCurrentSlotsChanged,
-    required this.onMaxSlotsChanged,
+    required this.list,
+    required this.defaultListEntry,
+    required this.onChange,
   });
 
   @override
@@ -26,105 +26,129 @@ class SpellBlockWidget extends ConsumerStatefulWidget {
 }
 
 class SpellBlockWidgetState extends ConsumerState<SpellBlockWidget> {
-  List<Map<String, dynamic>> spellList = [];
+  late TextEditingController _titleController;
+  late TextEditingController _currentSlotsController;
+  late TextEditingController _maxSlotsController;
+  late List<Map<String, dynamic>> _spellList;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.title);
+    _currentSlotsController = TextEditingController(text: widget.currentSlots.toString());
+    _maxSlotsController = TextEditingController(text: widget.maxSlots.toString());
+    _spellList = List<Map<String, dynamic>>.from(widget.list);
+  }
+
+  void _updateParent() {
+    widget.onChange({
+      'title': _titleController.text,
+      'slots': int.tryParse(_currentSlotsController.text) ?? 0,
+      'max_slots': int.tryParse(_maxSlotsController.text) ?? 0,
+      'list': _spellList,
+    });
+  }
 
   void addSpell() {
     setState(() {
-      spellList.add({"spellName": "", "isPrepared": false});
+      _spellList.add({
+        'name': widget.defaultListEntry['name'],
+        'checked': widget.defaultListEntry['checked'],
+      });
+      _updateParent();
     });
   }
 
   void removeSpell(int index) {
     setState(() {
-      spellList.removeAt(index);
+      _spellList.removeAt(index);
+      _updateParent();
     });
   }
 
   void updateSpellName(int index, String name) {
     setState(() {
-      spellList[index]["spellName"] = name;
+      _spellList[index]['name'] = name;
+      _updateParent();
     });
   }
 
   void togglePrepared(int index, bool value) {
     setState(() {
-      spellList[index]["isPrepared"] = value;
+      _spellList[index]['checked'] = value;
+      _updateParent();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Title and Slot Fields
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return IntrinsicHeight(
+      child: IntrinsicWidth(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: TextField(
-                decoration: const InputDecoration(labelText: 'Spell Block'),
-                controller: TextEditingController(text: widget.title),
-                onChanged: widget.onTitleChanged,
-              ),
+            // Title and Slot Fields
+            Row(
+              children: [
+                SizedBox(
+                  width: 120,
+                  child: TextField(
+                    decoration: const InputDecoration(labelText: 'Spell Block'),
+                    controller: _titleController,
+                    onChanged: (_) => _updateParent(),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                SizedBox(
+                  width: 60,
+                  child: TextField(
+                    decoration: const InputDecoration(labelText: 'Current'),
+                    keyboardType: TextInputType.number,
+                    controller: _currentSlotsController,
+                    onChanged: (_) => _updateParent(),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                SizedBox(
+                  width: 60,
+                  child: TextField(
+                    decoration: const InputDecoration(labelText: 'Max Slots'),
+                    keyboardType: TextInputType.number,
+                    controller: _maxSlotsController,
+                    onChanged: (_) => _updateParent(),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 16),
-            SizedBox(
-              width: 60,
-              child: TextField(
-                decoration: const InputDecoration(labelText: 'Current'),
-                keyboardType: TextInputType.number,
-                controller: TextEditingController(text: widget.currentSlots.toString()),
-                onChanged: (value) {
-                  widget.onCurrentSlotsChanged(int.tryParse(value) ?? 0);
-                },
-              ),
-            ),
-            const SizedBox(width: 16),
-            SizedBox(
-              width: 60,
-              child: TextField(
-                decoration: const InputDecoration(labelText: 'Spell Slots'),
-                keyboardType: TextInputType.number,
-                controller: TextEditingController(text: widget.maxSlots.toString()),
-                onChanged: (value) {
-                  widget.onMaxSlotsChanged(int.tryParse(value) ?? 0);
-                },
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        // Spell List
-        for (int i = 0; i < spellList.length; i++)
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: SingleSpellInput(
-                spellName: spellList[i]["spellName"],
-                isPrepared: spellList[i]["isPrepared"],
-                onSpellNameChanged: (name) => updateSpellName(i, name),
-                onPreparedChanged: (value) => togglePrepared(i, value),
-                onRemove: () => removeSpell(i),
-              ),
-            ),
-          ),
-        const SizedBox(height: 8),
-        // Add Spell Button
-        Expanded(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ElevatedButton.icon(
+            const SizedBox(height: 8),
+            // Spell List
+            ...List.generate(_spellList.length, (index) {
+              final spell = _spellList[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: SingleSpellInput(
+                  spellName: spell['name'],
+                  isPrepared: spell['checked'],
+                  onSpellNameChanged: (name) => updateSpellName(index, name),
+                  onPreparedChanged: (value) => togglePrepared(index, value),
+                  onRemove: () => removeSpell(index),
+                ),
+              );
+            }),
+            const SizedBox(height: 8),
+            // Add Spell Button
+            Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton.icon(
                 onPressed: addSpell,
                 icon: const Icon(Icons.add),
                 label: const Text('Add Spell'),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

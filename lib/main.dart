@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/character_sheet_wrapper.dart';
-import 'core/providers.dart';
+import 'core/providers/providers.dart';
 
 void main() {
   runApp(

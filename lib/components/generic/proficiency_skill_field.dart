@@ -1,38 +1,36 @@
-import 'package:character_sheet/components/generic/cycle_checkbox.dart';
-import 'package:character_sheet/core/layout/data_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/layout/formulae.dart';
-import '../../core/providers.dart';
+import '../../core/providers/providers.dart';
 import 'consumer_stateful_text_input.dart';
+import 'cycle_checkbox.dart';
 
 class ProficiencySkillField extends ConsumerWidget {
   final String label;
-  final DataBinding bonusDataBinding;
-  final DataBinding proficiencyDataBinding;
-  final DataBinding proficiencyBonusFormulaBinding;
+  final String bonusValueKey;
+  final String proficiencyTierKey;
+  final String proficiencyBonusKey;
 
   const ProficiencySkillField({
     super.key,
     required this.label,
-    required this.bonusDataBinding,
-    required this.proficiencyDataBinding,
-    required this.proficiencyBonusFormulaBinding,
+    required this.bonusValueKey,
+    required this.proficiencyTierKey,
+    required this.proficiencyBonusKey,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final skillBonus = ref.watch(sheetDataProvider.select((state) => state != null ? bonusDataBinding.getInSheet(state) : null));
-    final skillBonusUpdater = bonusDataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final bonusValue = ref.watch(sheetDataProvider.select((state) => state?.get(bonusValueKey)));
+    final proficiencyTier = ref.watch(sheetDataProvider.select((state) => state?.get(proficiencyTierKey)));
+    final proficiencyBonus = ref.watch(sheetDataProvider.select((state) => state?.get(proficiencyBonusKey)));
 
-    final skillProficiency = ref.watch(sheetDataProvider.select((state) => state != null ? proficiencyDataBinding.getInSheet(state) : null));
-    final skillProficiencyUpdater = proficiencyDataBinding.createStateUpdater(ref.read(sheetDataProvider.notifier));
+    final bonusValueUpdater = ref.read(sheetDataProvider.notifier).getUpdater(bonusValueKey);
+    final proficiencyTierUpdater = ref.read(sheetDataProvider.notifier).getUpdater(proficiencyTierKey);
 
     const proficiencyValues = [0, 0.5, 1, 2];
 
-    final Formula proficiencyFormula = ref.watch(layoutProvider.select((state) => state?.getFormulaFromOutKey(proficiencyBonusFormulaBinding.outKey)))!;
-    final total = (skillProficiency * proficiencyFormula.evaluate(ref) + skillBonus).floor();
+    final total = (proficiencyTier * proficiencyBonus + bonusValue).floor();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,17 +49,17 @@ class ProficiencySkillField extends ConsumerWidget {
               Text('P'),
               Text('E'),
             ],
-            initialIndex: proficiencyValues.indexOf(skillProficiency),
-            onChangedIndex: ((index) => skillProficiencyUpdater(proficiencyValues[index])),
+            initialIndex: proficiencyValues.indexOf(proficiencyTier),
+            onChangedIndex: ((index) => proficiencyTierUpdater(proficiencyValues[index])),
           ),
         ),
         SizedBox(
           width: 50,
           child: ConsumerStatefulTextInput(
-            initialValue: skillBonus.toString(),
+            initialValue: bonusValue.toString(),
             textInputType: TextInputType.number,
             textAlign: TextAlign.center,
-            onChanged: (value) => skillBonusUpdater(int.tryParse(value) ?? 0),
+            onChanged: (value) => bonusValueUpdater(int.tryParse(value) ?? 0),
           ),
         ),
         const Icon(
