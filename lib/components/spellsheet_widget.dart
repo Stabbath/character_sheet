@@ -33,10 +33,8 @@ class SpellSheetWidget extends Component {
 
     final blocksPerRow = 4;
 
-    return SizedBox(
-      width: 1200,
-      child: SizedBox(
-        height: (200 + 400 * (lists.length ~/ blocksPerRow)).toDouble(),
+    return IntrinsicHeight(
+      child: IntrinsicWidth(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -104,21 +102,19 @@ class SpellSheetWidget extends Component {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             for (var colIndex = 0; colIndex < blocksPerRow; colIndex++)
-                              Expanded(
-                                child: SpellBlockWidget(
-                                  title: lists[rowIndex * blocksPerRow + colIndex]['title'],
-                                  currentSlots: lists[rowIndex * blocksPerRow + colIndex]['slots'],
-                                  maxSlots: lists[rowIndex * blocksPerRow + colIndex]['max_slots'],
-                                  list: List<Map<String, dynamic>>.from(
-                                    parseYamlValue(lists[rowIndex * blocksPerRow + colIndex]['list'])
-                                  ),
-                                  defaultListEntry: defaultListEntry,
-                                  onChange: (newValue) {
-                                    final newLists = [...lists];
-                                    newLists[rowIndex * blocksPerRow + colIndex] = newValue;
-                                    listsUpdater(newLists);
-                                  },
+                              SpellBlockWidget(
+                                title: lists[rowIndex * blocksPerRow + colIndex]['title'],
+                                currentSlots: lists[rowIndex * blocksPerRow + colIndex]['slots'],
+                                maxSlots: lists[rowIndex * blocksPerRow + colIndex]['max_slots'],
+                                list: List<Map<String, dynamic>>.from(
+                                  parseYamlValue(lists[rowIndex * blocksPerRow + colIndex]['list'])
                                 ),
+                                defaultListEntry: defaultListEntry,
+                                onChange: (newValue) {
+                                  final newLists = [...lists];
+                                  newLists[rowIndex * blocksPerRow + colIndex] = newValue;
+                                  listsUpdater(newLists);
+                                },
                               ),
                           ],
                         ),
@@ -132,21 +128,19 @@ class SpellSheetWidget extends Component {
                           for (var i = (lists.length ~/ blocksPerRow) * blocksPerRow; i < lists.length; i++)
                             Padding(
                               padding: const EdgeInsets.only(right: 16.0),
-                              child: Expanded(
-                                child: SpellBlockWidget(
-                                  title: lists[i]['title'],
-                                  currentSlots: lists[i]['slots'],
-                                  maxSlots: lists[i]['max_slots'],
-                                  list: List<Map<String, dynamic>>.from(
-                                    parseYamlValue(lists[i]['list'])
-                                  ),
-                                  defaultListEntry: defaultListEntry,
-                                  onChange: (newValue) {
-                                    final newLists = [...lists];
-                                    newLists[i] = newValue;
-                                    listsUpdater(newLists);
-                                  },
+                              child: SpellBlockWidget(
+                                title: lists[i]['title'],
+                                currentSlots: lists[i]['slots'],
+                                maxSlots: lists[i]['max_slots'],
+                                list: List<Map<String, dynamic>>.from(
+                                  parseYamlValue(lists[i]['list'])
                                 ),
+                                defaultListEntry: defaultListEntry,
+                                onChange: (newValue) {
+                                  final newLists = [...lists];
+                                  newLists[i] = newValue;
+                                  listsUpdater(newLists);
+                                },
                               ),
                             ),
                         ],

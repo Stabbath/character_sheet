@@ -78,8 +78,7 @@ class SpellBlockWidgetState extends ConsumerState<SpellBlockWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
+    return IntrinsicHeight(
       child: SizedBox(
         width: 300,
         child: Column(
